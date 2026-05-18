@@ -60,8 +60,7 @@
   html, body {
     @apply bg-[#F4F5F6] text-foreground;
     font-family: 'Inter', sans-serif;
-    overscroll-behavior: none;
-    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
     height: 100vh;
@@ -70,8 +69,9 @@
 
   #root {
     height: 100%;
-    overflow-y: auto;
+    overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
+    scroll-behavior: auto;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -169,7 +169,7 @@
   }
 
   .card-hover {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.15s ease;
   }
   .card-hover:active {
     transform: scale(0.98);
