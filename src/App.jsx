@@ -65,8 +65,14 @@ const AuthenticatedApp = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.12, ease: "easeInOut" }}
-          style={{ position: "relative", zIndex: 0 }}
+          transition={{ duration: 0.1 }}
+          style={{
+            position: "absolute",
+            inset: 0,
+            overflowY: "auto",
+            WebkitOverflowScrolling: "touch",
+            zIndex: 0,
+          }}
         >
           <Routes location={location}>
             <Route path="/welcome" element={<Welcome />} />

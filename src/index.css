@@ -60,18 +60,16 @@
   html, body {
     @apply bg-[#F4F5F6] text-foreground;
     font-family: 'Inter', sans-serif;
-    overscroll-behavior-y: none;
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
-    height: 100vh;
-    height: 100dvh;
+    height: 100%;
   }
 
   #root {
     height: 100%;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
