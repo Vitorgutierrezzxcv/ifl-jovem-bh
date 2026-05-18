@@ -63,6 +63,15 @@
     overscroll-behavior: none;
     -webkit-overflow-scrolling: touch;
     -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  #root {
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   h1, h2, h3, h4, h5, h6 {
