@@ -53,8 +53,7 @@ export default function Journey() {
     <div className="min-h-screen bg-ifl-gray-bg" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
       {/* Header */}
       <div className="hex-bg-dark relative overflow-hidden" style={{ background: "#071D33" }}>
-        <div className="absolute top-0 right-0 w-40 h-40 rounded-full pointer-events-none"
-          style={{ background: "radial-gradient(circle, rgba(184,135,42,0.12) 0%, transparent 70%)", transform: "translate(20%, -20%)" }} />
+
         <MobileHeader title="Minha Jornada" dark />
         <div className="px-5 pb-6">
           <div className="flex items-center justify-between mb-4">
