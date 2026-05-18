@@ -75,10 +75,10 @@ export default function Admin() {
         <div className="grid grid-cols-2 gap-3">
           {adminMenuItems.map(item => (
             <button key={item.path} onClick={() => navigate(item.path)}
-              className="rounded-2xl p-4 flex flex-col items-center gap-2 card-hover"
+              className="rounded-2xl p-4 flex flex-col items-center gap-2 card-hover min-h-[88px]"
               style={{ background: "#FFFFFF", border: "1px solid rgba(7,29,51,0.06)" }}>
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "rgba(7,29,51,0.05)" }}>
-                <item.icon size={18} style={{ color: "#071D33" }} strokeWidth={1.8} />
+              <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: "rgba(7,29,51,0.05)" }}>
+                <item.icon size={20} style={{ color: "#071D33" }} strokeWidth={1.8} />
               </div>
               <span className="font-inter text-xs font-semibold text-center" style={{ color: "#111827" }}>{item.label}</span>
             </button>

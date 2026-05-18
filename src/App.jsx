@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation, useNavigationType } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
@@ -25,6 +25,10 @@ import Admin from './pages/Admin';
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
   const location = useLocation();
+  const navType = useNavigationType(); // "POP" = back, "PUSH" = forward, "REPLACE"
+  const isBack = navType === "POP";
+  const xIn = isBack ? -18 : 18;
+  const xOut = isBack ? 18 : -18;
 
   // Show loading spinner while checking app public settings or auth
   if (isLoadingPublicSettings || isLoadingAuth) {
@@ -50,9 +54,9 @@ const AuthenticatedApp = () => {
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
         key={location.pathname}
-        initial={{ opacity: 0, x: 18 }}
+        initial={{ opacity: 0, x: xIn }}
         animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -18 }}
+        exit={{ opacity: 0, x: xOut }}
         transition={{ duration: 0.18, ease: "easeInOut" }}
         style={{ willChange: "opacity, transform" }}
       >

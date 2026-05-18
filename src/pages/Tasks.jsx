@@ -67,6 +67,7 @@ export default function Tasks() {
   const months = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 
   if (selected) {
+    // optimistic: show newly added submission immediately
     const sub = getSubmission(selected.id);
     const dl = getDaysLeft(selected.due_date);
     return (
@@ -101,7 +102,12 @@ export default function Tasks() {
 
           {sub ? (
             <div className="rounded-2xl p-4" style={{ background: "#FFFFFF", border: "1px solid rgba(7,29,51,0.06)" }}>
-              <p className="font-montserrat font-bold text-sm mb-2" style={{ color: "#071D33" }}>Sua entrega</p>
+              <div className="flex items-center justify-between mb-2">
+                <p className="font-montserrat font-bold text-sm" style={{ color: "#071D33" }}>Sua entrega</p>
+                {sub._optimistic && (
+                  <span className="font-inter text-[10px] px-2 py-0.5 rounded-full" style={{ background: "rgba(31,138,91,0.1)", color: "#1F8A5B" }}>Enviando…</span>
+                )}
+              </div>
               {sub.content && <p className="font-inter text-sm" style={{ color: "#374151" }}>{sub.content}</p>}
               {sub.feedback && (
                 <div className="mt-3 p-3 rounded-xl" style={{ background: "rgba(7,29,51,0.04)" }}>
@@ -111,7 +117,18 @@ export default function Tasks() {
               )}
             </div>
           ) : getTaskStatus(selected) !== "expirada" && (
-            <SubmitForm task={selected} me={me} onSubmit={(sub) => { setSubmissions([...submissions, sub]); setSelected(null); loadData(); }} />
+            <SubmitForm
+              task={selected}
+              me={me}
+              onOptimistic={(optimisticSub) => {
+                setSubmissions(prev => [...prev, optimisticSub]);
+                setSelected(null);
+              }}
+              onSubmit={(realSub, tempId) => {
+                setSubmissions(prev => prev.map(s => s.id === tempId ? realSub : s));
+                loadData();
+              }}
+            />
           )}
         </div>
       </div>
@@ -181,13 +198,26 @@ export default function Tasks() {
   );
 }
 
-function SubmitForm({ task, me, onSubmit }) {
+function SubmitForm({ task, me, onOptimistic, onSubmit }) {
   const [content, setContent] = useState("");
   const [saving, setSaving] = useState(false);
 
   async function handleSubmit() {
     if (!content.trim()) return;
     setSaving(true);
+    const tempId = `optimistic_${Date.now()}`;
+    // Optimistic: show immediately
+    const optimisticSub = {
+      id: tempId,
+      task_id: task.id,
+      member_id: me?.id,
+      member_name: me?.full_name,
+      content,
+      status: "enviada",
+      submitted_at: new Date().toISOString(),
+      _optimistic: true,
+    };
+    onOptimistic(optimisticSub);
     try {
       const members = await base44.entities.Member.filter({ email: me?.email });
       const member = members[0];
@@ -199,7 +229,7 @@ function SubmitForm({ task, me, onSubmit }) {
         status: "enviada",
         submitted_at: new Date().toISOString(),
       });
-      onSubmit(sub);
+      onSubmit(sub, tempId);
     } catch (e) { console.error(e); }
     finally { setSaving(false); }
   }
