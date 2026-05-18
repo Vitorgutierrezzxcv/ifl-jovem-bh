@@ -19,7 +19,7 @@ export default function MobileHeader({ title, subtitle, dark = false, showNotifi
       style={{
         paddingTop: "calc(env(safe-area-inset-top) + 12px)",
         paddingBottom: "12px",
-        background: dark ? "#071D33" : "transparent",
+        background: dark ? "#071D33" : "#071D33",
       }}
     >
       <div className="flex items-center gap-3">
