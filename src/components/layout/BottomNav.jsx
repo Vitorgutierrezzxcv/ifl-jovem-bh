@@ -48,7 +48,7 @@ export default function BottomNav() {
 
   return (
     <nav
-      className="fixed left-1/2 z-50"
+      className="fixed left-1/2 z-[9999]"
       style={{
         bottom: "calc(env(safe-area-inset-bottom) + 14px)",
         transform: "translateX(-50%)",
@@ -61,6 +61,7 @@ export default function BottomNav() {
         border: "1px solid rgba(184,135,42,0.18)",
         boxShadow: "0 8px 32px rgba(7,29,51,0.28), 0 2px 8px rgba(0,0,0,0.18)",
         padding: "8px 8px",
+        pointerEvents: "auto",
       }}
     >
       <div className="flex items-center justify-around">
