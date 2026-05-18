@@ -1,0 +1,61 @@
+{
+  "name": "Attendance",
+  "type": "object",
+  "properties": {
+    "event_id": {
+      "type": "string"
+    },
+    "event_name": {
+      "type": "string"
+    },
+    "member_id": {
+      "type": "string"
+    },
+    "member_name": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "presente",
+        "ausente",
+        "ausencia_justificada",
+        "pendente",
+        "validada",
+        "anulada"
+      ],
+      "default": "pendente"
+    },
+    "checked_in_at": {
+      "type": "string"
+    },
+    "method": {
+      "type": "string",
+      "enum": [
+        "manual",
+        "qrcode",
+        "checkin",
+        "importacao"
+      ],
+      "default": "manual"
+    },
+    "recorded_by": {
+      "type": "string"
+    },
+    "justification_id": {
+      "type": "string"
+    },
+    "points_generated": {
+      "type": "number",
+      "default": 0
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "event_id",
+    "member_id",
+    "status"
+  ]
+}

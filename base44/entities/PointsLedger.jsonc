@@ -1,0 +1,72 @@
+{
+  "name": "PointsLedger",
+  "type": "object",
+  "properties": {
+    "member_id": {
+      "type": "string"
+    },
+    "member_name": {
+      "type": "string"
+    },
+    "points": {
+      "type": "number"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "palestra",
+        "auxilio_palestra",
+        "evento_extraordinario",
+        "patrocinio",
+        "iflxp",
+        "evento_externo",
+        "gestao",
+        "instagram",
+        "linkedin",
+        "evento_ordinario",
+        "tarefa",
+        "clube_livro",
+        "artigo_rol",
+        "conteudo_rol",
+        "gerencia",
+        "institucional",
+        "comunicacao",
+        "formacao"
+      ],
+      "default": "evento_ordinario"
+    },
+    "action": {
+      "type": "string"
+    },
+    "source_type": {
+      "type": "string"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "source_name": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pendente",
+        "aprovado",
+        "recusado",
+        "cancelado"
+      ],
+      "default": "aprovado"
+    },
+    "created_by": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "member_id",
+    "points",
+    "category"
+  ]
+}

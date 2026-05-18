@@ -1,0 +1,71 @@
+{
+  "name": "Opportunity",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "viagem_sp",
+        "evento_extraordinario",
+        "visita_tecnica",
+        "jantar_convidado",
+        "forum",
+        "iflxp",
+        "processo_seletivo_interno",
+        "vaga_gerente",
+        "vaga_projeto",
+        "premiacao",
+        "publicacao_artigo",
+        "oportunidade_externa"
+      ],
+      "default": "evento_extraordinario"
+    },
+    "vacancies": {
+      "type": "number"
+    },
+    "criteria": {
+      "type": "string"
+    },
+    "cycles_eligible": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "deadline": {
+      "type": "string",
+      "format": "date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "rascunho",
+        "aberta",
+        "encerrada",
+        "resultado_publicado"
+      ],
+      "default": "aberta"
+    },
+    "ranking_criteria": {
+      "type": "boolean",
+      "default": false
+    },
+    "department_id": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "type",
+    "deadline"
+  ]
+}

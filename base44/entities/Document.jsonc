@@ -1,0 +1,58 @@
+{
+  "name": "Document",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "codigo_etica",
+        "estatuto",
+        "ciclo_formacao",
+        "termo_associado",
+        "rol_literario",
+        "criterios_pontuacao",
+        "manual",
+        "financeiro",
+        "eventos",
+        "formacao",
+        "comunicacao",
+        "ata",
+        "interno"
+      ],
+      "default": "manual"
+    },
+    "file_url": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "visibility": {
+      "type": "string",
+      "enum": [
+        "publico",
+        "diretoria",
+        "presidencia"
+      ],
+      "default": "publico"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ativo",
+        "arquivado"
+      ],
+      "default": "ativo"
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "category"
+  ]
+}

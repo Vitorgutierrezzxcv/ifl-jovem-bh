@@ -1,0 +1,61 @@
+{
+  "name": "FinancialCharge",
+  "type": "object",
+  "properties": {
+    "member_id": {
+      "type": "string"
+    },
+    "member_name": {
+      "type": "string"
+    },
+    "plan": {
+      "type": "string",
+      "enum": [
+        "mensal",
+        "semestral",
+        "anual"
+      ],
+      "default": "mensal"
+    },
+    "amount": {
+      "type": "number"
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "em_dia",
+        "pendente",
+        "vencido",
+        "inadimplente",
+        "isento",
+        "negociado",
+        "cancelado"
+      ],
+      "default": "pendente"
+    },
+    "paid_at": {
+      "type": "string"
+    },
+    "payment_method": {
+      "type": "string"
+    },
+    "receipt_url": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "recorded_by": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "member_id",
+    "amount",
+    "due_date"
+  ]
+}

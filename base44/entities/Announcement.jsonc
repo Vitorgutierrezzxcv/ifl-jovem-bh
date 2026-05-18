@@ -1,0 +1,66 @@
+{
+  "name": "Announcement",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "audience": {
+      "type": "string",
+      "enum": [
+        "todos",
+        "qualifier",
+        "1_ciclo",
+        "2_ciclo",
+        "3_ciclo",
+        "fellow",
+        "diretoria",
+        "individual"
+      ],
+      "default": "todos"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "normal",
+        "importante",
+        "urgente"
+      ],
+      "default": "normal"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "rascunho",
+        "agendado",
+        "publicado",
+        "expirado",
+        "arquivado"
+      ],
+      "default": "publicado"
+    },
+    "publish_at": {
+      "type": "string"
+    },
+    "expires_at": {
+      "type": "string"
+    },
+    "department_name": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "requires_confirmation": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "title",
+    "content"
+  ]
+}

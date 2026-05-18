@@ -1,0 +1,93 @@
+{
+  "name": "Event",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "palestra_ordinaria",
+        "evento_ordinario_formacao",
+        "clube_do_livro",
+        "evento_extraordinario",
+        "viagem",
+        "visita_tecnica",
+        "forum",
+        "iflxp",
+        "reuniao_diretoria",
+        "processo_seletivo",
+        "evento_externo",
+        "evento_institucional"
+      ],
+      "default": "palestra_ordinaria"
+    },
+    "description": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "time": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "online_link": {
+      "type": "string"
+    },
+    "speaker": {
+      "type": "string"
+    },
+    "department_id": {
+      "type": "string"
+    },
+    "cycles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "capacity": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "rascunho",
+        "publicado",
+        "inscricoes_abertas",
+        "inscricoes_encerradas",
+        "realizado",
+        "cancelado",
+        "reagendado"
+      ],
+      "default": "publicado"
+    },
+    "points_value": {
+      "type": "number",
+      "default": 0
+    },
+    "requires_presence": {
+      "type": "boolean",
+      "default": true
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "materials_url": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "date",
+    "type"
+  ]
+}

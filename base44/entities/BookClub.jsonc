@@ -1,0 +1,70 @@
+{
+  "name": "BookClub",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "author": {
+      "type": "string"
+    },
+    "month": {
+      "type": "number"
+    },
+    "year": {
+      "type": "number"
+    },
+    "cycle": {
+      "type": "string"
+    },
+    "session_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "session_time": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "guest": {
+      "type": "string"
+    },
+    "moderator": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "cover_url": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "agendado",
+        "realizado",
+        "cancelado"
+      ],
+      "default": "agendado"
+    },
+    "points_listener": {
+      "type": "number",
+      "default": 1
+    },
+    "points_read": {
+      "type": "number",
+      "default": 2
+    },
+    "points_active": {
+      "type": "number",
+      "default": 3
+    }
+  },
+  "required": [
+    "title",
+    "author",
+    "month",
+    "year"
+  ]
+}

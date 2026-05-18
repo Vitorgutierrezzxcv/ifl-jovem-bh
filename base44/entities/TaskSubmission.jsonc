@@ -1,0 +1,53 @@
+{
+  "name": "TaskSubmission",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string"
+    },
+    "member_id": {
+      "type": "string"
+    },
+    "member_name": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "file_url": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "rascunho",
+        "enviada",
+        "enviada_atraso",
+        "em_correcao",
+        "aprovada",
+        "aprovada_ressalvas",
+        "recusada",
+        "ajuste_solicitado",
+        "reenvio_enviado",
+        "expirada"
+      ],
+      "default": "enviada"
+    },
+    "submitted_at": {
+      "type": "string"
+    },
+    "feedback": {
+      "type": "string"
+    },
+    "score": {
+      "type": "number"
+    },
+    "reviewed_by": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "task_id",
+    "member_id"
+  ]
+}

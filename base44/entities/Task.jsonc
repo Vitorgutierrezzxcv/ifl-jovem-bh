@@ -1,0 +1,51 @@
+{
+  "name": "Task",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "cycle": {
+      "type": "string"
+    },
+    "month": {
+      "type": "number"
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "event_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "rascunho",
+        "publicada",
+        "arquivada"
+      ],
+      "default": "publicada"
+    },
+    "points_value": {
+      "type": "number",
+      "default": 0
+    },
+    "department_id": {
+      "type": "string"
+    },
+    "cycles_target": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "title",
+    "due_date"
+  ]
+}

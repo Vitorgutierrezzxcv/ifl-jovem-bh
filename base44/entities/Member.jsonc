@@ -1,0 +1,129 @@
+{
+  "name": "Member",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "full_name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "avatar_url": {
+      "type": "string"
+    },
+    "birth_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "cycle": {
+      "type": "string",
+      "enum": [
+        "qualifier",
+        "1_ciclo",
+        "2_ciclo",
+        "3_ciclo",
+        "fellow",
+        "honorario"
+      ],
+      "default": "qualifier"
+    },
+    "entry_year": {
+      "type": "number"
+    },
+    "member_status": {
+      "type": "string",
+      "enum": [
+        "ativo",
+        "em_atencao",
+        "em_risco",
+        "suspenso",
+        "licenciado",
+        "inadimplente",
+        "desligado",
+        "concluido",
+        "fellow",
+        "honorario",
+        "alumni"
+      ],
+      "default": "ativo"
+    },
+    "financial_status": {
+      "type": "string",
+      "enum": [
+        "em_dia",
+        "pendente",
+        "vencido",
+        "inadimplente",
+        "isento",
+        "negociado"
+      ],
+      "default": "em_dia"
+    },
+    "progress_status": {
+      "type": "string",
+      "enum": [
+        "em_dia",
+        "atencao",
+        "em_risco",
+        "apto",
+        "aprovado",
+        "reprovado"
+      ],
+      "default": "em_dia"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "associado",
+        "gerente",
+        "diretor",
+        "vice_presidente",
+        "presidente"
+      ],
+      "default": "associado"
+    },
+    "department_id": {
+      "type": "string"
+    },
+    "department_name": {
+      "type": "string"
+    },
+    "total_points": {
+      "type": "number",
+      "default": 0
+    },
+    "ranking_position": {
+      "type": "number"
+    },
+    "attendance_percentage": {
+      "type": "number",
+      "default": 0
+    },
+    "linkedin_url": {
+      "type": "string"
+    },
+    "university": {
+      "type": "string"
+    },
+    "course": {
+      "type": "string"
+    },
+    "show_in_directory": {
+      "type": "boolean",
+      "default": true
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "full_name",
+    "email"
+  ]
+}
