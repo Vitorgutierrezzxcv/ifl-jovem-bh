@@ -109,7 +109,7 @@ export default function Agenda() {
   }
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-ifl-gray-bg relative overflow-auto" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 72px)" }}>
+    <div ref={containerRef} className="min-h-screen bg-ifl-gray-bg relative overflow-auto" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
       <PullToRefreshIndicator pullDistance={pullDistance} refreshing={refreshing} progress={pullProgress} />
       <div className="hex-bg-dark" style={{ background: "linear-gradient(160deg, #071D33 0%, #0A2640 100%)" }}>
         <MobileHeader title="Agenda" dark />

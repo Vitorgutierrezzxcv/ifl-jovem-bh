@@ -48,33 +48,42 @@ export default function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-100"
+      className="fixed left-1/2 z-50"
       style={{
-        paddingBottom: "env(safe-area-inset-bottom)",
-        boxShadow: "0 -4px 20px rgba(7,29,51,0.08)",
+        bottom: "calc(env(safe-area-inset-bottom) + 14px)",
+        transform: "translateX(-50%)",
+        width: "calc(100% - 32px)",
+        maxWidth: 420,
+        background: "rgba(7,29,51,0.92)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        borderRadius: 32,
+        border: "1px solid rgba(184,135,42,0.18)",
+        boxShadow: "0 8px 32px rgba(7,29,51,0.28), 0 2px 8px rgba(0,0,0,0.18)",
+        padding: "8px 8px",
       }}
     >
-      <div className="flex items-center justify-around px-2 pt-2 pb-1">
+      <div className="flex items-center justify-around">
         {navItems.map((item) => {
           const active = activeTab === item.path;
           return (
             <button
               key={item.path}
               onClick={() => handleTabPress(item.path)}
-              className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-2xl transition-all duration-200 min-w-[56px] min-h-[44px] justify-center"
+              className="flex flex-col items-center gap-0.5 transition-all duration-200 min-w-[52px] min-h-[44px] justify-center rounded-2xl"
               style={{
-                color: active ? "#B8872A" : "#6B7280",
-                background: active ? "rgba(184,135,42,0.08)" : "transparent",
+                padding: "6px 10px",
+                background: active ? "rgba(184,135,42,0.18)" : "transparent",
               }}
             >
               <item.icon
                 size={22}
-                strokeWidth={active ? 2.5 : 1.8}
-                style={{ color: active ? "#B8872A" : "#6B7280" }}
+                strokeWidth={active ? 2.4 : 1.7}
+                style={{ color: active ? "#D4A043" : "rgba(255,255,255,0.5)" }}
               />
               <span
                 className="font-inter text-[10px] font-medium"
-                style={{ color: active ? "#B8872A" : "#6B7280" }}
+                style={{ color: active ? "#D4A043" : "rgba(255,255,255,0.45)" }}
               >
                 {item.label}
               </span>

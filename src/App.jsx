@@ -21,6 +21,8 @@ import ROL from './pages/ROL';
 import Opportunities from './pages/Opportunities';
 import Documents from './pages/Documents';
 import Admin from './pages/Admin';
+import Points from './pages/Points';
+import Attendance from './pages/Attendance';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -74,6 +76,8 @@ const AuthenticatedApp = () => {
           <Route path="/oportunidades" element={<Opportunities />} />
           <Route path="/documentos" element={<Documents />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/pontos" element={<Points />} />
+          <Route path="/presenca" element={<Attendance />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </motion.div>

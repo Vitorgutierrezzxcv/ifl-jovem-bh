@@ -76,7 +76,7 @@ export default function Home() {
     <div
       ref={containerRef}
       className="min-h-screen bg-ifl-gray-bg relative overflow-auto"
-      style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 72px)" }}
+      style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}
     >
       <PullToRefreshIndicator pullDistance={pullDistance} refreshing={refreshing} progress={pullProgress} />
       {/* Hero Header */}
@@ -91,10 +91,10 @@ export default function Home() {
 
         <div className="px-5 pb-6">
           <p className="font-inter text-sm mb-1" style={{ color: "rgba(255,255,255,0.5)" }}>
-            Olá, {firstName} 👋
+            Olá 👋
           </p>
           <h1 className="font-montserrat font-black text-2xl text-white leading-tight">
-            Sua jornada no<br />IFL Jovem BH
+            {user?.full_name || "Associado"}
           </h1>
 
           {/* Journey Card */}
@@ -141,9 +141,9 @@ export default function Home() {
       {/* Quick metrics */}
       <div className="px-4 mt-4">
         <div className="grid grid-cols-3 gap-3">
-          <MetricCard icon={Star} label="Pontos" value={member?.total_points || 0} color="#B8872A" />
-          <MetricCard icon={Trophy} label="Ranking" value={member?.ranking_position ? `#${member.ranking_position}` : "—"} color="#071D33" />
-          <MetricCard icon={Calendar} label="Presença" value={`${Math.round(member?.attendance_percentage || 0)}%`} color="#1F8A5B" />
+          <MetricCard icon={Star} label="Pontos" value={member?.total_points || 0} color="#B8872A" onClick={() => navigate("/pontos")} />
+          <MetricCard icon={Trophy} label="Ranking" value={member?.ranking_position ? `#${member.ranking_position}` : "—"} color="#071D33" onClick={() => navigate("/ranking")} />
+          <MetricCard icon={Calendar} label="Presença" value={`${Math.round(member?.attendance_percentage || 0)}%`} color="#1F8A5B" onClick={() => navigate("/presenca")} />
         </div>
       </div>
 
