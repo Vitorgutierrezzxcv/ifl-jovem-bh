@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Calendar, Trophy, CheckSquare, DollarSign, BookOpen, Star, Bell, ChevronRight, TrendingUp, AlertCircle, Clock } from "lucide-react";
+import { Calendar, Trophy, CheckSquare, DollarSign, BookOpen, Star, Bell, ChevronRight, TrendingUp, AlertCircle, Clock, MessageSquare, Users, Award, FileText } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
 import BottomNav from "../components/layout/BottomNav";
 import MetricCard from "../components/ui/MetricCard";
@@ -127,13 +127,22 @@ export default function Home() {
               </div>
             </div>
 
-            <button
-              onClick={() => navigate("/jornada")}
-              className="mt-2 flex items-center gap-1 font-inter text-xs font-semibold"
-              style={{ color: "#D4A043" }}
-            >
-              Ver minha jornada <ChevronRight size={14} />
-            </button>
+            <div className="flex items-center gap-3 mt-2">
+              <button
+                onClick={() => navigate("/jornada")}
+                className="flex items-center gap-1 font-inter text-xs font-semibold"
+                style={{ color: "#D4A043" }}
+              >
+                Ver minha jornada <ChevronRight size={14} />
+              </button>
+              <button
+                onClick={() => navigate("/ciclo")}
+                className="flex items-center gap-1 font-inter text-xs font-semibold"
+                style={{ color: "rgba(255,255,255,0.5)" }}
+              >
+                Sobre o ciclo <ChevronRight size={14} />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -238,6 +247,10 @@ export default function Home() {
             { icon: BookOpen, label: "Clube do Livro", path: "/clube-livro", color: "#B8872A" },
             { icon: DollarSign, label: "Financeiro", path: "/financeiro", color: "#1F8A5B" },
             { icon: Star, label: "Oportunidades", path: "/oportunidades", color: "#B8872A" },
+            { icon: MessageSquare, label: "Demandas", path: "/demandas", color: "#071D33" },
+            { icon: Users, label: "Colaborações", path: "/colaboracoes", color: "#1F8A5B" },
+            { icon: Award, label: "Critérios de Pts", path: "/criterios-pontuacao", color: "#B8872A" },
+            { icon: FileText, label: "Ciclo de Formação", path: "/ciclo", color: "#071D33" },
           ].map(item => (
             <button
               key={item.path}

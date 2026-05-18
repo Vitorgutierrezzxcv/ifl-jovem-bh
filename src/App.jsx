@@ -23,6 +23,10 @@ import Documents from './pages/Documents';
 import Admin from './pages/Admin';
 import Points from './pages/Points';
 import Attendance from './pages/Attendance';
+import CycleInfo from './pages/CycleInfo';
+import Demands from './pages/Demands';
+import PointsCriteria from './pages/PointsCriteria';
+import Collaboration from './pages/Collaboration';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -78,6 +82,10 @@ const AuthenticatedApp = () => {
           <Route path="/admin" element={<Admin />} />
           <Route path="/pontos" element={<Points />} />
           <Route path="/presenca" element={<Attendance />} />
+          <Route path="/ciclo" element={<CycleInfo />} />
+          <Route path="/demandas" element={<Demands />} />
+          <Route path="/criterios-pontuacao" element={<PointsCriteria />} />
+          <Route path="/colaboracoes" element={<Collaboration />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </motion.div>
