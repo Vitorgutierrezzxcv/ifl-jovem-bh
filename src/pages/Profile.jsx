@@ -97,7 +97,7 @@ export default function Profile() {
       {member && (
         <div className="px-4 mt-4">
           <div className="rounded-2xl p-4 flex items-center justify-between"
-            style={{ background: "var(--card)", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}>
+            style={{ background: "hsl(var(--card))", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}>
             <div>
               <p className="font-inter text-xs" style={{ color: "#6B7280" }}>Status do associado</p>
               <div className="mt-1">
@@ -136,7 +136,7 @@ export default function Profile() {
       {/* Menu items */}
       <div className="px-4 mt-4">
         <h2 className="font-montserrat font-bold text-xs uppercase tracking-wider mb-3" style={{ color: "#9CA3AF" }}>Mais opções</h2>
-        <div className="rounded-2xl overflow-hidden" style={{ background: "var(--card)", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}>
+        <div className="rounded-2xl overflow-hidden" style={{ background: "hsl(var(--card))", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}>
           {menuItems.map((item, idx) => (
             <button key={item.path} onClick={() => navigate(item.path)}
               className="w-full flex items-center gap-3 px-4 py-3.5 card-hover"
