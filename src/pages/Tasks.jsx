@@ -136,7 +136,7 @@ export default function Tasks() {
 
   return (
     <div className="min-h-screen bg-ifl-gray-bg" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 72px)" }}>
-      <div className="hex-bg-dark" style={{ background: "linear-gradient(160deg, #071D33 0%, #0A2640 100%)" }}>
+      <div className="hex-bg-dark" style={{ background: "#071D33" }}>
         <MobileHeader title="Tarefas" dark />
         <div className="px-5 pb-5">
           <h1 className="font-montserrat font-black text-2xl text-white">Minhas Tarefas</h1>

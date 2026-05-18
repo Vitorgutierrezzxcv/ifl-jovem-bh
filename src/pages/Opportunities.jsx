@@ -32,7 +32,7 @@ export default function Opportunities() {
 
   return (
     <div className="min-h-screen bg-ifl-gray-bg" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 72px)" }}>
-      <div style={{ background: "linear-gradient(160deg, #071D33 0%, #0A2640 100%)" }}>
+      <div style={{ background: "#071D33" }}>
         <MobileHeader title="Oportunidades" dark />
         <div className="px-5 pb-5">
           <h1 className="font-montserrat font-black text-2xl text-white">Oportunidades</h1>
