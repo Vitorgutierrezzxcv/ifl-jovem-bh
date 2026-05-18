@@ -75,7 +75,7 @@ export default function Home() {
   return (
     <div
       ref={containerRef}
-      className="min-h-screen bg-ifl-gray-bg relative overflow-auto"
+      className="min-h-screen bg-ifl-gray-bg relative"
       style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}
     >
       <PullToRefreshIndicator pullDistance={pullDistance} refreshing={refreshing} progress={pullProgress} />
