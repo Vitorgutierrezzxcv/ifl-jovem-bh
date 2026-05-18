@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { CheckSquare, Clock, ChevronRight, Upload, AlertCircle } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
-import BottomNav from "../components/layout/BottomNav";
 import StatusBadge from "../components/ui/StatusBadge";
 
 const statusFilters = ["Todas", "Pendentes", "Enviadas", "Aprovadas"];
@@ -193,7 +192,6 @@ export default function Tasks() {
           );
         })}
       </div>
-      <BottomNav />
     </div>
   );
 }

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Calendar, CheckCircle2, XCircle, AlertCircle, Clock } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
-import BottomNav from "../components/layout/BottomNav";
 
 let attendanceUnsubscribe;
 
@@ -113,7 +112,7 @@ export default function Attendance() {
   }
 
   return (
-    <div className="min-h-screen bg-ifl-gray-bg overflow-y-auto" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
+    <div className="min-h-screen bg-ifl-gray-bg" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
       {/* Header */}
       <div className="hex-bg-dark relative overflow-hidden" style={{ background: "linear-gradient(160deg, #071D33 0%, #0A2640 100%)" }}>
         <div className="absolute top-0 right-0 w-48 h-48 pointer-events-none"
@@ -187,7 +186,6 @@ export default function Attendance() {
         )}
       </div>
 
-      <BottomNav />
     </div>
   );
 }

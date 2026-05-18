@@ -3,7 +3,6 @@ import { base44 } from "@/api/base44Client";
 import { useNavigate } from "react-router-dom";
 import { LogOut, ChevronRight, User, BookOpen, Library, DollarSign, FileText, Star, Bell, Shield, Trash2, AlertTriangle } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
-import BottomNav from "../components/layout/BottomNav";
 import StatusBadge from "../components/ui/StatusBadge";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel,
@@ -199,7 +198,6 @@ export default function Profile() {
         </AlertDialog>
       </div>
 
-      <BottomNav />
     </div>
   );
 }

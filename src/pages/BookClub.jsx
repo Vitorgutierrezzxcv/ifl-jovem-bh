@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { BookOpen, Calendar, Users, CheckCircle } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
-import BottomNav from "../components/layout/BottomNav";
 
 export default function BookClub() {
   const [books, setBooks] = useState([]);
@@ -72,7 +71,6 @@ export default function BookClub() {
         )}
       </div>
 
-      <BottomNav />
     </div>
   );
 }

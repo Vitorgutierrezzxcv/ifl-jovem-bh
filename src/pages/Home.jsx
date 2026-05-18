@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Calendar, Trophy, CheckSquare, DollarSign, BookOpen, Star, Bell, ChevronRight, TrendingUp, AlertCircle, Clock, MessageSquare, Users, Award, FileText } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
-import BottomNav from "../components/layout/BottomNav";
 import MetricCard from "../components/ui/MetricCard";
 import StatusBadge from "../components/ui/StatusBadge";
 import usePullToRefresh from "../hooks/usePullToRefresh";
@@ -268,7 +267,6 @@ export default function Home() {
         </div>
       </div>
 
-      <BottomNav />
     </div>
   );
 }

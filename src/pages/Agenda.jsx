@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import { base44 } from "@/api/base44Client";
 import { Calendar, MapPin, Clock, ChevronRight, Users, Zap } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
-import BottomNav from "../components/layout/BottomNav";
 import usePullToRefresh from "../hooks/usePullToRefresh";
 import PullToRefreshIndicator from "../components/ui/PullToRefreshIndicator";
 import QRScanner from "../components/QRScanner";
@@ -189,8 +188,6 @@ export default function Agenda() {
           )}
         </div>
       )}
-
-      <BottomNav />
 
       <QRScanner
         isOpen={showQRScanner}

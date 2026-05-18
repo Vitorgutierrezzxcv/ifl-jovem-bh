@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Trophy, Star, TrendingUp, ChevronRight } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
-import BottomNav from "../components/layout/BottomNav";
 
 const cycleFilters = ["Geral", "Qualifier", "1º Ciclo", "2º Ciclo", "3º Ciclo", "Fellow"];
 const cycleMap = { "Qualifier": "qualifier", "1º Ciclo": "1_ciclo", "2º Ciclo": "2_ciclo", "3º Ciclo": "3_ciclo", "Fellow": "fellow" };
@@ -173,7 +172,6 @@ export default function Ranking() {
         </div>
       </div>
 
-      <BottomNav />
     </div>
   );
 }

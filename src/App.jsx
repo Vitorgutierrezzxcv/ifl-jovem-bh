@@ -6,6 +6,7 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import { AnimatePresence, motion } from 'framer-motion';
+import BottomNav from './components/layout/BottomNav';
 
 // Pages
 import Welcome from './pages/Welcome';
@@ -57,39 +58,42 @@ const AuthenticatedApp = () => {
 
   // Render the main app
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <motion.div
-        key={location.pathname}
-        initial={{ opacity: 0, x: xIn }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: xOut }}
-        transition={{ duration: 0.18, ease: "easeInOut" }}
-        style={{ willChange: "opacity, transform" }}
-      >
-        <Routes location={location}>
-          <Route path="/welcome" element={<Welcome />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/jornada" element={<Journey />} />
-          <Route path="/agenda" element={<Agenda />} />
-          <Route path="/ranking" element={<Ranking />} />
-          <Route path="/perfil" element={<Profile />} />
-          <Route path="/tarefas" element={<Tasks />} />
-          <Route path="/financeiro" element={<Financial />} />
-          <Route path="/clube-livro" element={<BookClub />} />
-          <Route path="/rol" element={<ROL />} />
-          <Route path="/oportunidades" element={<Opportunities />} />
-          <Route path="/documentos" element={<Documents />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/pontos" element={<Points />} />
-          <Route path="/presenca" element={<Attendance />} />
-          <Route path="/ciclo" element={<CycleInfo />} />
-          <Route path="/demandas" element={<Demands />} />
-          <Route path="/criterios-pontuacao" element={<PointsCriteria />} />
-          <Route path="/colaboracoes" element={<Collaboration />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </motion.div>
-    </AnimatePresence>
+    <>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0, x: xIn }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: xOut }}
+          transition={{ duration: 0.18, ease: "easeInOut" }}
+          style={{ willChange: "opacity, transform", position: "relative", zIndex: 0 }}
+        >
+          <Routes location={location}>
+            <Route path="/welcome" element={<Welcome />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/jornada" element={<Journey />} />
+            <Route path="/agenda" element={<Agenda />} />
+            <Route path="/ranking" element={<Ranking />} />
+            <Route path="/perfil" element={<Profile />} />
+            <Route path="/tarefas" element={<Tasks />} />
+            <Route path="/financeiro" element={<Financial />} />
+            <Route path="/clube-livro" element={<BookClub />} />
+            <Route path="/rol" element={<ROL />} />
+            <Route path="/oportunidades" element={<Opportunities />} />
+            <Route path="/documentos" element={<Documents />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/pontos" element={<Points />} />
+            <Route path="/presenca" element={<Attendance />} />
+            <Route path="/ciclo" element={<CycleInfo />} />
+            <Route path="/demandas" element={<Demands />} />
+            <Route path="/criterios-pontuacao" element={<PointsCriteria />} />
+            <Route path="/colaboracoes" element={<Collaboration />} />
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </motion.div>
+      </AnimatePresence>
+      <BottomNav />
+    </>
   );
 };
 

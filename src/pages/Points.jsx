@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Star, Trophy, TrendingUp, ChevronRight } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
-import BottomNav from "../components/layout/BottomNav";
 
 const categoryLabels = {
   palestra: "Palestra",
@@ -155,7 +154,6 @@ export default function Points() {
         </div>
       </div>
 
-      <BottomNav />
     </div>
   );
 }

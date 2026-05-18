@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Star, Calendar, Users, ChevronRight } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
-import BottomNav from "../components/layout/BottomNav";
 
 const typeLabels = {
   viagem_sp: "Viagem SP",
@@ -86,7 +85,6 @@ export default function Opportunities() {
         )}
       </div>
 
-      <BottomNav />
     </div>
   );
 }
