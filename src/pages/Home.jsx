@@ -81,7 +81,7 @@ export default function Home() {
       {/* Hero Header */}
       <div
         className="hex-bg-dark relative overflow-hidden"
-        style={{ background: "linear-gradient(160deg, #071D33 0%, #0A2640 100%)" }}
+        style={{ background: "#071D33" }}
       >
         <div className="absolute top-0 right-0 w-48 h-48 rounded-full pointer-events-none"
           style={{ background: "radial-gradient(circle, rgba(184,135,42,0.12) 0%, transparent 70%)", transform: "translate(30%, -30%)" }} />
