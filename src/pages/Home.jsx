@@ -32,21 +32,29 @@ export default function Home() {
 
   async function loadData() {
     try {
-      const u = await base44.auth.me();
-      setUser(u);
-      const [members, allMembers, evs, anns, tks] = await Promise.all([
-        base44.entities.Member.filter({ email: u.email }),
+      // Load public data first (doesn't need auth)
+      const [allMembers, evs, anns, tks] = await Promise.all([
         base44.entities.Member.list("-total_points", 1),
         base44.entities.Event.list("-date", 5),
         base44.entities.Announcement.list("-created_date", 10),
-        base44.entities.Task.filter({ status: "publicada" }, "-due_date", 5),
+        base44.entities.Task.list("-due_date", 10),
       ]);
-      const foundMember = members.length > 0 ? members[0] : (allMembers.length > 0 ? allMembers[0] : null);
-      if (foundMember) setMember(foundMember);
+
       const today = new Date().toISOString().split("T")[0];
       setEvents(evs.filter(e => e.date >= today).slice(0, 3));
       setAnnouncements(anns.filter(a => a.status === "publicado").slice(0, 3));
-      setTasks(tks.slice(0, 3));
+      setTasks(tks.filter(t => t.status === "publicada").slice(0, 3));
+
+      // Try to get logged-in user and their member profile
+      try {
+        const u = await base44.auth.me();
+        setUser(u);
+        const members = await base44.entities.Member.filter({ email: u.email });
+        if (members.length > 0) setMember(members[0]);
+        else if (allMembers.length > 0) setMember(allMembers[0]);
+      } catch {
+        if (allMembers.length > 0) setMember(allMembers[0]);
+      }
     } catch (e) {
       console.error(e);
     } finally {
