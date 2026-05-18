@@ -5,7 +5,21 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
-// Add page imports here
+
+// Pages
+import Welcome from './pages/Welcome';
+import Home from './pages/Home';
+import Journey from './pages/Journey';
+import Agenda from './pages/Agenda';
+import Ranking from './pages/Ranking';
+import Profile from './pages/Profile';
+import Tasks from './pages/Tasks';
+import Financial from './pages/Financial';
+import BookClub from './pages/BookClub';
+import ROL from './pages/ROL';
+import Opportunities from './pages/Opportunities';
+import Documents from './pages/Documents';
+import Admin from './pages/Admin';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -33,7 +47,19 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      {/* Add your page Route elements here */}
+      <Route path="/welcome" element={<Welcome />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/jornada" element={<Journey />} />
+      <Route path="/agenda" element={<Agenda />} />
+      <Route path="/ranking" element={<Ranking />} />
+      <Route path="/perfil" element={<Profile />} />
+      <Route path="/tarefas" element={<Tasks />} />
+      <Route path="/financeiro" element={<Financial />} />
+      <Route path="/clube-livro" element={<BookClub />} />
+      <Route path="/rol" element={<ROL />} />
+      <Route path="/oportunidades" element={<Opportunities />} />
+      <Route path="/documentos" element={<Documents />} />
+      <Route path="/admin" element={<Admin />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
