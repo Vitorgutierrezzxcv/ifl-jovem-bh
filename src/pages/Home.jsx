@@ -38,14 +38,14 @@ export default function Home() {
         base44.entities.Member.filter({ email: u.email }),
         base44.entities.Member.list("-total_points", 1),
         base44.entities.Event.list("-date", 5),
-        base44.entities.Announcement.filter({ status: "publicado" }, "-created_date", 5),
+        base44.entities.Announcement.list("-created_date", 10),
         base44.entities.Task.filter({ status: "publicada" }, "-due_date", 5),
       ]);
       const foundMember = members.length > 0 ? members[0] : (allMembers.length > 0 ? allMembers[0] : null);
       if (foundMember) setMember(foundMember);
       const today = new Date().toISOString().split("T")[0];
       setEvents(evs.filter(e => e.date >= today).slice(0, 3));
-      setAnnouncements(anns.slice(0, 3));
+      setAnnouncements(anns.filter(a => a.status === "publicado").slice(0, 3));
       setTasks(tks.slice(0, 3));
     } catch (e) {
       console.error(e);

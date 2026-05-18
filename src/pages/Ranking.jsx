@@ -17,9 +17,10 @@ export default function Ranking() {
   async function loadData() {
     try {
       const u = await base44.auth.me();
-      const all = await base44.entities.Member.filter({ member_status: "ativo" }, "-total_points", 50);
+      const all = await base44.entities.Member.list("-total_points", 50);
+      const active = all.filter(m => m.member_status !== "desligado" && m.member_status !== "suspenso");
       // assign ranks
-      const ranked = all.map((m, i) => ({ ...m, _rank: i + 1 }));
+      const ranked = active.map((m, i) => ({ ...m, _rank: i + 1 }));
       setMembers(ranked);
       const mine = ranked.find(m => m.email === u.email) || ranked[0];
       setMe(mine);
