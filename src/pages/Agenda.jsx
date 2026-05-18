@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { base44 } from "@/api/base44Client";
 import { Calendar, MapPin, Clock, ChevronRight, Users } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
 import BottomNav from "../components/layout/BottomNav";
+import usePullToRefresh from "../hooks/usePullToRefresh";
+import PullToRefreshIndicator from "../components/ui/PullToRefreshIndicator";
 
 const typeConfig = {
   palestra_ordinaria: { label: "Palestra", color: "#071D33" },
@@ -36,6 +38,13 @@ export default function Agenda() {
     finally { setLoading(false); }
   }
 
+  const handleRefresh = useCallback(async () => {
+    setLoading(true);
+    await loadEvents();
+  }, []);
+
+  const { containerRef, pullDistance, refreshing, progress: pullProgress } = usePullToRefresh(handleRefresh);
+
   const today = new Date().toISOString().split("T")[0];
   const upcoming = events.filter(e => e.date >= today);
   const past = events.filter(e => e.date < today);
@@ -56,7 +65,7 @@ export default function Agenda() {
     const tc = typeConfig[ev.type] || { label: ev.type, color: "#071D33" };
     const dt = new Date(ev.date + "T12:00:00");
     return (
-      <div className="rounded-2xl overflow-hidden card-hover" style={{ background: "#FFFFFF", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}>
+      <div className="rounded-2xl overflow-hidden card-hover" style={{ background: "hsl(var(--card))", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}>
         <div className="flex">
           {/* Date column */}
           <div className="w-16 flex flex-col items-center justify-center py-4 flex-shrink-0" style={{ background: "#071D33" }}>
@@ -100,7 +109,8 @@ export default function Agenda() {
   }
 
   return (
-    <div className="min-h-screen bg-ifl-gray-bg" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 72px)" }}>
+    <div ref={containerRef} className="min-h-screen bg-ifl-gray-bg relative overflow-auto" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 72px)" }}>
+      <PullToRefreshIndicator pullDistance={pullDistance} refreshing={refreshing} progress={pullProgress} />
       <div className="hex-bg-dark" style={{ background: "linear-gradient(160deg, #071D33 0%, #0A2640 100%)" }}>
         <MobileHeader title="Agenda" dark />
         <div className="px-5 pb-5">
@@ -117,7 +127,7 @@ export default function Agenda() {
           <button key={f} onClick={() => setFilter(f)}
             className="flex-shrink-0 px-4 py-2 rounded-2xl font-inter text-xs font-semibold transition-all duration-200"
             style={{
-              background: filter === f ? "#071D33" : "#FFFFFF",
+              background: filter === f ? "#071D33" : "hsl(var(--card))",
               color: filter === f ? "#D4A043" : "#6B7280",
               border: filter === f ? "1px solid rgba(184,135,42,0.3)" : "1px solid rgba(7,29,51,0.08)",
             }}>

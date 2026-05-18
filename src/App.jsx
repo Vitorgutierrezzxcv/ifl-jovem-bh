@@ -1,10 +1,11 @@
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
+import { AnimatePresence, motion } from 'framer-motion';
 
 // Pages
 import Welcome from './pages/Welcome';
@@ -23,6 +24,7 @@ import Admin from './pages/Admin';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
+  const location = useLocation();
 
   // Show loading spinner while checking app public settings or auth
   if (isLoadingPublicSettings || isLoadingAuth) {
@@ -38,7 +40,6 @@ const AuthenticatedApp = () => {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
     } else if (authError.type === 'auth_required') {
-      // Redirect to login automatically
       navigateToLogin();
       return null;
     }
@@ -46,22 +47,33 @@ const AuthenticatedApp = () => {
 
   // Render the main app
   return (
-    <Routes>
-      <Route path="/welcome" element={<Welcome />} />
-      <Route path="/" element={<Home />} />
-      <Route path="/jornada" element={<Journey />} />
-      <Route path="/agenda" element={<Agenda />} />
-      <Route path="/ranking" element={<Ranking />} />
-      <Route path="/perfil" element={<Profile />} />
-      <Route path="/tarefas" element={<Tasks />} />
-      <Route path="/financeiro" element={<Financial />} />
-      <Route path="/clube-livro" element={<BookClub />} />
-      <Route path="/rol" element={<ROL />} />
-      <Route path="/oportunidades" element={<Opportunities />} />
-      <Route path="/documentos" element={<Documents />} />
-      <Route path="/admin" element={<Admin />} />
-      <Route path="*" element={<PageNotFound />} />
-    </Routes>
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.div
+        key={location.pathname}
+        initial={{ opacity: 0, x: 18 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -18 }}
+        transition={{ duration: 0.18, ease: "easeInOut" }}
+        style={{ willChange: "opacity, transform" }}
+      >
+        <Routes location={location}>
+          <Route path="/welcome" element={<Welcome />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/jornada" element={<Journey />} />
+          <Route path="/agenda" element={<Agenda />} />
+          <Route path="/ranking" element={<Ranking />} />
+          <Route path="/perfil" element={<Profile />} />
+          <Route path="/tarefas" element={<Tasks />} />
+          <Route path="/financeiro" element={<Financial />} />
+          <Route path="/clube-livro" element={<BookClub />} />
+          <Route path="/rol" element={<ROL />} />
+          <Route path="/oportunidades" element={<Opportunities />} />
+          <Route path="/documentos" element={<Documents />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

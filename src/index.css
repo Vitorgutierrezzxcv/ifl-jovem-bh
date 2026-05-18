@@ -68,6 +68,43 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', sans-serif;
   }
+
+  button, a, nav, [role="button"] {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+}
+
+/* System dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: 215 40% 8%;
+    --foreground: 0 0% 95%;
+    --card: 215 38% 11%;
+    --card-foreground: 0 0% 95%;
+    --popover: 215 38% 11%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 38 65% 52%;
+    --primary-foreground: 215 72% 8%;
+    --secondary: 215 30% 16%;
+    --secondary-foreground: 0 0% 90%;
+    --muted: 215 30% 14%;
+    --muted-foreground: 215 10% 55%;
+    --accent: 38 65% 44%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 4 70% 50%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 215 25% 18%;
+    --input: 215 25% 18%;
+    --ring: 38 65% 52%;
+
+    --ifl-gray-bg: #0C1623;
+    --ifl-gray-light: #0F1C2E;
+  }
+
+  html, body {
+    background-color: #0C1623;
+  }
 }
 
 @layer utilities {

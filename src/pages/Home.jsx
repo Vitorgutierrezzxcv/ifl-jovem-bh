@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Calendar, Trophy, CheckSquare, DollarSign, BookOpen, Star, Bell, ChevronRight, TrendingUp, AlertCircle, Clock } from "lucide-react";
@@ -6,6 +6,8 @@ import MobileHeader from "../components/layout/MobileHeader";
 import BottomNav from "../components/layout/BottomNav";
 import MetricCard from "../components/ui/MetricCard";
 import StatusBadge from "../components/ui/StatusBadge";
+import usePullToRefresh from "../hooks/usePullToRefresh";
+import PullToRefreshIndicator from "../components/ui/PullToRefreshIndicator";
 
 const cycleLabels = {
   qualifier: "Qualifier",
@@ -51,6 +53,13 @@ export default function Home() {
     }
   }
 
+  const handleRefresh = useCallback(async () => {
+    setLoading(true);
+    await loadData();
+  }, []);
+
+  const { containerRef, pullDistance, refreshing, progress: pullProgress } = usePullToRefresh(handleRefresh);
+
   const progress = member ? Math.min(100, Math.round((member.total_points || 0) / 2)) : 0;
   const firstName = user?.full_name?.split(" ")[0] || "Associado";
 
@@ -65,9 +74,11 @@ export default function Home() {
 
   return (
     <div
-      className="min-h-screen bg-ifl-gray-bg"
+      ref={containerRef}
+      className="min-h-screen bg-ifl-gray-bg relative overflow-auto"
       style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 72px)" }}
     >
+      <PullToRefreshIndicator pullDistance={pullDistance} refreshing={refreshing} progress={pullProgress} />
       {/* Hero Header */}
       <div
         className="hex-bg-dark relative overflow-hidden"
@@ -152,7 +163,7 @@ export default function Home() {
               <div
                 key={ev.id}
                 className="rounded-2xl p-4 flex items-center gap-3 card-hover"
-                style={{ background: "#FFFFFF", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}
+                style={{ background: "hsl(var(--card))", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}
                 onClick={() => navigate("/agenda")}
               >
                 <div className="w-12 h-12 rounded-xl flex flex-col items-center justify-center flex-shrink-0"
@@ -191,7 +202,7 @@ export default function Home() {
                 key={ann.id}
                 className="rounded-2xl p-4 card-hover"
                 style={{
-                  background: ann.priority === "urgente" ? "#071D33" : "#FFFFFF",
+                  background: ann.priority === "urgente" ? "#071D33" : "hsl(var(--card))",
                   border: ann.priority === "urgente" ? "1px solid rgba(184,135,42,0.3)" : "1px solid rgba(7,29,51,0.06)",
                   boxShadow: "0 2px 8px rgba(7,29,51,0.04)",
                 }}
@@ -232,7 +243,7 @@ export default function Home() {
               key={item.path}
               onClick={() => navigate(item.path)}
               className="rounded-2xl p-4 flex items-center gap-3 card-hover text-left"
-              style={{ background: "#FFFFFF", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}
+              style={{ background: "hsl(var(--card))", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}
             >
               <div className="w-9 h-9 rounded-xl flex items-center justify-center"
                 style={{ background: `${item.color}10` }}>

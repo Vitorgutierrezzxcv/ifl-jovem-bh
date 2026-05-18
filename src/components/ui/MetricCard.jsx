@@ -5,7 +5,7 @@ export default function MetricCard({ icon: Icon, label, value, sub, color = "#07
     <div
       className="rounded-2xl p-4 card-hover cursor-pointer flex flex-col gap-2"
       style={{
-        background: dark ? "#071D33" : "#FFFFFF",
+        background: dark ? "#071D33" : "var(--card)",
         border: dark ? "1px solid rgba(184,135,42,0.2)" : "1px solid rgba(7,29,51,0.06)",
         boxShadow: "0 2px 12px rgba(7,29,51,0.06)",
       }}

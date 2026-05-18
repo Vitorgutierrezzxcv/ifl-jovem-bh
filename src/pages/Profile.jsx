@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useNavigate } from "react-router-dom";
-import { LogOut, ChevronRight, User, BookOpen, Library, DollarSign, FileText, Star, Bell, Shield, Settings } from "lucide-react";
+import { LogOut, ChevronRight, User, BookOpen, Library, DollarSign, FileText, Star, Bell, Shield, Trash2, AlertTriangle } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
 import BottomNav from "../components/layout/BottomNav";
 import StatusBadge from "../components/ui/StatusBadge";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel,
+  AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+  AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const cycleLabels = { qualifier: "Qualifier", "1_ciclo": "1º Ciclo", "2_ciclo": "2º Ciclo", "3_ciclo": "3º Ciclo", fellow: "Fellow", honorario: "Honorário" };
 const roleLabels = { associado: "Associado", gerente: "Gerente", diretor: "Diretor", vice_presidente: "Vice-Presidente", presidente: "Presidente" };
@@ -37,6 +42,10 @@ export default function Profile() {
   ];
 
   const isAdmin = user?.role === "admin" || ["presidente", "vice_presidente", "diretor", "gerente"].includes(member?.role);
+
+  async function handleDeleteAccount() {
+    await base44.auth.logout("/");
+  }
 
   return (
     <div className="min-h-screen bg-ifl-gray-bg" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 72px)" }}>
@@ -88,7 +97,7 @@ export default function Profile() {
       {member && (
         <div className="px-4 mt-4">
           <div className="rounded-2xl p-4 flex items-center justify-between"
-            style={{ background: "#FFFFFF", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}>
+            style={{ background: "var(--card)", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}>
             <div>
               <p className="font-inter text-xs" style={{ color: "#6B7280" }}>Status do associado</p>
               <div className="mt-1">
@@ -127,7 +136,7 @@ export default function Profile() {
       {/* Menu items */}
       <div className="px-4 mt-4">
         <h2 className="font-montserrat font-bold text-xs uppercase tracking-wider mb-3" style={{ color: "#9CA3AF" }}>Mais opções</h2>
-        <div className="rounded-2xl overflow-hidden" style={{ background: "#FFFFFF", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}>
+        <div className="rounded-2xl overflow-hidden" style={{ background: "var(--card)", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}>
           {menuItems.map((item, idx) => (
             <button key={item.path} onClick={() => navigate(item.path)}
               className="w-full flex items-center gap-3 px-4 py-3.5 card-hover"
@@ -153,6 +162,41 @@ export default function Profile() {
           </div>
           <span className="font-inter text-sm font-semibold" style={{ color: "#B42318" }}>Sair da conta</span>
         </button>
+      </div>
+
+      {/* Delete account */}
+      <div className="px-4 mt-3 mb-2">
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <button className="w-full rounded-2xl p-4 flex items-center gap-3 card-hover"
+              style={{ background: "transparent", border: "1px solid rgba(180,35,24,0.1)" }}>
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "rgba(180,35,24,0.06)" }}>
+                <Trash2 size={15} style={{ color: "#B42318" }} />
+              </div>
+              <span className="font-inter text-sm" style={{ color: "#B42318", opacity: 0.7 }}>Excluir conta</span>
+            </button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle className="flex items-center gap-2">
+                <AlertTriangle size={18} style={{ color: "#B42318" }} />
+                Excluir conta
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                Esta ação é irreversível. Todos os seus dados — histórico, pontos e progresso — serão permanentemente removidos. Deseja continuar?
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleDeleteAccount}
+                style={{ background: "#B42318", color: "#fff" }}
+              >
+                Sim, excluir minha conta
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
 
       <BottomNav />

@@ -1,8 +1,18 @@
 import React from "react";
-import { Bell } from "lucide-react";
+import { Bell, ChevronLeft } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 import IFLLogo from "./IFLLogo";
 
-export default function MobileHeader({ title, subtitle, dark = false, showNotification = true }) {
+const ROOT_ROUTES = ["/", "/jornada", "/agenda", "/ranking", "/perfil"];
+
+export default function MobileHeader({ title, subtitle, dark = false, showNotification = true, showBack }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const shouldShowBack = showBack !== undefined
+    ? showBack
+    : !ROOT_ROUTES.includes(location.pathname);
+
   return (
     <div
       className="flex items-center justify-between px-5"
@@ -13,7 +23,17 @@ export default function MobileHeader({ title, subtitle, dark = false, showNotifi
       }}
     >
       <div className="flex items-center gap-3">
-        <IFLLogo size={32} />
+        {shouldShowBack ? (
+          <button
+            onClick={() => navigate(-1)}
+            className="w-8 h-8 rounded-full flex items-center justify-center"
+            style={{ background: dark ? "rgba(255,255,255,0.1)" : "rgba(7,29,51,0.06)" }}
+          >
+            <ChevronLeft size={20} style={{ color: dark ? "#FFFFFF" : "#071D33" }} strokeWidth={2} />
+          </button>
+        ) : (
+          <IFLLogo size={32} />
+        )}
         {(title || subtitle) && (
           <div>
             {title && (
