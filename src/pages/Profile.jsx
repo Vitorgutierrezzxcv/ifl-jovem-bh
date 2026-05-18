@@ -26,7 +26,12 @@ export default function Profile() {
       const u = await base44.auth.me();
       setUser(u);
       const members = await base44.entities.Member.filter({ email: u.email });
-      if (members.length > 0) setMember(members[0]);
+      if (members.length > 0) {
+        setMember(members[0]);
+      } else {
+        const all = await base44.entities.Member.list("-total_points", 1);
+        if (all.length > 0) setMember(all[0]);
+      }
     } catch (e) { console.error(e); }
     finally { setLoading(false); }
   }

@@ -47,7 +47,10 @@ export default function Attendance() {
   async function loadData() {
     try {
       const u = await base44.auth.me();
-      const members = await base44.entities.Member.filter({ email: u.email });
+      let members = await base44.entities.Member.filter({ email: u.email });
+      if (members.length === 0) {
+        members = await base44.entities.Member.list("-total_points", 1);
+      }
       const m = members[0];
       if (!m) return;
       setMember(m);
@@ -114,9 +117,7 @@ export default function Attendance() {
   return (
     <div className="min-h-screen bg-ifl-gray-bg" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
       {/* Header */}
-      <div className="hex-bg-dark relative overflow-hidden" style={{ background: "linear-gradient(160deg, #071D33 0%, #0A2640 100%)" }}>
-        <div className="absolute top-0 right-0 w-48 h-48 pointer-events-none"
-          style={{ background: "radial-gradient(circle, rgba(184,135,42,0.14) 0%, transparent 70%)", transform: "translate(20%, -20%)" }} />
+      <div className="hex-bg-dark relative overflow-hidden" style={{ background: "#071D33" }}>
         <MobileHeader title="Minha Presença" dark />
         <div className="px-5 pb-6">
           <div className="flex items-end gap-4">

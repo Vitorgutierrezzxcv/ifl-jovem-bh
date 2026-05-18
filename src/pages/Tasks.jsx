@@ -20,7 +20,8 @@ export default function Tasks() {
     try {
       const u = await base44.auth.me();
       setMe(u);
-      const members = await base44.entities.Member.filter({ email: u.email });
+      let members = await base44.entities.Member.filter({ email: u.email });
+      if (members.length === 0) members = await base44.entities.Member.list("-total_points", 1);
       const member = members[0];
       const [ts, subs] = await Promise.all([
         base44.entities.Task.filter({ status: "publicada" }, "-due_date", 20),

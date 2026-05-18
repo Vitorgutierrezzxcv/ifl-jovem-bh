@@ -34,13 +34,15 @@ export default function Home() {
     try {
       const u = await base44.auth.me();
       setUser(u);
-      const [members, evs, anns, tks] = await Promise.all([
+      const [members, allMembers, evs, anns, tks] = await Promise.all([
         base44.entities.Member.filter({ email: u.email }),
+        base44.entities.Member.list("-total_points", 1),
         base44.entities.Event.list("-date", 5),
         base44.entities.Announcement.filter({ status: "publicado" }, "-created_date", 5),
         base44.entities.Task.filter({ status: "publicada" }, "-due_date", 5),
       ]);
-      if (members.length > 0) setMember(members[0]);
+      const foundMember = members.length > 0 ? members[0] : (allMembers.length > 0 ? allMembers[0] : null);
+      if (foundMember) setMember(foundMember);
       const today = new Date().toISOString().split("T")[0];
       setEvents(evs.filter(e => e.date >= today).slice(0, 3));
       setAnnouncements(anns.slice(0, 3));

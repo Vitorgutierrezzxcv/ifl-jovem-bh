@@ -50,7 +50,7 @@ export default function Points() {
         base44.entities.Member.filter({ email: u.email }),
         base44.entities.Member.filter({ member_status: "ativo" }, "-total_points", 50),
       ]);
-      const m = members[0];
+      const m = members[0] || allMembers[0];
       if (m) {
         setMember(m);
         const entries = await base44.entities.PointsLedger.filter(

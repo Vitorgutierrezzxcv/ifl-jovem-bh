@@ -21,7 +21,7 @@ export default function Ranking() {
       // assign ranks
       const ranked = all.map((m, i) => ({ ...m, _rank: i + 1 }));
       setMembers(ranked);
-      const mine = ranked.find(m => m.email === u.email);
+      const mine = ranked.find(m => m.email === u.email) || ranked[0];
       setMe(mine);
     } catch (e) { console.error(e); }
     finally { setLoading(false); }

@@ -14,7 +14,10 @@ export default function Financial() {
   async function loadData() {
     try {
       const u = await base44.auth.me();
-      const members = await base44.entities.Member.filter({ email: u.email });
+      let members = await base44.entities.Member.filter({ email: u.email });
+      if (members.length === 0) {
+        members = await base44.entities.Member.list("-total_points", 1);
+      }
       if (members[0]) {
         setMember(members[0]);
         const chgs = await base44.entities.FinancialCharge.filter({ member_id: members[0].id }, "-due_date");
