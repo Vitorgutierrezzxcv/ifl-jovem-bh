@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { base44 } from "@/api/base44Client";
-import { Calendar, MapPin, Clock, ChevronRight, Users } from "lucide-react";
+import { Calendar, MapPin, Clock, ChevronRight, Users, Zap } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
 import BottomNav from "../components/layout/BottomNav";
 import usePullToRefresh from "../hooks/usePullToRefresh";
 import PullToRefreshIndicator from "../components/ui/PullToRefreshIndicator";
+import QRScanner from "../components/QRScanner";
+import CheckInModal from "../components/CheckInModal";
 
 const typeConfig = {
   palestra_ordinaria: { label: "Palestra", color: "#071D33" },
@@ -27,6 +29,9 @@ export default function Agenda() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("Todos");
+  const [showQRScanner, setShowQRScanner] = useState(false);
+  const [showCheckInModal, setShowCheckInModal] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => { loadEvents(); }, []);
 
@@ -64,6 +69,8 @@ export default function Agenda() {
   function EventCard({ ev }) {
     const tc = typeConfig[ev.type] || { label: ev.type, color: "#071D33" };
     const dt = new Date(ev.date + "T12:00:00");
+    const isUpcoming = dt.toISOString().split("T")[0] >= new Date().toISOString().split("T")[0];
+
     return (
       <div className="rounded-2xl overflow-hidden card-hover" style={{ background: "hsl(var(--card))", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}>
         <div className="flex">
@@ -100,9 +107,23 @@ export default function Agenda() {
               </div>
             )}
           </div>
-          <div className="flex items-center pr-3">
-            <ChevronRight size={16} style={{ color: "#B8872A" }} />
-          </div>
+          {isUpcoming && (
+            <button
+              onClick={() => {
+                setSelectedEvent(ev);
+                setShowQRScanner(true);
+              }}
+              className="px-3 flex items-center gap-1 rounded-lg transition-colors"
+              style={{ background: "rgba(184,135,42,0.1)" }}
+            >
+              <Zap size={16} style={{ color: "#B8872A" }} />
+            </button>
+          )}
+          {!isUpcoming && (
+            <div className="flex items-center pr-3">
+              <ChevronRight size={16} style={{ color: "#B8872A" }} />
+            </div>
+          )}
         </div>
       </div>
     );
@@ -170,6 +191,29 @@ export default function Agenda() {
       )}
 
       <BottomNav />
+
+      <QRScanner
+        isOpen={showQRScanner}
+        onClose={() => setShowQRScanner(false)}
+        onScan={(scannedEventId) => {
+          setShowQRScanner(false);
+          setShowCheckInModal(true);
+        }}
+      />
+
+      <CheckInModal
+        isOpen={showCheckInModal}
+        onClose={() => {
+          setShowCheckInModal(false);
+          setSelectedEvent(null);
+          loadEvents();
+        }}
+        eventId={selectedEvent?.id}
+        eventName={selectedEvent?.name}
+        onSuccess={() => {
+          loadEvents();
+        }}
+      />
     </div>
   );
 }

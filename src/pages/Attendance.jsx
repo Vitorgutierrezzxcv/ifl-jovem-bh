@@ -4,6 +4,8 @@ import { Calendar, CheckCircle2, XCircle, AlertCircle, Clock } from "lucide-reac
 import MobileHeader from "../components/layout/MobileHeader";
 import BottomNav from "../components/layout/BottomNav";
 
+let attendanceUnsubscribe;
+
 const statusConfig = {
   presente: { label: "Presente", icon: CheckCircle2, color: "#1F8A5B", bg: "rgba(31,138,91,0.1)" },
   ausente: { label: "Ausente", icon: XCircle, color: "#B42318", bg: "rgba(180,35,24,0.1)" },
@@ -22,7 +24,26 @@ export default function Attendance() {
   const [filter, setFilter] = useState("Todos");
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => { loadData(); }, []);
+  useEffect(() => { 
+    loadData();
+    // Subscribe to real-time attendance updates
+    attendanceUnsubscribe = base44.entities.Attendance.subscribe((event) => {
+      if (event.type === 'create' || event.type === 'update') {
+        setAttendances(prev => {
+          const existing = prev.findIndex(a => a.id === event.data.id);
+          if (existing >= 0) {
+            const updated = [...prev];
+            updated[existing] = event.data;
+            return updated;
+          }
+          return [event.data, ...prev];
+        });
+      }
+    });
+    return () => {
+      if (attendanceUnsubscribe) attendanceUnsubscribe();
+    };
+  }, []);
 
   async function loadData() {
     try {
