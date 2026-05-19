@@ -7,6 +7,7 @@ import MetricCard from "../components/ui/MetricCard";
 import StatusBadge from "../components/ui/StatusBadge";
 import usePullToRefresh from "../hooks/usePullToRefresh";
 import PullToRefreshIndicator from "../components/ui/PullToRefreshIndicator";
+import CycleGoals from "../components/home/CycleGoals";
 
 const cycleLabels = {
   qualifier: "Qualifier",
@@ -154,6 +155,9 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* Meta do Mês */}
+      <CycleGoals member={member} />
 
       {/* Quick metrics */}
       <div className="px-4 mt-4">
