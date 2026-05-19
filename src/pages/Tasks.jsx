@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
-import { CheckSquare, Clock, ChevronRight, Link, FileText, AlertCircle, Paperclip, X, CheckCircle2 } from "lucide-react";
+import { CheckSquare, Clock, ChevronRight, Link, FileText, AlertCircle, Paperclip, X, CheckCircle2, AlertTriangle } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
 import StatusBadge from "../components/ui/StatusBadge";
 
@@ -125,85 +125,173 @@ export default function Tasks() {
 
     return (
       <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
-        <div style={{ background: "#0D2137" }}><MobileHeader title="Tarefa" dark showBack /></div>
+        <div style={{ background: "#0D2137" }}><MobileHeader title="Detalhes da Tarefa" dark showBack /></div>
         <div className="px-4 pt-4 flex flex-col gap-4">
-          {/* Info card */}
-          <div className="rounded-2xl p-5" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.08)" }}>
-            <h2 className="font-montserrat font-bold text-lg" style={{ color: "#111827" }}>{selectedTask.title}</h2>
-            {selectedTask.description && (
-              <p className="font-inter text-sm mt-2 leading-relaxed" style={{ color: "#6B7280" }}>{selectedTask.description}</p>
-            )}
-            <div className="flex items-center gap-3 mt-3 flex-wrap">
-              <div className="flex items-center gap-1.5">
-                <Clock size={13} style={{ color: "#B5862A" }} />
-                <span className="font-inter text-xs" style={{ color: "#6B7280" }}>
-                  Prazo: {new Date(selectedTask.due_date + "T12:00:00").toLocaleDateString("pt-BR")}
-                </span>
+          
+          {/* Task Header */}
+          <div className="rounded-2xl p-5" style={{ background: "#0D2137", border: "1px solid rgba(181,134,42,0.2)" }}>
+            <div className="flex items-start gap-3 mb-3">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "rgba(181,134,42,0.15)" }}>
+                <CheckSquare size={20} style={{ color: "#D4A043" }} />
               </div>
-              {isLate && !sub && (
-                <span className="font-inter text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: "rgba(180,35,24,0.1)", color: "#B42318" }}>ATRASADA</span>
-              )}
-              {selectedTask.points_value > 0 && (
-                <span className="ml-auto font-montserrat font-bold text-sm" style={{ color: "#B5862A" }}>+{selectedTask.points_value} pts</span>
-              )}
+              <h1 className="font-montserrat font-black text-lg text-white flex-1">{selectedTask.title}</h1>
             </div>
-            {selectedTask.cycles_target?.length > 0 && (
-              <p className="font-inter text-xs mt-2" style={{ color: "#9CA3AF" }}>Ciclos: {selectedTask.cycles_target.join(", ")}</p>
+            
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 gap-2">
+              <div className="rounded-xl p-2.5" style={{ background: "rgba(255,255,255,0.07)" }}>
+                <p className="font-inter text-[10px]" style={{ color: "rgba(255,255,255,0.5)" }}>PONTOS</p>
+                <p className="font-montserrat font-black text-lg" style={{ color: "#D4A043" }}>
+                  {selectedTask.points_value > 0 ? `+${selectedTask.points_value}` : "—"}
+                </p>
+              </div>
+              <div className="rounded-xl p-2.5" style={{ background: "rgba(255,255,255,0.07)" }}>
+                <p className="font-inter text-[10px]" style={{ color: "rgba(255,255,255,0.5)" }}>PRAZO</p>
+                <p className="font-inter font-bold text-sm" style={{ color: isLate && !sub ? "#FF7A6B" : "rgba(255,255,255,0.8)" }}>
+                  {new Date(selectedTask.due_date + "T12:00:00").toLocaleDateString("pt-BR")}
+                </p>
+              </div>
+            </div>
+            
+            {isLate && !sub && (
+              <div className="mt-2 p-2 rounded-lg flex items-center gap-2" style={{ background: "rgba(180,35,24,0.15)", border: "1px solid rgba(180,35,24,0.2)" }}>
+                <AlertCircle size={14} style={{ color: "#B42318" }} />
+                <span className="font-inter text-xs font-semibold" style={{ color: "#B42318" }}>Esta tarefa está atrasada</span>
+              </div>
             )}
           </div>
 
-          {/* Submission area */}
-          {sub ? (
-            <div className="rounded-2xl p-5" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.08)" }}>
-              <div className="flex items-center justify-between mb-3">
-                <p className="font-montserrat font-bold text-sm" style={{ color: "#111827" }}>Sua entrega</p>
-                <StatusBadge status={sub.status} />
-              </div>
-              {sub.content && <p className="font-inter text-sm mt-2 leading-relaxed" style={{ color: "#6B7280" }}>{sub.content}</p>}
-              {sub.file_url && (
-                <a href={sub.file_url} target="_blank" rel="noreferrer"
-                  className="mt-3 flex items-center gap-2 text-xs font-semibold"
-                  style={{ color: "#B5862A" }}>
-                  <Paperclip size={13} /> Ver arquivo anexado
-                </a>
-              )}
-              {sub.feedback && (
-                <div className="mt-4 p-3 rounded-xl" style={{ background: "rgba(13,33,55,0.05)", border: "1px solid rgba(13,33,55,0.08)" }}>
-                  <p className="font-inter text-xs font-semibold mb-1" style={{ color: "#0D2137" }}>Feedback da Diretoria</p>
-                  <p className="font-inter text-sm" style={{ color: "#374151" }}>{sub.feedback}</p>
-                </div>
-              )}
-              {sub.status === "aprovada" && (
-                <div className="mt-3 flex items-center gap-2">
-                  <CheckCircle2 size={16} style={{ color: "#1F8A5B" }} />
-                  <span className="font-inter text-sm font-semibold" style={{ color: "#1F8A5B" }}>
-                    {selectedTask.points_value > 0 ? `+${selectedTask.points_value} pontos creditados!` : "Aprovada!"}
+          {/* Task Description */}
+          {selectedTask.description && (
+            <div className="rounded-2xl p-4" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.08)" }}>
+              <p className="font-inter text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#9CA3AF" }}>O que você precisa fazer</p>
+              <p className="font-inter text-sm leading-relaxed" style={{ color: "#374151" }}>{selectedTask.description}</p>
+            </div>
+          )}
+
+          {/* Task Info */}
+          {selectedTask.cycles_target?.length > 0 && (
+            <div className="rounded-2xl p-4" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.08)" }}>
+              <p className="font-inter text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#9CA3AF" }}>Para quem é</p>
+              <div className="flex flex-wrap gap-1.5">
+                {selectedTask.cycles_target.map(c => (
+                  <span key={c} className="font-inter text-xs font-semibold px-2.5 py-1 rounded-full" style={{ background: "rgba(13,33,55,0.08)", color: "#0D2137" }}>
+                    {c}
                   </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Submission Status */}
+          {sub ? (
+            <>
+              <div className="rounded-2xl p-4" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.08)" }}>
+                <div className="flex items-center justify-between mb-3">
+                  <p className="font-montserrat font-bold text-sm" style={{ color: "#111827" }}>Status da sua entrega</p>
+                  <StatusBadge status={sub.status} size="md" />
+                </div>
+                
+                {sub.status === "aprovada" && (
+                  <div className="p-3 rounded-xl flex items-start gap-2" style={{ background: "rgba(31,138,91,0.1)", border: "1px solid rgba(31,138,91,0.2)" }}>
+                    <CheckCircle2 size={18} style={{ color: "#1F8A5B", flexShrink: 0 }} />
+                    <div>
+                      <p className="font-inter font-semibold text-sm" style={{ color: "#1F8A5B" }}>
+                        Tarefa aprovada!
+                      </p>
+                      {selectedTask.points_value > 0 && (
+                        <p className="font-montserrat font-black text-lg" style={{ color: "#1F8A5B" }}>
+                          +{selectedTask.points_value} pontos
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+                
+                {sub.status === "aprovada_ressalvas" && (
+                  <div className="p-3 rounded-xl flex items-start gap-2" style={{ background: "rgba(217,154,34,0.1)", border: "1px solid rgba(217,154,34,0.2)" }}>
+                    <AlertCircle size={18} style={{ color: "#D99A22", flexShrink: 0 }} />
+                    <div>
+                      <p className="font-inter font-semibold text-sm" style={{ color: "#D99A22" }}>
+                        Aprovada com ressalvas
+                      </p>
+                      {selectedTask.points_value > 0 && (
+                        <p className="font-montserrat font-bold text-sm mt-1" style={{ color: "#D99A22" }}>
+                          +{selectedTask.points_value} pontos (ver feedback)
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {sub.status === "em_correcao" && (
+                  <div className="p-3 rounded-xl flex items-start gap-2" style={{ background: "rgba(217,154,34,0.1)", border: "1px solid rgba(217,154,34,0.2)" }}>
+                    <AlertCircle size={18} style={{ color: "#D99A22", flexShrink: 0 }} />
+                    <p className="font-inter text-sm" style={{ color: "#D99A22" }}>A Diretoria está analisando sua entrega</p>
+                  </div>
+                )}
+
+                {sub.status === "recusada" && (
+                  <div className="p-3 rounded-xl flex items-start gap-2" style={{ background: "rgba(180,35,24,0.1)", border: "1px solid rgba(180,35,24,0.2)" }}>
+                    <AlertCircle size={18} style={{ color: "#B42318", flexShrink: 0 }} />
+                    <p className="font-inter text-sm" style={{ color: "#B42318" }}>Sua entrega foi recusada. Verifique o feedback e reenvie.</p>
+                  </div>
+                )}
+              </div>
+
+              {sub.content && (
+                <div className="rounded-2xl p-4" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.08)" }}>
+                  <p className="font-inter text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#9CA3AF" }}>Sua resposta</p>
+                  <p className="font-inter text-sm leading-relaxed" style={{ color: "#374151" }}>{sub.content}</p>
                 </div>
               )}
+
+              {sub.file_url && (
+                <div className="rounded-2xl p-4" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.08)" }}>
+                  <p className="font-inter text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: "#9CA3AF" }}>Arquivo anexado</p>
+                  <a href={sub.file_url} target="_blank" rel="noreferrer"
+                    className="flex items-center gap-2 p-3 rounded-xl"
+                    style={{ background: "rgba(13,33,55,0.05)", border: "1px solid rgba(13,33,55,0.1)" }}>
+                    <Paperclip size={16} style={{ color: "#B5862A" }} />
+                    <span className="font-inter text-sm font-semibold flex-1 truncate" style={{ color: "#0D2137" }}>Ver arquivo</span>
+                    <ChevronRight size={16} style={{ color: "#B5862A" }} />
+                  </a>
+                </div>
+              )}
+
+              {sub.feedback && (
+                <div className="rounded-2xl p-4" style={{ background: "rgba(184,135,42,0.06)", border: "1px solid rgba(184,135,42,0.15)" }}>
+                  <p className="font-montserrat font-bold text-sm mb-2" style={{ color: "#0D2137" }}>💬 Feedback da Diretoria</p>
+                  <p className="font-inter text-sm leading-relaxed" style={{ color: "#374151" }}>{sub.feedback}</p>
+                </div>
+              )}
+
               {["ajuste_solicitado", "recusada"].includes(sub.status) && (
                 <button
                   onClick={() => {
                     setSubmissions(prev => prev.filter(s => s.id !== sub.id));
+                    setSubmissionText("");
+                    setSubmissionLink("");
+                    setSubmissionFile(null);
                   }}
-                  className="mt-4 w-full py-3 rounded-xl font-montserrat font-bold text-sm"
-                  style={{ background: "#0D2137", color: "#FFF" }}>
-                  Reenviar tarefa
+                  className="w-full py-3 rounded-xl font-montserrat font-bold text-sm text-white"
+                  style={{ background: "#0D2137" }}>
+                  Reenviar Tarefa
                 </button>
               )}
-            </div>
+            </>
           ) : (
             <div className="rounded-2xl p-5" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.08)" }}>
-              <p className="font-montserrat font-bold text-sm mb-4" style={{ color: "#111827" }}>Enviar Entrega</p>
+              <p className="font-montserrat font-bold text-sm mb-4" style={{ color: "#111827" }}>📤 Enviar sua entrega</p>
 
               {/* Text area */}
               <label className="font-inter text-xs font-semibold block mb-1.5" style={{ color: "#0D2137" }}>
-                Descrição / Resposta
+                Sua resposta *
               </label>
               <textarea
                 className="w-full rounded-xl p-3 font-inter text-sm border resize-none focus:outline-none"
                 rows={4}
-                placeholder="Descreva sua entrega, resposta ou reflexão sobre a tarefa..."
+                placeholder="Escreva sua resposta, reflexão ou descreva o que você fez..."
                 value={submissionText}
                 onChange={e => setSubmissionText(e.target.value)}
                 style={{ borderColor: "rgba(13,33,55,0.12)", background: "#F0F0F4" }}
@@ -211,13 +299,13 @@ export default function Tasks() {
 
               {/* Link */}
               <label className="font-inter text-xs font-semibold block mt-3 mb-1.5" style={{ color: "#0D2137" }}>
-                Link (Drive, Docs, YouTube, etc.)
+                Link (opcional)
               </label>
               <div className="flex items-center gap-2 p-3 rounded-xl" style={{ background: "#F0F0F4", border: "1px solid rgba(13,33,55,0.1)" }}>
                 <Link size={15} style={{ color: "#6B7280" }} />
                 <input
                   className="flex-1 bg-transparent font-inter text-sm outline-none"
-                  placeholder="https://..."
+                  placeholder="Drive, Docs, YouTube, etc."
                   value={submissionLink}
                   onChange={e => setSubmissionLink(e.target.value)}
                 />
@@ -225,7 +313,7 @@ export default function Tasks() {
 
               {/* File upload */}
               <label className="font-inter text-xs font-semibold block mt-3 mb-1.5" style={{ color: "#0D2137" }}>
-                Arquivo (PDF, imagem, vídeo, etc.)
+                Anexar arquivo (opcional)
               </label>
               <input
                 ref={fileInputRef}
@@ -246,7 +334,7 @@ export default function Tasks() {
                   className="w-full flex items-center justify-center gap-2 p-3 rounded-xl font-inter text-sm"
                   style={{ background: "#F0F0F4", border: "1px dashed rgba(13,33,55,0.2)", color: "#6B7280" }}>
                   <Paperclip size={15} />
-                  Anexar arquivo (PDF, imagem, vídeo...)
+                  Clique para anexar arquivo
                 </button>
               )}
 
@@ -260,7 +348,7 @@ export default function Tasks() {
               </button>
               {isLate && (
                 <p className="font-inter text-xs text-center mt-2" style={{ color: "#B42318" }}>
-                  Envio fora do prazo — sujeito a análise da Diretoria
+                  ⚠️ Esta tarefa está atrasada — a entrega será analisada pela Diretoria
                 </p>
               )}
             </div>
