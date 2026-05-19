@@ -20,7 +20,8 @@ export default function Financial() {
       }
       if (members[0]) {
         setMember(members[0]);
-        const chgs = await base44.entities.FinancialCharge.filter({ member_id: members[0].id }, "-due_date");
+        const chgs = await base44.entities.FinancialCharge.filter({ member_id: members[0].id });
+        chgs.sort((a, b) => new Date(b.due_date) - new Date(a.due_date));
         setCharges(chgs);
       }
     } catch (e) { console.error(e); }

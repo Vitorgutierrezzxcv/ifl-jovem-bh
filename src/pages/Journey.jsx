@@ -27,6 +27,7 @@ export default function Journey() {
         setMember(members[0]);
       } else {
         const all = await base44.entities.Member.list("-total_points", 1);
+
         if (all.length > 0) setMember(all[0]);
       }
     } catch (e) { console.error(e); }
