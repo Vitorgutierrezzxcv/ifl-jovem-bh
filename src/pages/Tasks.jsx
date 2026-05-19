@@ -225,12 +225,12 @@ export default function Tasks() {
 
               {/* File upload */}
               <label className="font-inter text-xs font-semibold block mt-3 mb-1.5" style={{ color: "#0D2137" }}>
-                Arquivo (PDF, imagem, etc.)
+                Arquivo (PDF, imagem, vídeo, etc.)
               </label>
               <input
                 ref={fileInputRef}
                 type="file"
-                accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.mp4,.mov,.webm,.avi,.mkv"
                 className="hidden"
                 onChange={e => setSubmissionFile(e.target.files[0] || null)}
               />
@@ -246,7 +246,7 @@ export default function Tasks() {
                   className="w-full flex items-center justify-center gap-2 p-3 rounded-xl font-inter text-sm"
                   style={{ background: "#F0F0F4", border: "1px dashed rgba(13,33,55,0.2)", color: "#6B7280" }}>
                   <Paperclip size={15} />
-                  Anexar arquivo (PDF, imagem...)
+                  Anexar arquivo (PDF, imagem, vídeo...)
                 </button>
               )}
 
