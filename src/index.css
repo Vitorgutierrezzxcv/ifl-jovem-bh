@@ -27,16 +27,16 @@
     --ring: 215 72% 12%;
     --radius: 0.75rem;
 
-    /* IFL Custom Colors */
-    --ifl-navy: #071D33;
-    --ifl-navy-light: #0A2640;
-    --ifl-navy-dark: #040F1A;
-    --ifl-gold: #B8872A;
-    --ifl-gold-light: #D4A043;
+    /* IFL Custom Colors — Brand palette from Instagram */
+    --ifl-navy: #0D2137;
+    --ifl-navy-light: #132840;
+    --ifl-navy-dark: #081526;
+    --ifl-gold: #B5862A;
+    --ifl-gold-light: #C9973A;
     --ifl-gold-dark: #9A6E1F;
     --ifl-white: #FFFFFF;
-    --ifl-gray-bg: #F4F5F6;
-    --ifl-gray-light: #F7F7F4;
+    --ifl-gray-bg: #F0F0F4;
+    --ifl-gray-light: #E8E8EE;
     --ifl-gray-text: #6B7280;
     --ifl-dark-text: #111827;
     --ifl-success: #1F8A5B;
@@ -63,7 +63,7 @@
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
     height: 100%;
-    background-color: #071D33;
+    background-color: #0D2137;
   }
 
   #root {
