@@ -214,32 +214,51 @@ export default function Home() {
             </h2>
           </div>
           <div className="flex flex-col gap-2">
-            {announcements.map(ann => (
-              <div
-                key={ann.id}
-                className="rounded-2xl p-4 card-hover"
-                style={{
-                  background: ann.priority === "urgente" ? "#071D33" : "hsl(var(--card))",
-                  border: ann.priority === "urgente" ? "1px solid rgba(184,135,42,0.3)" : "1px solid rgba(7,29,51,0.06)",
-                  boxShadow: "0 2px 8px rgba(7,29,51,0.04)",
-                }}
-              >
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
-                    style={{ background: ann.priority === "urgente" ? "rgba(184,135,42,0.2)" : "rgba(7,29,51,0.06)" }}>
-                    <Bell size={15} style={{ color: ann.priority === "urgente" ? "#D4A043" : "#071D33" }} />
+            {announcements.map(ann => {
+              const audienceRoutes = {
+                evento: "/agenda",
+                tarefa: "/tarefas",
+                financeiro: "/financeiro",
+                oportunidade: "/oportunidades",
+                clube_do_livro: "/clube-livro",
+                rol: "/rol",
+                colaboracao: "/colaboracoes",
+              };
+              const dest = ann.audience && audienceRoutes[ann.audience] ? audienceRoutes[ann.audience] : null;
+              return (
+                <button
+                  key={ann.id}
+                  onClick={() => dest ? navigate(dest) : null}
+                  className="rounded-2xl p-4 card-hover text-left w-full"
+                  style={{
+                    background: ann.priority === "urgente" ? "#071D33" : "hsl(var(--card))",
+                    border: ann.priority === "urgente" ? "1px solid rgba(184,135,42,0.3)" : ann.priority === "importante" ? "1px solid rgba(217,154,34,0.2)" : "1px solid rgba(7,29,51,0.06)",
+                    boxShadow: "0 2px 8px rgba(7,29,51,0.04)",
+                  }}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
+                      style={{ background: ann.priority === "urgente" ? "rgba(184,135,42,0.2)" : ann.priority === "importante" ? "rgba(217,154,34,0.1)" : "rgba(7,29,51,0.06)" }}>
+                      <Bell size={15} style={{ color: ann.priority === "urgente" ? "#D4A043" : ann.priority === "importante" ? "#D99A22" : "#071D33" }} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        {ann.priority === "urgente" && <span className="font-inter text-[10px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: "rgba(184,135,42,0.25)", color: "#D4A043" }}>URGENTE</span>}
+                        {ann.priority === "importante" && <span className="font-inter text-[10px] font-bold" style={{ color: "#D99A22" }}>IMPORTANTE</span>}
+                        {ann.department_name && <span className="font-inter text-[10px]" style={{ color: ann.priority === "urgente" ? "rgba(255,255,255,0.4)" : "#9CA3AF" }}>{ann.department_name}</span>}
+                      </div>
+                      <p className="font-montserrat font-bold text-sm" style={{ color: ann.priority === "urgente" ? "#FFFFFF" : "#111827" }}>
+                        {ann.title}
+                      </p>
+                      <p className="font-inter text-xs mt-0.5 line-clamp-2" style={{ color: ann.priority === "urgente" ? "rgba(255,255,255,0.55)" : "#6B7280" }}>
+                        {ann.content}
+                      </p>
+                    </div>
+                    {dest && <ChevronRight size={14} style={{ color: ann.priority === "urgente" ? "rgba(255,255,255,0.4)" : "#B8872A", flexShrink: 0, marginTop: 2 }} />}
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-montserrat font-bold text-sm" style={{ color: ann.priority === "urgente" ? "#FFFFFF" : "#111827" }}>
-                      {ann.title}
-                    </p>
-                    <p className="font-inter text-xs mt-0.5 line-clamp-2" style={{ color: ann.priority === "urgente" ? "rgba(255,255,255,0.55)" : "#6B7280" }}>
-                      {ann.content}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
+                </button>
+              );
+            })}
           </div>
         </div>
       )}
