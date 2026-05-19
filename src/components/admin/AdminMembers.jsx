@@ -69,8 +69,8 @@ export default function AdminMembers({ onSelectMember, isAdmin, memberRole }) {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "#F4F5F7", paddingTop: "calc(env(safe-area-inset-top) + 56px)" }}>
-      <div className="lg:pt-0">
+    <div className="min-h-screen" style={{ background: "#F4F5F7" }}>
+      <div>
         <AdminHeader
           title="Gestão de Associados"
           subtitle={`${filtered.length} de ${members.length} associados`}

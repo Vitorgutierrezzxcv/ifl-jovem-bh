@@ -57,8 +57,8 @@ export default function AdminOpportunities({ isAdmin, memberRole }) {
   const statusColor = { aberta: "#1F8A5B", encerrada: "#B42318", resultado_publicado: "#071D33", rascunho: "#9CA3AF" };
 
   return (
-    <div className="min-h-screen" style={{ background: "#F4F5F7", paddingTop: "calc(env(safe-area-inset-top) + 56px)" }}>
-      <div className="lg:pt-0">
+    <div className="min-h-screen" style={{ background: "#F4F5F7" }}>
+      <div>
         <AdminHeader title="Oportunidades" subtitle={`${items.filter(i => i.status === "aberta").length} abertas`}
           actions={
             <button onClick={() => { setForm(emptyForm); setEditId(null); setShowForm(true); }}

@@ -91,7 +91,9 @@ export default function Admin() {
         isAdmin={isAdmin}
         memberRole={memberRole}
       />
-      <main className="flex-1 overflow-y-auto">
+      <main className="flex-1 overflow-y-auto lg:pt-0" style={{ paddingTop: "var(--mobile-header-h, 0)" }}>
+        {/* Mobile offset */}
+        <div className="lg:hidden" style={{ height: "calc(env(safe-area-inset-top) + 52px)" }} />
         {renderSection()}
       </main>
     </div>

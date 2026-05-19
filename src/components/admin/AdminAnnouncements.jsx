@@ -58,8 +58,8 @@ export default function AdminAnnouncements({ isAdmin, memberRole }) {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "#F4F5F7", paddingTop: "calc(env(safe-area-inset-top) + 56px)" }}>
-      <div className="lg:pt-0">
+    <div className="min-h-screen" style={{ background: "#F4F5F7" }}>
+      <div>
         <AdminHeader title="Avisos e Comunicados" subtitle={`${items.length} avisos`}
           actions={
             <button onClick={() => { setForm(emptyForm); setEditId(null); setShowForm(true); }}

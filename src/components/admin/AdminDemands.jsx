@@ -50,8 +50,8 @@ export default function AdminDemands({ isAdmin, memberRole }) {
   statusTabs.forEach(t => { counts[t.key] = t.key === "todos" ? demands.length : demands.filter(d => d.status === t.key).length; });
 
   return (
-    <div className="min-h-screen" style={{ background: "#F4F5F7", paddingTop: "calc(env(safe-area-inset-top) + 56px)" }}>
-      <div className="lg:pt-0">
+    <div className="min-h-screen" style={{ background: "#F4F5F7" }}>
+      <div>
         <AdminHeader title="Demandas Internas" subtitle={`${counts["pendente"] || 0} pendentes`} />
       </div>
 

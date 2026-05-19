@@ -73,8 +73,8 @@ export default function AdminFinancial({ isAdmin, memberRole }) {
   const totalRecebido = charges.filter(c => c.status === "em_dia").reduce((s, c) => s + (c.amount || 0), 0);
 
   return (
-    <div className="min-h-screen" style={{ background: "#F4F5F7", paddingTop: "calc(env(safe-area-inset-top) + 56px)" }}>
-      <div className="lg:pt-0">
+    <div className="min-h-screen" style={{ background: "#F4F5F7" }}>
+      <div>
         <AdminHeader title="Gestão Financeira" subtitle="Cobranças e inadimplência"
           actions={
             <div className="flex gap-2">

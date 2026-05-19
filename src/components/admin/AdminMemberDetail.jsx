@@ -72,9 +72,9 @@ export default function AdminMemberDetail({ memberId, onBack, isAdmin, memberRol
   const approvedSubmissions = submissions.filter(s => s.status === "aprovada" || s.status === "aprovada_ressalvas").length;
 
   return (
-    <div className="min-h-screen" style={{ background: "#F4F5F7", paddingTop: "calc(env(safe-area-inset-top) + 56px)" }}>
+    <div className="min-h-screen" style={{ background: "#F4F5F7" }}>
       {/* Header */}
-      <div className="bg-white border-b px-4 py-4 lg:pt-4" style={{ borderColor: "rgba(13,33,55,0.08)" }}>
+      <div className="bg-white border-b px-4 py-4" style={{ borderColor: "rgba(13,33,55,0.08)" }}>
         <div className="flex items-center gap-3 mb-4">
           <button onClick={onBack} className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "rgba(13,33,55,0.06)" }}>
             <ArrowLeft size={16} style={{ color: "#071D33" }} />

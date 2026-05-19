@@ -85,8 +85,8 @@ export default function AdminPoints({ isAdmin, memberRole }) {
   const pendingCount = points.filter(p => p.status === "pendente").length;
 
   return (
-    <div className="min-h-screen" style={{ background: "#F4F5F7", paddingTop: "calc(env(safe-area-inset-top) + 56px)" }}>
-      <div className="lg:pt-0">
+    <div className="min-h-screen" style={{ background: "#F4F5F7" }}>
+      <div>
         <AdminHeader title="Gestão de Pontos" subtitle={`${pendingCount} pendentes de aprovação`}
           actions={
             <div className="flex gap-2">
