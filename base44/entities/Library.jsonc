@@ -1,0 +1,85 @@
+{
+  "name": "Library",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "file_url": {
+      "type": "string"
+    },
+    "file_type": {
+      "type": "string",
+      "enum": [
+        "pdf",
+        "video",
+        "manual",
+        "planilha",
+        "apresentacao",
+        "imagem",
+        "link",
+        "outro"
+      ],
+      "default": "pdf"
+    },
+    "department": {
+      "type": "string",
+      "enum": [
+        "geral",
+        "presidencia",
+        "vice_presidencia",
+        "formacao",
+        "comunicacao",
+        "projetos",
+        "financeiro",
+        "pessoas",
+        "captacao",
+        "eventos",
+        "marketing"
+      ],
+      "default": "geral"
+    },
+    "visibility": {
+      "type": "string",
+      "enum": [
+        "todos",
+        "diretoria",
+        "presidencia"
+      ],
+      "default": "todos"
+    },
+    "tags": {
+      "type": "string"
+    },
+    "content_text": {
+      "type": "string"
+    },
+    "external_url": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ativo",
+        "arquivado"
+      ],
+      "default": "ativo"
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "download_count": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "title",
+    "department",
+    "file_type"
+  ]
+}

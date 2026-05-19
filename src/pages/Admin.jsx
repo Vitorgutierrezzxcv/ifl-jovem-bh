@@ -13,6 +13,7 @@ import AdminOpportunities from "../components/admin/AdminOpportunities";
 import AdminDemands from "../components/admin/AdminDemands";
 import AdminMemberDetail from "../components/admin/AdminMemberDetail";
 import AdminAccessLevels from "../components/admin/AdminAccessLevels";
+import AdminLibrary from "../components/admin/AdminLibrary";
 
 const ADMIN_SECTIONS = {
   dashboard: AdminDashboard,
@@ -79,6 +80,7 @@ export default function Admin() {
       opportunities: <AdminOpportunities isAdmin={isAdmin} memberRole={memberRole} />,
       demands: <AdminDemands isAdmin={isAdmin} memberRole={memberRole} />,
       access: <AdminAccessLevels isAdmin={isAdmin} memberRole={memberRole} />,
+      library: <AdminLibrary isAdmin={isAdmin} memberRole={memberRole} />,
     };
     return sections[activeSection] || sections.dashboard;
   };

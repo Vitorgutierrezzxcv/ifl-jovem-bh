@@ -27,6 +27,7 @@ import CycleInfo from './pages/CycleInfo';
 import Demands from './pages/Demands';
 import PointsCriteria from './pages/PointsCriteria';
 import Collaboration from './pages/Collaboration';
+import Library from './pages/Library';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -74,6 +75,7 @@ const AuthenticatedApp = () => {
         <Route path="/demandas" element={<Demands />} />
         <Route path="/criterios-pontuacao" element={<PointsCriteria />} />
         <Route path="/colaboracoes" element={<Collaboration />} />
+        <Route path="/biblioteca" element={<Library />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <BottomNav />
