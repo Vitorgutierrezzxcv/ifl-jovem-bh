@@ -144,8 +144,12 @@ export default function AdminMemberDetail({ memberId, onBack, isAdmin, memberRol
                   <Field label="Telefone" value={editData.phone} onChange={v => setEditData({ ...editData, phone: v })} />
                   <Field label="Universidade" value={editData.university} onChange={v => setEditData({ ...editData, university: v })} />
                   <Field label="Curso" value={editData.course} onChange={v => setEditData({ ...editData, course: v })} />
+                  <Field label="LinkedIn" value={editData.linkedin_url} onChange={v => setEditData({ ...editData, linkedin_url: v })} />
+                  <Field label="Diretoria" value={editData.department_name} onChange={v => setEditData({ ...editData, department_name: v })} />
                   <SelectField label="Ciclo" value={editData.cycle} options={cycleOptions} labels={cycleLabels} onChange={v => setEditData({ ...editData, cycle: v })} />
-                  <SelectField label="Status" value={editData.member_status} options={statusOptions} onChange={v => setEditData({ ...editData, member_status: v })} />
+                  <SelectField label="Status Geral" value={editData.member_status} options={statusOptions} onChange={v => setEditData({ ...editData, member_status: v })} />
+                  <SelectField label="Status Financeiro" value={editData.financial_status} options={["em_dia","pendente","vencido","inadimplente","isento","negociado"]} onChange={v => setEditData({ ...editData, financial_status: v })} />
+                  <SelectField label="Status de Progresso" value={editData.progress_status} options={["em_dia","atencao","em_risco","apto","aprovado","reprovado"]} onChange={v => setEditData({ ...editData, progress_status: v })} />
                   <SelectField label="Cargo" value={editData.role} options={roleOptions} onChange={v => setEditData({ ...editData, role: v })} />
                 </div>
               ) : (
