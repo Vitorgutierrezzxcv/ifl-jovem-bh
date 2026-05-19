@@ -46,6 +46,8 @@ export default function BottomNav() {
     }
   }
 
+  if (location.pathname.startsWith("/admin")) return null;
+
   return (
     <nav
       className="fixed left-1/2 z-[9999]"
