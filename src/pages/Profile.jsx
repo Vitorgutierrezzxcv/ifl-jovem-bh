@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useNavigate } from "react-router-dom";
-import { LogOut, ChevronRight, User, BookOpen, Library, DollarSign, FileText, Star, Bell, Shield, Trash2, AlertTriangle } from "lucide-react";
+import { LogOut, ChevronRight, User, BookOpen, Library, DollarSign, FileText, Star, Bell, Shield, Trash2, AlertTriangle, BarChart2 } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
 import StatusBadge from "../components/ui/StatusBadge";
+import ProfileAnalytics from "../components/profile/ProfileAnalytics";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel,
   AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
@@ -18,6 +19,7 @@ export default function Profile() {
   const [user, setUser] = useState(null);
   const [member, setMember] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("perfil");
 
   useEffect(() => { loadData(); }, []);
 
@@ -96,6 +98,34 @@ export default function Profile() {
           </div>
         </div>
       </div>
+
+      {/* Tabs */}
+      <div className="flex gap-1 px-4 mt-4">
+        {[
+          { key: "perfil", label: "Perfil" },
+          { key: "analytics", label: "Analytics", icon: BarChart2 },
+        ].map(tab => (
+          <button
+            key={tab.key}
+            onClick={() => setActiveTab(tab.key)}
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl font-inter text-sm font-semibold transition-all"
+            style={{
+              background: activeTab === tab.key ? "#071D33" : "hsl(var(--card))",
+              color: activeTab === tab.key ? "#D4A043" : "#6B7280",
+              border: activeTab === tab.key ? "1px solid rgba(184,135,42,0.2)" : "1px solid rgba(7,29,51,0.06)",
+            }}
+          >
+            {tab.icon && <tab.icon size={14} strokeWidth={2} />}
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Analytics tab */}
+      {activeTab === "analytics" && <ProfileAnalytics member={member} />}
+
+      {/* Profile tab content */}
+      {activeTab === "perfil" && <>
 
       {/* Status */}
       {member && (
@@ -202,6 +232,8 @@ export default function Profile() {
           </AlertDialogContent>
         </AlertDialog>
       </div>
+
+      </>}
 
     </div>
   );
