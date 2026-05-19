@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useNavigate } from "react-router-dom";
-import { LogOut, ChevronRight, User, BookOpen, Library, DollarSign, FileText, Star, Bell, Shield, Trash2, AlertTriangle, BarChart2 } from "lucide-react";
+import { LogOut, ChevronRight, User, BookOpen, Library, DollarSign, FileText, Star, Bell, Shield, Trash2, AlertTriangle, BarChart2, TrendingUp } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
 import StatusBadge from "../components/ui/StatusBadge";
 import ProfileAnalytics from "../components/profile/ProfileAnalytics";
+import ProfilePerformance from "../components/profile/ProfilePerformance";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel,
   AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
@@ -103,6 +104,7 @@ export default function Profile() {
       <div className="flex gap-1 px-4 mt-4">
         {[
           { key: "perfil", label: "Perfil" },
+          { key: "desempenho", label: "Desempenho", icon: TrendingUp },
           { key: "analytics", label: "Analytics", icon: BarChart2 },
         ].map(tab => (
           <button
@@ -120,6 +122,9 @@ export default function Profile() {
           </button>
         ))}
       </div>
+
+      {/* Desempenho tab */}
+      {activeTab === "desempenho" && <ProfilePerformance member={member} />}
 
       {/* Analytics tab */}
       {activeTab === "analytics" && <ProfileAnalytics member={member} />}
