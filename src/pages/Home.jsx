@@ -218,13 +218,22 @@ export default function Home() {
               const audienceRoutes = {
                 evento: "/agenda",
                 tarefa: "/tarefas",
+                tarefa_pending: "/tarefas",
                 financeiro: "/financeiro",
                 oportunidade: "/oportunidades",
                 clube_do_livro: "/clube-livro",
                 rol: "/rol",
                 colaboracao: "/colaboracoes",
+                todos: null,
+                qualifier: null,
+                "1_ciclo": null,
+                "2_ciclo": null,
+                "3_ciclo": null,
+                fellow: null,
+                diretoria: null,
+                individual: null,
               };
-              const dest = ann.audience && audienceRoutes[ann.audience] ? audienceRoutes[ann.audience] : null;
+              const dest = ann.audience && audienceRoutes[ann.audience] !== undefined ? audienceRoutes[ann.audience] : "/agenda";
               return (
                 <button
                   key={ann.id}

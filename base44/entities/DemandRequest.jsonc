@@ -1,0 +1,53 @@
+{
+  "name": "DemandRequest",
+  "type": "object",
+  "properties": {
+    "member_id": {
+      "type": "string"
+    },
+    "member_name": {
+      "type": "string"
+    },
+    "member_email": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "cycle": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "other_category": {
+      "type": "string"
+    },
+    "justification": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pendente",
+        "em_analise",
+        "respondida",
+        "resolvida",
+        "indeferida"
+      ],
+      "default": "pendente"
+    },
+    "response": {
+      "type": "string"
+    },
+    "responded_by": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "member_name",
+    "cycle",
+    "category",
+    "justification"
+  ]
+}
