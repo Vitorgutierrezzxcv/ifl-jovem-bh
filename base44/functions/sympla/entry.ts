@@ -77,6 +77,21 @@ Deno.serve(async (req) => {
         if (name) memberByName[name] = m;
       });
 
+      // Pre-fetch all existing attendance and points for this event in one query
+      const [existingAttendances, existingPoints] = await Promise.all([
+        internal_event_id
+          ? base44.asServiceRole.entities.Attendance.filter({ event_id: internal_event_id }, undefined, 500)
+          : Promise.resolve([]),
+        internal_event_id && points_value > 0
+          ? base44.asServiceRole.entities.PointsLedger.filter({ source_id: internal_event_id, source_type: "event" }, undefined, 500)
+          : Promise.resolve([]),
+      ]);
+
+      const attendanceByMember = {};
+      existingAttendances.forEach(a => { attendanceByMember[a.member_id] = a; });
+      const pointsByMember = {};
+      existingPoints.forEach(p => { pointsByMember[p.member_id] = p; });
+
       let matched = 0, unmatched = 0;
       const results = [];
 
@@ -104,16 +119,13 @@ Deno.serve(async (req) => {
         }
 
         if (!member && nameNorm) {
-          // Try exact normalized name
           if (memberByName[nameNorm]) {
             member = memberByName[nameNorm];
             matchMethod = "nome";
           } else {
-            // Fuzzy: check if sympla name words are all contained in member name or vice versa
             const symplaWords = nameNorm.split(/\s+/).filter(w => w.length > 2);
             for (const [mName, m] of Object.entries(memberByName)) {
-              const allMatch = symplaWords.every(w => mName.includes(w));
-              if (allMatch && symplaWords.length >= 2) {
+              if (symplaWords.length >= 2 && symplaWords.every(w => mName.includes(w))) {
                 member = m;
                 matchMethod = "nome (parcial)";
                 break;
@@ -124,24 +136,14 @@ Deno.serve(async (req) => {
 
         if (!member) {
           unmatched++;
-          results.push({
-            sympla_name: fullName,
-            sympla_email: p.email,
-            sympla_cpf: cpfRaw,
-            status: "não encontrado",
-            match_method: null
-          });
+          results.push({ sympla_name: fullName, sympla_email: p.email, sympla_cpf: cpfRaw, status: "não encontrado", match_method: null });
           continue;
         }
 
-        // Create/update Attendance record (if internal_event_id provided)
+        // Attendance record (use pre-fetched data)
         if (internal_event_id) {
-          const existing = await base44.asServiceRole.entities.Attendance.filter({
-            event_id: internal_event_id,
-            member_id: member.id
-          });
-
-          if (existing.length === 0) {
+          const existing = attendanceByMember[member.id];
+          if (!existing) {
             await base44.asServiceRole.entities.Attendance.create({
               event_id: internal_event_id,
               event_name: event_name || "Importado via Sympla",
@@ -152,8 +154,8 @@ Deno.serve(async (req) => {
               recorded_by: user.email,
               notes: `Sympla check-in: ${p.checkin?.check_in_date || ""} | Cruzado por ${matchMethod}`
             });
-          } else if (existing[0].status !== "presente") {
-            await base44.asServiceRole.entities.Attendance.update(existing[0].id, {
+          } else if (existing.status !== "presente") {
+            await base44.asServiceRole.entities.Attendance.update(existing.id, {
               status: "presente",
               method: "importacao",
               notes: `Sympla check-in via importação | Cruzado por ${matchMethod}`
@@ -161,46 +163,28 @@ Deno.serve(async (req) => {
           }
         }
 
-        // Create PointsLedger entry if points_value > 0
-        if (points_value > 0 && internal_event_id) {
-          // Check if points already launched for this event+member
-          const existingPoints = await base44.asServiceRole.entities.PointsLedger.filter({
+        // Points (use pre-fetched data)
+        if (points_value > 0 && internal_event_id && !pointsByMember[member.id]) {
+          await base44.asServiceRole.entities.PointsLedger.create({
             member_id: member.id,
+            member_name: member.full_name,
+            points: points_value,
+            category: category,
+            action: `Presença: ${event_name || "Evento via Sympla"}`,
+            source_type: "event",
             source_id: internal_event_id,
-            source_type: "event"
+            source_name: event_name || "Evento via Sympla",
+            status: "aprovado",
+            notes: `Importado do Sympla | Cruzado por ${matchMethod}`,
+            created_by: user.email
           });
-
-          if (existingPoints.length === 0) {
-            await base44.asServiceRole.entities.PointsLedger.create({
-              member_id: member.id,
-              member_name: member.full_name,
-              points: points_value,
-              category: category,
-              action: `Presença: ${event_name || "Evento via Sympla"}`,
-              source_type: "event",
-              source_id: internal_event_id,
-              source_name: event_name || "Evento via Sympla",
-              status: "aprovado",
-              notes: `Importado do Sympla | Cruzado por ${matchMethod}`,
-              created_by: user.email
-            });
-
-            // Update member total_points
-            await base44.asServiceRole.entities.Member.update(member.id, {
-              total_points: (member.total_points || 0) + points_value
-            });
-          }
+          await base44.asServiceRole.entities.Member.update(member.id, {
+            total_points: (member.total_points || 0) + points_value
+          });
         }
 
         matched++;
-        results.push({
-          sympla_name: fullName,
-          sympla_email: p.email,
-          sympla_cpf: cpfRaw,
-          member_name: member.full_name,
-          status: "importado",
-          match_method: matchMethod
-        });
+        results.push({ sympla_name: fullName, sympla_email: p.email, sympla_cpf: cpfRaw, member_name: member.full_name, status: "importado", match_method: matchMethod });
       }
 
       return Response.json({
