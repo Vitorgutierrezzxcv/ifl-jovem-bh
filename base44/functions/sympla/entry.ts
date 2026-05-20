@@ -89,19 +89,37 @@ Deno.serve(async (req) => {
         const fullName = `${p.first_name || ""} ${p.last_name || ""}`.trim();
         const nameNorm = normalizeName(fullName);
 
-        // Match: CPF > email > name
+        // Match: basta UM bater — CPF > email > nome completo
         let member = null;
         let matchMethod = "";
 
         if (cpfNorm && memberByCPF[cpfNorm]) {
           member = memberByCPF[cpfNorm];
           matchMethod = "CPF";
-        } else if (emailNorm && memberByEmail[emailNorm]) {
+        }
+
+        if (!member && emailNorm && memberByEmail[emailNorm]) {
           member = memberByEmail[emailNorm];
           matchMethod = "email";
-        } else if (nameNorm && memberByName[nameNorm]) {
-          member = memberByName[nameNorm];
-          matchMethod = "nome";
+        }
+
+        if (!member && nameNorm) {
+          // Try exact normalized name
+          if (memberByName[nameNorm]) {
+            member = memberByName[nameNorm];
+            matchMethod = "nome";
+          } else {
+            // Fuzzy: check if sympla name words are all contained in member name or vice versa
+            const symplaWords = nameNorm.split(/\s+/).filter(w => w.length > 2);
+            for (const [mName, m] of Object.entries(memberByName)) {
+              const allMatch = symplaWords.every(w => mName.includes(w));
+              if (allMatch && symplaWords.length >= 2) {
+                member = m;
+                matchMethod = "nome (parcial)";
+                break;
+              }
+            }
+          }
         }
 
         if (!member) {
