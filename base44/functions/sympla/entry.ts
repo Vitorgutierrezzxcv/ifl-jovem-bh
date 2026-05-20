@@ -11,6 +11,16 @@ async function symplaFetch(path, token) {
   return json;
 }
 
+function normalizeCPF(cpf) {
+  if (!cpf) return "";
+  return cpf.replace(/\D/g, "");
+}
+
+function normalizeName(name) {
+  if (!name) return "";
+  return name.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -21,7 +31,7 @@ Deno.serve(async (req) => {
     if (!token) return Response.json({ error: "SYMPLA_TOKEN não configurado" }, { status: 500 });
 
     const body = await req.json();
-    const { action, event_id, page_size = 200 } = body;
+    const { action, event_id } = body;
 
     // List events from Sympla
     if (action === "list_events") {
@@ -29,70 +39,159 @@ Deno.serve(async (req) => {
       return Response.json({ events: data.data || [] });
     }
 
-    // List participants for an event
+    // List participants for an event (only checked-in)
     if (action === "list_participants") {
       if (!event_id) return Response.json({ error: "event_id obrigatório" }, { status: 400 });
-      const data = await symplaFetch(`/events/${event_id}/participants?page_size=${page_size}`, token);
-      return Response.json({ participants: data.data || [], total: data.pagination?.quantity || 0 });
+      const data = await symplaFetch(`/events/${event_id}/participants?page_size=200`, token);
+      const all = data.data || [];
+      // Filter only who checked in
+      const checkedIn = all.filter(p => p.checkin?.check_in === true);
+      return Response.json({ participants: checkedIn, total_registered: all.length, total_checkin: checkedIn.length });
     }
 
-    // Import attendance: match participants by email to members, create Attendance records
+    // Import attendance: match by CPF (primary), then email, then name
+    // Also creates PointsLedger entry and updates member total_points
     if (action === "import_attendance") {
       if (!event_id) return Response.json({ error: "event_id obrigatório" }, { status: 400 });
-      const { internal_event_id, event_name } = body;
+      const { internal_event_id, event_name, points_value = 0, category = "palestra", only_checkin = true } = body;
 
       // Fetch all participants from Sympla
       const data = await symplaFetch(`/events/${event_id}/participants?page_size=200`, token);
-      const participants = data.data || [];
+      const allParticipants = data.data || [];
+      const participants = only_checkin
+        ? allParticipants.filter(p => p.checkin?.check_in === true)
+        : allParticipants;
 
-      // Fetch members to match by email
+      // Fetch all members
       const members = await base44.asServiceRole.entities.Member.list();
+
+      // Build lookup maps
+      const memberByCPF = {};
       const memberByEmail = {};
-      members.forEach(m => { if (m.email) memberByEmail[m.email.toLowerCase()] = m; });
+      const memberByName = {};
+      members.forEach(m => {
+        const cpf = normalizeCPF(m.cpf);
+        if (cpf) memberByCPF[cpf] = m;
+        if (m.email) memberByEmail[m.email.toLowerCase().trim()] = m;
+        const name = normalizeName(m.full_name);
+        if (name) memberByName[name] = m;
+      });
 
       let matched = 0, unmatched = 0;
       const results = [];
 
       for (const p of participants) {
-        const email = (p.email || "").toLowerCase();
-        const member = memberByEmail[email];
+        // Extract CPF from custom_form
+        const cpfField = (p.custom_form || []).find(f => f.name?.toLowerCase().includes("cpf"));
+        const cpfRaw = cpfField?.value || "";
+        const cpfNorm = normalizeCPF(cpfRaw);
+        const emailNorm = (p.email || "").toLowerCase().trim();
+        const fullName = `${p.first_name || ""} ${p.last_name || ""}`.trim();
+        const nameNorm = normalizeName(fullName);
+
+        // Match: CPF > email > name
+        let member = null;
+        let matchMethod = "";
+
+        if (cpfNorm && memberByCPF[cpfNorm]) {
+          member = memberByCPF[cpfNorm];
+          matchMethod = "CPF";
+        } else if (emailNorm && memberByEmail[emailNorm]) {
+          member = memberByEmail[emailNorm];
+          matchMethod = "email";
+        } else if (nameNorm && memberByName[nameNorm]) {
+          member = memberByName[nameNorm];
+          matchMethod = "nome";
+        }
 
         if (!member) {
           unmatched++;
-          results.push({ name: `${p.first_name} ${p.last_name}`, email, status: "não encontrado" });
+          results.push({
+            sympla_name: fullName,
+            sympla_email: p.email,
+            sympla_cpf: cpfRaw,
+            status: "não encontrado",
+            match_method: null
+          });
           continue;
         }
 
-        // Check if attendance already exists
-        const existing = await base44.asServiceRole.entities.Attendance.filter({
-          event_id: internal_event_id,
-          member_id: member.id
-        });
-
-        if (existing.length === 0) {
-          await base44.asServiceRole.entities.Attendance.create({
+        // Create/update Attendance record (if internal_event_id provided)
+        if (internal_event_id) {
+          const existing = await base44.asServiceRole.entities.Attendance.filter({
             event_id: internal_event_id,
-            event_name: event_name || "Importado via Sympla",
-            member_id: member.id,
-            member_name: member.full_name,
-            status: "presente",
-            method: "importacao",
-            recorded_by: user.email,
-            notes: `Importado do Sympla (ticket: ${p.ticket_num_qr_code || p.id})`
+            member_id: member.id
           });
-          matched++;
-          results.push({ name: member.full_name, email, status: "importado" });
-        } else {
-          // Update existing to presente if not already
-          if (existing[0].status !== "presente") {
-            await base44.asServiceRole.entities.Attendance.update(existing[0].id, { status: "presente", method: "importacao" });
+
+          if (existing.length === 0) {
+            await base44.asServiceRole.entities.Attendance.create({
+              event_id: internal_event_id,
+              event_name: event_name || "Importado via Sympla",
+              member_id: member.id,
+              member_name: member.full_name,
+              status: "presente",
+              method: "importacao",
+              recorded_by: user.email,
+              notes: `Sympla check-in: ${p.checkin?.check_in_date || ""} | Cruzado por ${matchMethod}`
+            });
+          } else if (existing[0].status !== "presente") {
+            await base44.asServiceRole.entities.Attendance.update(existing[0].id, {
+              status: "presente",
+              method: "importacao",
+              notes: `Sympla check-in via importação | Cruzado por ${matchMethod}`
+            });
           }
-          matched++;
-          results.push({ name: member.full_name, email, status: "já existia" });
         }
+
+        // Create PointsLedger entry if points_value > 0
+        if (points_value > 0 && internal_event_id) {
+          // Check if points already launched for this event+member
+          const existingPoints = await base44.asServiceRole.entities.PointsLedger.filter({
+            member_id: member.id,
+            source_id: internal_event_id,
+            source_type: "event"
+          });
+
+          if (existingPoints.length === 0) {
+            await base44.asServiceRole.entities.PointsLedger.create({
+              member_id: member.id,
+              member_name: member.full_name,
+              points: points_value,
+              category: category,
+              action: `Presença: ${event_name || "Evento via Sympla"}`,
+              source_type: "event",
+              source_id: internal_event_id,
+              source_name: event_name || "Evento via Sympla",
+              status: "aprovado",
+              notes: `Importado do Sympla | Cruzado por ${matchMethod}`,
+              created_by: user.email
+            });
+
+            // Update member total_points
+            await base44.asServiceRole.entities.Member.update(member.id, {
+              total_points: (member.total_points || 0) + points_value
+            });
+          }
+        }
+
+        matched++;
+        results.push({
+          sympla_name: fullName,
+          sympla_email: p.email,
+          sympla_cpf: cpfRaw,
+          member_name: member.full_name,
+          status: "importado",
+          match_method: matchMethod
+        });
       }
 
-      return Response.json({ matched, unmatched, total: participants.length, results });
+      return Response.json({
+        matched,
+        unmatched,
+        total_checkin: participants.length,
+        total_registered: allParticipants.length,
+        results
+      });
     }
 
     return Response.json({ error: "action inválida" }, { status: 400 });

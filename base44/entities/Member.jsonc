@@ -11,6 +11,9 @@
     "email": {
       "type": "string"
     },
+    "cpf": {
+      "type": "string"
+    },
     "phone": {
       "type": "string"
     },
