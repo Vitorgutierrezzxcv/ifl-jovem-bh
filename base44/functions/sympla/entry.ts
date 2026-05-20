@@ -90,10 +90,14 @@ Deno.serve(async (req) => {
       const attendanceByMember = {};
       existingAttendances.forEach(a => { attendanceByMember[a.member_id] = a; });
       const pointsByMember = {};
+      // Track existing ledger entries — their total_points may not have been applied yet (e.g. from a failed previous import)
       existingPoints.forEach(p => { pointsByMember[p.member_id] = p; });
 
       let matched = 0, unmatched = 0;
       const results = [];
+      const membersToRecalc = new Set();
+      // Always recalc members who already had points from this event (may have been created but total_points not updated)
+      existingPoints.forEach(p => membersToRecalc.add(p.member_id));
 
       for (const p of participants) {
         // Extract CPF from custom_form
@@ -178,13 +182,22 @@ Deno.serve(async (req) => {
             notes: `Importado do Sympla | Cruzado por ${matchMethod}`,
             created_by: user.email
           });
-          await base44.asServiceRole.entities.Member.update(member.id, {
-            total_points: (member.total_points || 0) + points_value
-          });
+          // Mark this member as needing points recalculation
+          pointsByMember[member.id] = true; // prevent duplicate
+          membersToRecalc.add(member.id);
         }
 
         matched++;
         results.push({ sympla_name: fullName, sympla_email: p.email, sympla_cpf: cpfRaw, member_name: member.full_name, status: "importado", match_method: matchMethod });
+      }
+
+      // Recalculate total_points for all affected members from PointsLedger (source of truth)
+      for (const memberId of membersToRecalc) {
+        const allLedger = await base44.asServiceRole.entities.PointsLedger.filter(
+          { member_id: memberId, status: "aprovado" }, undefined, 1000
+        );
+        const total = allLedger.reduce((sum, l) => sum + (l.points || 0), 0);
+        await base44.asServiceRole.entities.Member.update(memberId, { total_points: total });
       }
 
       return Response.json({
