@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { Plus, Edit2, Trash2, ChevronRight, Calendar, MapPin, Users } from "lucide-react";
+import { Plus, Edit2, Trash2, ChevronRight, Calendar, MapPin, Users, Download } from "lucide-react";
 import AdminHeader from "./AdminHeader";
+import SymplaIntegration from "./SymplaIntegration";
 
 const typeLabels = {
   palestra_ordinaria: "Palestra", evento_ordinario_formacao: "Formação", clube_do_livro: "Clube do Livro",
@@ -21,6 +22,7 @@ export default function AdminEvents({ isAdmin, memberRole }) {
   const [saving, setSaving] = useState(false);
   const [filterStatus, setFilterStatus] = useState("todos");
   const [deleteConfirm, setDeleteConfirm] = useState(null);
+  const [showSympla, setShowSympla] = useState(false);
 
   useEffect(() => { load(); }, []);
 
@@ -61,11 +63,18 @@ export default function AdminEvents({ isAdmin, memberRole }) {
       <div>
         <AdminHeader title="Gestão de Eventos" subtitle={`${events.length} eventos`}
           actions={
-            <button onClick={() => { setForm(emptyEvent); setEditId(null); setShowForm(true); }}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-inter font-semibold text-white"
-              style={{ background: "#071D33" }}>
-              <Plus size={14} /> Novo Evento
-            </button>
+            <div className="flex gap-2">
+              <button onClick={() => setShowSympla(true)}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-inter font-semibold"
+                style={{ background: "rgba(16,110,200,0.1)", color: "#106EC8", border: "1px solid rgba(16,110,200,0.2)" }}>
+                <Download size={14} /> Sympla
+              </button>
+              <button onClick={() => { setForm(emptyEvent); setEditId(null); setShowForm(true); }}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-inter font-semibold text-white"
+                style={{ background: "#071D33" }}>
+                <Plus size={14} /> Novo Evento
+              </button>
+            </div>
           }
         />
       </div>
@@ -144,6 +153,9 @@ export default function AdminEvents({ isAdmin, memberRole }) {
           </div>
         </div>
       )}
+
+      {/* Sympla Integration Modal */}
+      {showSympla && <SymplaIntegration onClose={() => setShowSympla(false)} />}
 
       {/* Delete Confirm */}
       {deleteConfirm && (
