@@ -30,13 +30,23 @@ export default function AdminMemberDetail({ memberId, onBack, isAdmin, memberRol
     setLoading(true);
     const [m, pts, att, subs, chs, dems] = await Promise.all([
       base44.entities.Member.filter({ id: memberId }),
-      base44.entities.PointsLedger.filter({ member_id: memberId }),
+      base44.entities.PointsLedger.filter({ member_id: memberId }, undefined, 500),
       base44.entities.Attendance.filter({ member_id: memberId }),
       base44.entities.TaskSubmission.filter({ member_id: memberId }),
       base44.entities.FinancialCharge.filter({ member_id: memberId }),
       base44.entities.DemandRequest.filter({ member_id: memberId }),
     ]);
     const mem = m[0] || null;
+
+    // Sync total_points from ledger (source of truth)
+    if (mem) {
+      const realTotal = pts.filter(p => p.status === "aprovado").reduce((s, p) => s + (p.points || 0), 0);
+      if (mem.total_points !== realTotal) {
+        await base44.entities.Member.update(memberId, { total_points: realTotal });
+        mem.total_points = realTotal;
+      }
+    }
+
     setMember(mem);
     setEditData(mem || {});
     setPoints(pts.sort((a, b) => new Date(b.created_date) - new Date(a.created_date)));
