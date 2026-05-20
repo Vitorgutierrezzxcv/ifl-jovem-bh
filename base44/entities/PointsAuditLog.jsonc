@@ -1,0 +1,35 @@
+{
+  "name": "PointsAuditLog",
+  "type": "object",
+  "properties": {
+    "member_id": {
+      "type": "string"
+    },
+    "member_name": {
+      "type": "string"
+    },
+    "previous_points": {
+      "type": "number"
+    },
+    "new_points": {
+      "type": "number"
+    },
+    "delta": {
+      "type": "number"
+    },
+    "changed_by": {
+      "type": "string"
+    },
+    "changed_at": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "member_id",
+    "member_name",
+    "new_points"
+  ]
+}
