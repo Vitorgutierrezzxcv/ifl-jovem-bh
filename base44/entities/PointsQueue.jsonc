@@ -1,0 +1,85 @@
+{
+  "name": "PointsQueue",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "activity_type": {
+      "type": "string",
+      "enum": [
+        "mesa_redonda",
+        "evento_extraordinario",
+        "evento_ordinario",
+        "lanche_recepcao_sombra",
+        "linkedin",
+        "stories_nichat",
+        "clube_livro_presenca",
+        "clube_livro_leitura",
+        "clube_livro_participacao",
+        "tarefa",
+        "outros"
+      ],
+      "default": "evento_extraordinario"
+    },
+    "source_department": {
+      "type": "string",
+      "enum": [
+        "comunicacao",
+        "eventos",
+        "formacao",
+        "financeiro",
+        "institucional",
+        "presidencia",
+        "outros"
+      ],
+      "default": "eventos"
+    },
+    "event_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "suggested_points": {
+      "type": "number",
+      "default": 2
+    },
+    "member_ids": {
+      "type": "string"
+    },
+    "member_names": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "recebido",
+        "em_analise",
+        "aprovado",
+        "rejeitado",
+        "aplicado"
+      ],
+      "default": "recebido"
+    },
+    "reviewed_by": {
+      "type": "string"
+    },
+    "review_notes": {
+      "type": "string"
+    },
+    "submitted_by": {
+      "type": "string"
+    },
+    "submitted_by_dept": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "activity_type",
+    "source_department",
+    "suggested_points"
+  ]
+}

@@ -14,6 +14,8 @@ import AdminDemands from "../components/admin/AdminDemands";
 import AdminMemberDetail from "../components/admin/AdminMemberDetail";
 import AdminAccessLevels from "../components/admin/AdminAccessLevels";
 import AdminLibrary from "../components/admin/AdminLibrary";
+import FormacaoDashboard from "../components/admin/FormacaoDashboard";
+import AdminPointsQueue from "../components/admin/AdminPointsQueue";
 
 const ADMIN_SECTIONS = {
   dashboard: AdminDashboard,
@@ -81,6 +83,8 @@ export default function Admin() {
       demands: <AdminDemands isAdmin={isAdmin} memberRole={memberRole} />,
       access: <AdminAccessLevels isAdmin={isAdmin} memberRole={memberRole} />,
       library: <AdminLibrary isAdmin={isAdmin} memberRole={memberRole} />,
+      formacao: <FormacaoDashboard onNavigate={setActiveSection} />,
+      queue: <AdminPointsQueue isAdmin={isAdmin} memberRole={memberRole} />,
     };
     return sections[activeSection] || sections.dashboard;
   };

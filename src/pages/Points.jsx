@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { Star, Trophy, TrendingUp, ChevronRight } from "lucide-react";
+import { Star, Trophy, TrendingUp, ChevronRight, Clock, XCircle, CheckCircle } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
 
 const categoryLabels = {
@@ -41,6 +41,10 @@ export default function Points() {
   const [rankMembers, setRankMembers] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [pendingLedger, setPendingLedger] = useState([]);
+  const [rejectedLedger, setRejectedLedger] = useState([]);
+  const [tab, setTab] = useState("aprovado");
+
   useEffect(() => { loadData(); }, []);
 
   async function loadData() {
@@ -53,12 +57,14 @@ export default function Points() {
       const m = members[0] || allMembers[0];
       if (m) {
         setMember(m);
-        const entries = await base44.entities.PointsLedger.filter(
-          { member_id: m.id, status: "aprovado" },
-          "-created_date",
-          30
-        );
-        setLedger(entries);
+        const [approved, pending, rejected] = await Promise.all([
+          base44.entities.PointsLedger.filter({ member_id: m.id, status: "aprovado" }, "-created_date", 50),
+          base44.entities.PointsLedger.filter({ member_id: m.id, status: "pendente" }, "-created_date", 20),
+          base44.entities.PointsLedger.filter({ member_id: m.id, status: "recusado" }, "-created_date", 20),
+        ]);
+        setLedger(approved);
+        setPendingLedger(pending);
+        setRejectedLedger(rejected);
       }
       setRankMembers(allMembers.map((rm, i) => ({ ...rm, _rank: i + 1 })));
     } catch (e) { console.error(e); }
@@ -94,45 +100,122 @@ export default function Points() {
         </div>
       </div>
 
-      {/* History */}
+      {/* Tabs */}
       <div className="px-4 mt-5">
-        <h2 className="font-montserrat font-bold text-xs uppercase tracking-wider mb-3"
-          style={{ color: "#6B7280" }}>
-          Histórico de pontos
-        </h2>
+        <div className="flex gap-2 mb-4">
+          {[
+            { key: "aprovado", label: "Aprovados", count: ledger.length },
+            { key: "pendente", label: "Pendentes", count: pendingLedger.length },
+            { key: "recusado", label: "Recusados", count: rejectedLedger.length },
+          ].map(t => (
+            <button key={t.key} onClick={() => setTab(t.key)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full font-inter text-xs font-semibold"
+              style={{ background: tab === t.key ? "#071D33" : "rgba(255,255,255,0.8)", color: tab === t.key ? "white" : "#6B7280", border: tab === t.key ? "none" : "1px solid rgba(7,29,51,0.12)" }}>
+              {t.label}
+              {t.count > 0 && <span className="text-[10px]">({t.count})</span>}
+            </button>
+          ))}
+        </div>
+
         {loading ? (
           <div className="flex justify-center py-8">
             <div className="w-7 h-7 rounded-full animate-spin" style={{ border: "3px solid #B8872A", borderTopColor: "transparent" }} />
           </div>
-        ) : ledger.length === 0 ? (
-          <div className="flex flex-col items-center py-10 gap-2">
-            <Star size={36} style={{ color: "rgba(7,29,51,0.12)" }} />
-            <p className="font-inter text-sm" style={{ color: "#9CA3AF" }}>Nenhum ponto registrado ainda</p>
-          </div>
         ) : (
-          <div className="flex flex-col gap-2">
-            {ledger.map(entry => (
-              <div key={entry.id} className="rounded-2xl px-4 py-3 flex items-center gap-3"
-                style={{ background: "hsl(var(--card))", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.03)" }}>
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: "rgba(184,135,42,0.1)" }}>
-                  <Star size={16} style={{ color: "#B8872A" }} strokeWidth={1.8} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-inter text-sm font-semibold truncate" style={{ color: "#111827" }}>
-                    {entry.action || categoryLabels[entry.category] || entry.category}
-                  </p>
-                  <p className="font-inter text-xs mt-0.5" style={{ color: "#9CA3AF" }}>
-                    {entry.source_name || categoryLabels[entry.category]}
-                    {entry.created_date && ` · ${new Date(entry.created_date).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })}`}
-                  </p>
-                </div>
-                <span className="font-montserrat font-black text-base" style={{ color: "#1F8A5B" }}>
-                  +{entry.points}
-                </span>
+          <>
+            {tab === "aprovado" && (ledger.length === 0 ? (
+              <div className="flex flex-col items-center py-10 gap-2">
+                <Star size={36} style={{ color: "rgba(7,29,51,0.12)" }} />
+                <p className="font-inter text-sm" style={{ color: "#9CA3AF" }}>Nenhum ponto aprovado ainda</p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {ledger.map(entry => (
+                  <div key={entry.id} className="rounded-2xl px-4 py-3 flex items-center gap-3"
+                    style={{ background: "hsl(var(--card))", border: "1px solid rgba(7,29,51,0.06)" }}>
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{ background: "rgba(184,135,42,0.1)" }}>
+                      <CheckCircle size={16} style={{ color: "#1F8A5B" }} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-inter text-sm font-semibold truncate" style={{ color: "#111827" }}>
+                        {entry.action || categoryLabels[entry.category] || entry.category}
+                      </p>
+                      <p className="font-inter text-xs mt-0.5" style={{ color: "#9CA3AF" }}>
+                        {categoryLabels[entry.category] || entry.category}
+                        {entry.created_date && ` · ${new Date(entry.created_date).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })}`}
+                        {entry.notes && ` · ${entry.notes}`}
+                      </p>
+                    </div>
+                    <span className="font-montserrat font-black text-base" style={{ color: "#1F8A5B" }}>
+                      +{entry.points}
+                    </span>
+                  </div>
+                ))}
               </div>
             ))}
-          </div>
+
+            {tab === "pendente" && (pendingLedger.length === 0 ? (
+              <div className="flex flex-col items-center py-10 gap-2">
+                <Clock size={36} style={{ color: "rgba(7,29,51,0.12)" }} />
+                <p className="font-inter text-sm" style={{ color: "#9CA3AF" }}>Nenhum ponto pendente</p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {pendingLedger.map(entry => (
+                  <div key={entry.id} className="rounded-2xl px-4 py-3 flex items-center gap-3"
+                    style={{ background: "hsl(var(--card))", border: "1px solid rgba(217,154,34,0.2)" }}>
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{ background: "rgba(217,154,34,0.1)" }}>
+                      <Clock size={16} style={{ color: "#D99A22" }} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-inter text-sm font-semibold truncate" style={{ color: "#111827" }}>
+                        {entry.action || categoryLabels[entry.category] || entry.category}
+                      </p>
+                      <p className="font-inter text-xs mt-0.5" style={{ color: "#9CA3AF" }}>
+                        Aguardando aprovação · {new Date(entry.created_date).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })}
+                      </p>
+                    </div>
+                    <span className="font-montserrat font-black text-base" style={{ color: "#D99A22" }}>
+                      +{entry.points}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ))}
+
+            {tab === "recusado" && (rejectedLedger.length === 0 ? (
+              <div className="flex flex-col items-center py-10 gap-2">
+                <XCircle size={36} style={{ color: "rgba(7,29,51,0.12)" }} />
+                <p className="font-inter text-sm" style={{ color: "#9CA3AF" }}>Nenhum ponto recusado</p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {rejectedLedger.map(entry => (
+                  <div key={entry.id} className="rounded-2xl px-4 py-3 flex items-center gap-3"
+                    style={{ background: "hsl(var(--card))", border: "1px solid rgba(180,35,24,0.15)" }}>
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{ background: "rgba(180,35,24,0.08)" }}>
+                      <XCircle size={16} style={{ color: "#B42318" }} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-inter text-sm font-semibold truncate" style={{ color: "#374151" }}>
+                        {entry.action || categoryLabels[entry.category] || entry.category}
+                      </p>
+                      <p className="font-inter text-xs mt-0.5" style={{ color: "#9CA3AF" }}>
+                        {new Date(entry.created_date).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })}
+                        {entry.notes && ` · ${entry.notes}`}
+                      </p>
+                    </div>
+                    <span className="font-montserrat font-black text-base" style={{ color: "#B42318" }}>
+                      {entry.points}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </>
         )}
       </div>
 

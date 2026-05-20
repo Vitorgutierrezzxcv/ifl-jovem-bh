@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import {
   LayoutDashboard, Users, Calendar, CheckSquare, DollarSign,
   Star, Bell, Target, MessageSquare, LogOut, Menu, X, ChevronRight,
-  Shield, ArrowLeft, Lock, BookOpen,
+  Shield, ArrowLeft, Lock, BookOpen, GraduationCap, Inbox,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -19,6 +19,8 @@ const navItems = [
   { key: "announcements", label: "Avisos", icon: Bell, desc: "Comunicados" },
   { key: "access", label: "Níveis de Acesso", icon: Shield, desc: "Cargos e permissões" },
   { key: "library", label: "Biblioteca", icon: BookOpen, desc: "Materiais por diretoria" },
+  { key: "formacao", label: "Central de Formação", icon: GraduationCap, desc: "Dashboard operacional" },
+  { key: "queue", label: "Fila de Pontuação", icon: Inbox, desc: "Lançamentos das diretorias" },
 ];
 
 const roleLabel = {
