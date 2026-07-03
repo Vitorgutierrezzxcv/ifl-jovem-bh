@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useNavigate } from "react-router-dom";
-import { LogOut, ChevronRight, User, BookOpen, Library, DollarSign, FileText, Star, Bell, Shield, Trash2, AlertTriangle, BarChart2, TrendingUp } from "lucide-react";
+import { LogOut, ChevronRight, User, BookOpen, Library, DollarSign, FileText, Star, Bell, Shield, Trash2, AlertTriangle, BarChart2, TrendingUp, Users, CheckSquare, Lock, Pencil, Check } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
 import StatusBadge from "../components/ui/StatusBadge";
 import ProfileAnalytics from "../components/profile/ProfileAnalytics";
@@ -21,6 +21,9 @@ export default function Profile() {
   const [member, setMember] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("perfil");
+  const [editingBio, setEditingBio] = useState(false);
+  const [bioDraft, setBioDraft] = useState("");
+  const [savingBio, setSavingBio] = useState(false);
 
   useEffect(() => { loadData(); }, []);
 
@@ -31,6 +34,7 @@ export default function Profile() {
       const members = await base44.entities.Member.filter({ email: u.email });
       if (members.length > 0) {
         setMember(members[0]);
+        setBioDraft(members[0].mini_bio || "");
       } else {
         const all = await base44.entities.Member.list("-total_points", 1);
         if (all.length > 0) setMember(all[0]);
@@ -45,10 +49,21 @@ export default function Profile() {
     { icon: DollarSign, label: "Financeiro", path: "/financeiro" },
     { icon: Star, label: "Oportunidades", path: "/oportunidades" },
     { icon: FileText, label: "Documentos", path: "/documentos" },
+    { icon: Users, label: "Diretório de Associados", path: "/diretorio" },
     { icon: Bell, label: "Avisos", path: "/avisos" },
   ];
 
-  const isAdmin = user?.role === "admin" || ["presidente", "vice_presidente", "diretor", "gerente"].includes(member?.role);
+  const isBoard = ["presidente", "vice_presidente", "diretor", "gerente"].includes(member?.role);
+  const isAdmin = user?.role === "admin" || isBoard;
+
+  async function handleSaveBio() {
+    if (!member) return;
+    setSavingBio(true);
+    await base44.entities.Member.update(member.id, { mini_bio: bioDraft });
+    setMember(m => ({ ...m, mini_bio: bioDraft }));
+    setSavingBio(false);
+    setEditingBio(false);
+  }
 
   async function handleDeleteAccount() {
     await base44.auth.logout("/");
@@ -150,6 +165,70 @@ export default function Profile() {
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Mini bio */}
+      {member && (
+        <div className="px-4 mt-4">
+          <div className="rounded-2xl p-4" style={{ background: "hsl(var(--card))", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}>
+            <div className="flex items-center justify-between mb-2">
+              <p className="font-inter text-xs font-semibold" style={{ color: "#6B7280" }}>Mini bio (visível no diretório)</p>
+              {!editingBio && (
+                <button onClick={() => setEditingBio(true)} className="flex items-center gap-1 font-inter text-xs font-semibold" style={{ color: "#B8872A" }}>
+                  <Pencil size={12} /> Editar
+                </button>
+              )}
+            </div>
+            {editingBio ? (
+              <div className="flex flex-col gap-2">
+                <textarea value={bioDraft} onChange={e => setBioDraft(e.target.value)} rows={3} maxLength={220}
+                  placeholder="Conte um pouco sobre sua área de atuação..."
+                  className="w-full rounded-xl px-3 py-2 font-inter text-sm resize-none outline-none text-foreground"
+                  style={{ background: "hsl(var(--background))", border: "1px solid rgba(7,29,51,0.1)" }} />
+                <div className="flex gap-2 justify-end">
+                  <button onClick={() => { setEditingBio(false); setBioDraft(member.mini_bio || ""); }} className="px-3 py-1.5 rounded-lg font-inter text-xs font-semibold" style={{ color: "#6B7280" }}>Cancelar</button>
+                  <button onClick={handleSaveBio} disabled={savingBio} className="flex items-center gap-1 px-3 py-1.5 rounded-lg font-inter text-xs font-semibold text-white" style={{ background: "#071D33" }}>
+                    <Check size={12} /> {savingBio ? "Salvando..." : "Salvar"}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <p className="font-inter text-sm text-foreground">{member.mini_bio || "Nenhuma bio adicionada ainda."}</p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Monthly tasks quick access */}
+      <div className="px-4 mt-4">
+        <button onClick={() => navigate("/tarefas")} className="w-full rounded-2xl p-4 flex items-center gap-3 card-hover"
+          style={{ background: "hsl(var(--card))", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}>
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(184,135,42,0.1)" }}>
+            <CheckSquare size={17} style={{ color: "#B8872A" }} />
+          </div>
+          <div className="flex-1 text-left">
+            <p className="font-montserrat font-bold text-sm text-foreground">Enviar Tarefas do Mês</p>
+            <p className="font-inter text-xs" style={{ color: "#6B7280" }}>Veja as tarefas pendentes e envie suas entregas</p>
+          </div>
+          <ChevronRight size={16} style={{ color: "#B8872A" }} />
+        </button>
+      </div>
+
+      {/* Board area access */}
+      {isBoard && (
+        <div className="px-4 mt-4">
+          <button onClick={() => navigate("/diretoria")} className="w-full rounded-2xl p-4 flex items-center gap-3 card-hover"
+            style={{ background: "hsl(var(--card))", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}>
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(7,29,51,0.06)" }}>
+              <Lock size={16} style={{ color: "#071D33" }} />
+            </div>
+            <div className="flex-1 text-left">
+              <p className="font-montserrat font-bold text-sm text-foreground">Acesso da Diretoria</p>
+              <p className="font-inter text-xs" style={{ color: "#6B7280" }}>Documentos institucionais restritos</p>
+            </div>
+            <ChevronRight size={16} style={{ color: "#B8872A" }} />
+          </button>
         </div>
       )}
 

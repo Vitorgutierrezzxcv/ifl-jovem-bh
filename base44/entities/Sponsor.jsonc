@@ -1,0 +1,54 @@
+{
+  "name": "Sponsor",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "tier": {
+      "type": "string",
+      "enum": [
+        "prata",
+        "ouro",
+        "apoio"
+      ],
+      "default": "apoio"
+    },
+    "payment_mode": {
+      "type": "string",
+      "enum": [
+        "mensal",
+        "anual_unico"
+      ],
+      "default": "mensal"
+    },
+    "amount": {
+      "type": "number"
+    },
+    "due_day": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ativo",
+        "atrasado",
+        "encerrado"
+      ],
+      "default": "ativo"
+    },
+    "contact_name": {
+      "type": "string"
+    },
+    "contact_email": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "tier"
+  ]
+}

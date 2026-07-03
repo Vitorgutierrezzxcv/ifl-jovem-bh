@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { MessageSquare, Send, CheckCircle2, Clock, X, ChevronRight, Plus, AlertCircle } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
@@ -11,6 +12,8 @@ const CATEGORIES = [
   "Questões Relativas ao Artigo Obrigatório",
   "Questões Relativas ao ROL Literário (vídeos)",
   "Outros Problemas do Ranking",
+  "Inscrição para Recepção/Sombra em Eventos",
+  "Solicitação de Desligamento",
   "Outros",
 ];
 
@@ -25,6 +28,7 @@ const statusConfig = {
 };
 
 export default function Demands() {
+  const location = useLocation();
   const [user, setUser] = useState(null);
   const [member, setMember] = useState(null);
   const [myDemands, setMyDemands] = useState([]);
@@ -49,6 +53,10 @@ export default function Demands() {
       const demands = u ? await base44.entities.DemandRequest.filter({ member_email: u.email }, "-created_date", 50).catch(() => []) : [];
       setMyDemands(demands);
     }).catch(() => {}).finally(() => setLoading(false));
+    if (location.state?.presetCategory) {
+      setForm(f => ({ ...f, categoria: location.state.presetCategory }));
+      setView("new");
+    }
   }, []);
 
   async function handleSubmit(e) {

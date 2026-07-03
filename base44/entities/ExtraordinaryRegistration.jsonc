@@ -1,0 +1,39 @@
+{
+  "name": "ExtraordinaryRegistration",
+  "type": "object",
+  "properties": {
+    "event_id": {
+      "type": "string"
+    },
+    "event_title": {
+      "type": "string"
+    },
+    "member_id": {
+      "type": "string"
+    },
+    "member_name": {
+      "type": "string"
+    },
+    "answers": {
+      "type": "string"
+    },
+    "selected": {
+      "type": "boolean",
+      "default": false
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": false
+    },
+    "nps_score": {
+      "type": "number"
+    },
+    "nps_comment": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "event_id",
+    "member_id"
+  ]
+}

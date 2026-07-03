@@ -1,0 +1,45 @@
+{
+  "name": "ExtraordinaryEvent",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "location": {
+      "type": "string"
+    },
+    "capacity": {
+      "type": "number"
+    },
+    "custom_questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "aberto",
+        "selecao",
+        "encerrado"
+      ],
+      "default": "aberto"
+    },
+    "collect_nps": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "title",
+    "date"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "name": "RolArticle",
+  "type": "object",
+  "properties": {
+    "member_id": {
+      "type": "string"
+    },
+    "member_name": {
+      "type": "string"
+    },
+    "book_title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "file_url": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pendente",
+        "aprovado",
+        "recusado"
+      ],
+      "default": "pendente"
+    },
+    "feedback": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "member_id",
+    "book_title"
+  ]
+}

@@ -117,6 +117,9 @@
     "course": {
       "type": "string"
     },
+    "mini_bio": {
+      "type": "string"
+    },
     "show_in_directory": {
       "type": "boolean",
       "default": true

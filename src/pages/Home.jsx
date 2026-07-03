@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { CheckSquare, DollarSign, BookOpen, Star, Bell, ChevronRight, MessageSquare, Users, Award, FileText } from "lucide-react";
+import { CheckSquare, Zap, Award, MessageSquare, HandHelping, ChevronRight, Bell } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
 import StatusBadge from "../components/ui/StatusBadge";
 import usePullToRefresh from "../hooks/usePullToRefresh";
@@ -275,18 +275,15 @@ export default function Home() {
         </h2>
         <div className="grid grid-cols-2 gap-3">
           {[
-            { icon: CheckSquare, label: "Minhas Tarefas", path: "/tarefas", color: "#071D33" },
-            { icon: BookOpen, label: "Clube do Livro", path: "/clube-livro", color: "#B8872A" },
-            { icon: DollarSign, label: "Financeiro", path: "/financeiro", color: "#1F8A5B" },
-            { icon: Star, label: "Oportunidades", path: "/oportunidades", color: "#B8872A" },
-            { icon: MessageSquare, label: "Demandas", path: "/demandas", color: "#071D33" },
-            { icon: Users, label: "Colaborações", path: "/colaboracoes", color: "#1F8A5B" },
+            { icon: Zap, label: "Evento Extraordinário", path: "/eventos-extraordinarios", color: "#B8872A" },
+            { icon: CheckSquare, label: "Envio de Tarefas", path: "/tarefas", color: "#071D33" },
+            { icon: MessageSquare, label: "SAC — Demandas", path: "/demandas", color: "#071D33" },
             { icon: Award, label: "Critérios de Pts", path: "/criterios-pontuacao", color: "#B8872A" },
-            { icon: FileText, label: "Ciclo de Formação", path: "/ciclo", color: "#071D33" },
+            { icon: HandHelping, label: "Recepção & Sombra", path: "/demandas", state: { presetCategory: "Inscrição para Recepção/Sombra em Eventos" }, color: "#1F8A5B" },
           ].map(item => (
             <button
-              key={item.path}
-              onClick={() => navigate(item.path)}
+              key={item.label}
+              onClick={() => navigate(item.path, item.state ? { state: item.state } : undefined)}
               className="rounded-2xl p-4 flex items-center gap-3 card-hover text-left"
               style={{ background: "hsl(var(--card))", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}
             >

@@ -1,0 +1,29 @@
+{
+  "name": "BoardDocument",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "apresentacao_institucional",
+        "viagem_sp",
+        "iflxp",
+        "outro"
+      ],
+      "default": "outro"
+    },
+    "file_url": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "file_url"
+  ]
+}

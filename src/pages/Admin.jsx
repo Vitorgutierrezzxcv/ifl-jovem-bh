@@ -16,6 +16,9 @@ import AdminAccessLevels from "../components/admin/AdminAccessLevels";
 import AdminLibrary from "../components/admin/AdminLibrary";
 import FormacaoDashboard from "../components/admin/FormacaoDashboard";
 import AdminPointsQueue from "../components/admin/AdminPointsQueue";
+import AdminExtraordinaryEvents from "../components/admin/AdminExtraordinaryEvents";
+import AdminSponsors from "../components/admin/AdminSponsors";
+import AdminBoardDocuments from "../components/admin/AdminBoardDocuments";
 
 const ADMIN_SECTIONS = {
   dashboard: AdminDashboard,
@@ -85,6 +88,9 @@ export default function Admin() {
       library: <AdminLibrary isAdmin={isAdmin} memberRole={memberRole} />,
       formacao: <FormacaoDashboard onNavigate={setActiveSection} />,
       queue: <AdminPointsQueue isAdmin={isAdmin} memberRole={memberRole} />,
+      extraordinary: <AdminExtraordinaryEvents />,
+      sponsors: <AdminSponsors />,
+      board: <AdminBoardDocuments />,
     };
     return sections[activeSection] || sections.dashboard;
   };

@@ -1,7 +1,63 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { Calendar, MapPin, Clock, Users, ChevronRight, Star, Zap } from "lucide-react";
+import { Calendar, MapPin, Clock, Users, ChevronRight, Star, Zap, ChevronLeft } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
+
+const WEEKDAYS = ["D", "S", "T", "Q", "Q", "S", "S"];
+
+function MonthCalendar({ events, month, onMonthChange, selectedDay, onSelectDay }) {
+  const year = month.getFullYear();
+  const monthIdx = month.getMonth();
+  const firstDay = new Date(year, monthIdx, 1);
+  const daysInMonth = new Date(year, monthIdx + 1, 0).getDate();
+  const startOffset = firstDay.getDay();
+
+  const eventsByDay = {};
+  events.forEach(ev => {
+    const d = new Date(ev.date + "T12:00:00");
+    if (d.getFullYear() === year && d.getMonth() === monthIdx) {
+      eventsByDay[d.getDate()] = (eventsByDay[d.getDate()] || 0) + 1;
+    }
+  });
+
+  const cells = [];
+  for (let i = 0; i < startOffset; i++) cells.push(null);
+  for (let d = 1; d <= daysInMonth; d++) cells.push(d);
+
+  return (
+    <div className="rounded-2xl p-4" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.08)" }}>
+      <div className="flex items-center justify-between mb-3">
+        <button onClick={() => onMonthChange(-1)} className="p-1.5 rounded-lg" style={{ background: "rgba(13,33,55,0.06)" }}><ChevronLeft size={16} /></button>
+        <p className="font-montserrat font-bold text-sm text-foreground capitalize">{month.toLocaleString("pt-BR", { month: "long", year: "numeric" })}</p>
+        <button onClick={() => onMonthChange(1)} className="p-1.5 rounded-lg" style={{ background: "rgba(13,33,55,0.06)" }}><ChevronRight size={16} /></button>
+      </div>
+      <div className="grid grid-cols-7 gap-1 mb-1">
+        {WEEKDAYS.map((w, i) => (
+          <div key={i} className="text-center font-inter text-[10px] font-semibold" style={{ color: "#9CA3AF" }}>{w}</div>
+        ))}
+      </div>
+      <div className="grid grid-cols-7 gap-1">
+        {cells.map((d, i) => {
+          if (!d) return <div key={i} />;
+          const isSelected = selectedDay === d;
+          const hasEvents = !!eventsByDay[d];
+          const isToday = new Date().toDateString() === new Date(year, monthIdx, d).toDateString();
+          return (
+            <button key={i} onClick={() => onSelectDay(isSelected ? null : d)}
+              className="aspect-square rounded-lg flex flex-col items-center justify-center relative"
+              style={{
+                background: isSelected ? "#0D2137" : "transparent",
+                border: isToday && !isSelected ? "1px solid rgba(181,134,42,0.4)" : "1px solid transparent",
+              }}>
+              <span className="font-inter text-xs" style={{ color: isSelected ? "#FFF" : "#374151" }}>{d}</span>
+              {hasEvents && <div className="w-1 h-1 rounded-full absolute bottom-1" style={{ background: isSelected ? "#D4A043" : "#B5862A" }} />}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 const typeLabels = {
   palestra_ordinaria: "Palestra",
@@ -31,6 +87,13 @@ export default function Agenda() {
   const [selected, setSelected] = useState(null);
   const [filter, setFilter] = useState("proximos");
   const [loading, setLoading] = useState(true);
+  const [month, setMonth] = useState(new Date());
+  const [selectedDay, setSelectedDay] = useState(null);
+
+  function changeMonth(delta) {
+    setSelectedDay(null);
+    setMonth(m => new Date(m.getFullYear(), m.getMonth() + delta, 1));
+  }
 
   useEffect(() => {
     base44.entities.Event.list("-date", 50).then(evs => {
@@ -45,6 +108,10 @@ export default function Agenda() {
     if (filter === "proximos") return ev.date >= today && ev.status !== "cancelado";
     if (filter === "realizados") return ev.date < today || ev.status === "realizado";
     return true;
+  }).filter(ev => {
+    if (!selectedDay) return true;
+    const d = new Date(ev.date + "T12:00:00");
+    return d.getFullYear() === month.getFullYear() && d.getMonth() === month.getMonth() && d.getDate() === selectedDay;
   });
 
   if (selected) {
@@ -117,6 +184,10 @@ export default function Agenda() {
     <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
       <MobileHeader title="Agenda" dark />
 
+      <div className="px-4 pt-4">
+        <MonthCalendar events={events} month={month} onMonthChange={changeMonth} selectedDay={selectedDay} onSelectDay={setSelectedDay} />
+      </div>
+
       <div className="flex gap-2 px-4 pt-4 pb-2">
         {[{ key: "proximos", label: "Próximos" }, { key: "realizados", label: "Realizados" }, { key: "todos", label: "Todos" }].map(f => (
           <button key={f.key} onClick={() => setFilter(f.key)}
@@ -125,6 +196,11 @@ export default function Agenda() {
             {f.label}
           </button>
         ))}
+        {selectedDay && (
+          <button onClick={() => setSelectedDay(null)} className="px-3 py-1.5 rounded-full font-inter text-xs font-semibold" style={{ background: "rgba(181,134,42,0.12)", color: "#B5862A" }}>
+            Dia {selectedDay} ✕
+          </button>
+        )}
       </div>
 
       <div className="px-4 flex flex-col gap-3 pt-2">

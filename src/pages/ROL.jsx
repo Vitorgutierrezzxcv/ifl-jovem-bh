@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { BookOpen, Search, ExternalLink } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { BookOpen, Search, ExternalLink, Send, X, FileUp } from "lucide-react";
+import { base44 } from "@/api/base44Client";
 import MobileHeader from "../components/layout/MobileHeader";
 
 // ROL Literário completo — baseado no documento oficial IFL Jovem BH
@@ -58,10 +59,53 @@ const temaColors = {
 const cicloLabels = { "1_ciclo": "1º Ciclo", "2_ciclo": "2º Ciclo", "3_ciclo": "3º Ciclo", "todos": "Todos os Ciclos" };
 const temas = ["Todos", ...Array.from(new Set(livros.map(l => l.tema)))];
 
+const statusLabels = { pendente: { label: "Em análise", color: "#D99A22" }, aprovado: { label: "Aprovado", color: "#1F8A5B" }, recusado: { label: "Recusado", color: "#B42318" } };
+
 export default function ROL() {
   const [search, setSearch] = useState("");
   const [activeCiclo, setActiveCiclo] = useState("todos");
   const [activeTema, setActiveTema] = useState("Todos");
+  const [showForm, setShowForm] = useState(false);
+  const [member, setMember] = useState(null);
+  const [myArticles, setMyArticles] = useState([]);
+  const [form, setForm] = useState({ book_title: "", content: "" });
+  const [uploading, setUploading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    base44.auth.me().then(async u => {
+      const members = await base44.entities.Member.filter({ email: u.email });
+      const m = members[0];
+      if (m) {
+        setMember(m);
+        const arts = await base44.entities.RolArticle.filter({ member_id: m.id }, "-created_date", 50).catch(() => []);
+        setMyArticles(arts);
+      }
+    }).catch(() => {});
+  }, []);
+
+  async function handleFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploading(true);
+    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    setForm(f => ({ ...f, file_url }));
+    setUploading(false);
+  }
+
+  async function handleSubmitArticle(e) {
+    e.preventDefault();
+    if (!member || !form.book_title) return;
+    setSubmitting(true);
+    const article = await base44.entities.RolArticle.create({
+      member_id: member.id, member_name: member.full_name,
+      book_title: form.book_title, content: form.content, file_url: form.file_url,
+    });
+    setMyArticles(prev => [article, ...prev]);
+    setForm({ book_title: "", content: "" });
+    setSubmitting(false);
+    setShowForm(false);
+  }
 
   const filtered = livros.filter(b => {
     const matchSearch = b.title.toLowerCase().includes(search.toLowerCase()) || b.author.toLowerCase().includes(search.toLowerCase());
@@ -82,6 +126,50 @@ export default function ROL() {
       </div>
 
       <div className="px-4 pt-4">
+        {/* Article submission */}
+        {member && (
+          <div className="rounded-2xl p-4 mb-4" style={{ background: "hsl(var(--card))", border: "1px solid rgba(181,134,42,0.25)" }}>
+            {!showForm ? (
+              <button onClick={() => setShowForm(true)} className="w-full flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "rgba(181,134,42,0.12)" }}>
+                  <Send size={16} style={{ color: "#B5862A" }} />
+                </div>
+                <span className="flex-1 text-left font-montserrat font-bold text-sm text-foreground">Enviar artigo baseado no ROL</span>
+              </button>
+            ) : (
+              <form onSubmit={handleSubmitArticle} className="flex flex-col gap-3">
+                <div className="flex items-center justify-between">
+                  <p className="font-montserrat font-bold text-sm text-foreground">Enviar Artigo</p>
+                  <button type="button" onClick={() => setShowForm(false)}><X size={16} /></button>
+                </div>
+                <input required placeholder="Livro base do artigo" value={form.book_title} onChange={e => setForm({ ...form, book_title: e.target.value })}
+                  className="w-full rounded-xl px-4 h-11 font-inter text-sm outline-none text-foreground" style={{ background: "hsl(var(--background))", border: "1px solid rgba(13,33,55,0.1)" }} />
+                <textarea placeholder="Cole o texto do artigo (opcional se enviar arquivo)" value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} rows={3}
+                  className="w-full rounded-xl px-4 py-3 font-inter text-sm resize-none outline-none text-foreground" style={{ background: "hsl(var(--background))", border: "1px solid rgba(13,33,55,0.1)" }} />
+                <label className="flex items-center gap-2 px-4 h-11 rounded-xl font-inter text-sm cursor-pointer" style={{ background: "hsl(var(--background))", border: "1px solid rgba(13,33,55,0.1)", color: "#6B7280" }}>
+                  <FileUp size={15} /> {uploading ? "Enviando..." : form.file_url ? "Arquivo anexado ✓" : "Anexar arquivo (opcional)"}
+                  <input type="file" className="hidden" onChange={handleFile} />
+                </label>
+                <button type="submit" disabled={submitting || uploading} className="w-full rounded-2xl h-12 font-montserrat font-bold text-sm text-white" style={{ background: "#0D2137" }}>
+                  {submitting ? "Enviando..." : "Enviar Artigo"}
+                </button>
+              </form>
+            )}
+            {myArticles.length > 0 && !showForm && (
+              <div className="mt-3 pt-3 flex flex-col gap-2" style={{ borderTop: "1px solid rgba(13,33,55,0.06)" }}>
+                {myArticles.map(a => (
+                  <div key={a.id} className="flex items-center justify-between">
+                    <span className="font-inter text-xs text-foreground truncate">{a.book_title}</span>
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full flex-shrink-0" style={{ background: `${statusLabels[a.status]?.color}15`, color: statusLabels[a.status]?.color }}>
+                      {statusLabels[a.status]?.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Search */}
         <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl mb-3" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.1)" }}>
           <Search size={15} style={{ color: "#9CA3AF" }} />

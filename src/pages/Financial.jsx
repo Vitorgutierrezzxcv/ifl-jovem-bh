@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { DollarSign, Calendar, CheckCircle, AlertCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { DollarSign, Calendar, CheckCircle, AlertCircle, LogOut } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
 import StatusBadge from "../components/ui/StatusBadge";
 
 export default function Financial() {
+  const navigate = useNavigate();
   const [charges, setCharges] = useState([]);
   const [member, setMember] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,8 +30,10 @@ export default function Financial() {
     finally { setLoading(false); }
   }
 
-  const total = charges.filter(c => c.status === "pendente").reduce((a, c) => a + (c.amount || 0), 0);
-  const paid = charges.filter(c => c.status === "em_dia").length;
+  const currentYear = new Date().getFullYear();
+  const chargesThisYear = charges.filter(c => new Date(c.due_date).getFullYear() === currentYear);
+  const totalPaidThisYear = chargesThisYear.filter(c => c.status === "em_dia").reduce((a, c) => a + (c.amount || 0), 0);
+  const totalRemainingThisYear = chargesThisYear.filter(c => c.status !== "em_dia" && c.status !== "isento" && c.status !== "cancelado").reduce((a, c) => a + (c.amount || 0), 0);
 
   return (
     <div className="min-h-screen bg-ifl-gray-bg" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 72px)" }}>
@@ -37,22 +41,28 @@ export default function Financial() {
         <MobileHeader title="Financeiro" dark />
         <div className="px-5 pb-6">
           <h1 className="font-montserrat font-black text-2xl text-white mb-4">Situação Financeira</h1>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-2xl p-4" style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(184,135,42,0.15)" }}>
+          <div className="grid grid-cols-3 gap-3">
+            <div className="rounded-2xl p-3" style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(184,135,42,0.15)" }}>
               <p className="font-inter text-xs" style={{ color: "rgba(255,255,255,0.5)" }}>Status</p>
               <StatusBadge status={member?.financial_status || "em_dia"} />
             </div>
-            <div className="rounded-2xl p-4" style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(184,135,42,0.15)" }}>
-              <p className="font-inter text-xs" style={{ color: "rgba(255,255,255,0.5)" }}>Débito Total</p>
-              <p className="font-montserrat font-black text-xl mt-1" style={{ color: total > 0 ? "#D99A22" : "#1F8A5B" }}>
-                R$ {total.toFixed(2)}
+            <div className="rounded-2xl p-3" style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(184,135,42,0.15)" }}>
+              <p className="font-inter text-xs" style={{ color: "rgba(255,255,255,0.5)" }}>Pago em {currentYear}</p>
+              <p className="font-montserrat font-black text-lg mt-1" style={{ color: "#1F8A5B" }}>
+                R$ {totalPaidThisYear.toFixed(2)}
+              </p>
+            </div>
+            <div className="rounded-2xl p-3" style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(184,135,42,0.15)" }}>
+              <p className="font-inter text-xs" style={{ color: "rgba(255,255,255,0.5)" }}>Falta pagar</p>
+              <p className="font-montserrat font-black text-lg mt-1" style={{ color: totalRemainingThisYear > 0 ? "#D99A22" : "#1F8A5B" }}>
+                R$ {totalRemainingThisYear.toFixed(2)}
               </p>
             </div>
           </div>
         </div>
       </div>
 
-      {total > 0 && (
+      {totalRemainingThisYear > 0 && (
         <div className="px-4 mt-4">
           <div className="rounded-2xl p-4 flex items-start gap-3" style={{ background: "rgba(217,154,34,0.08)", border: "1px solid rgba(217,154,34,0.2)" }}>
             <AlertCircle size={18} style={{ color: "#D99A22", marginTop: 1, flexShrink: 0 }} />
@@ -63,6 +73,17 @@ export default function Financial() {
           </div>
         </div>
       )}
+
+      <div className="px-4 mt-4">
+        <button onClick={() => navigate("/demandas", { state: { presetCategory: "Solicitação de Desligamento" } })}
+          className="w-full rounded-2xl p-4 flex items-center gap-3 card-hover"
+          style={{ background: "rgba(180,35,24,0.05)", border: "1px solid rgba(180,35,24,0.15)" }}>
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(180,35,24,0.1)" }}>
+            <LogOut size={16} style={{ color: "#B42318" }} />
+          </div>
+          <span className="font-inter text-sm font-semibold" style={{ color: "#B42318" }}>Solicitar Desligamento</span>
+        </button>
+      </div>
 
       <div className="px-4 mt-5">
         <h2 className="font-montserrat font-bold text-sm uppercase tracking-wider mb-3" style={{ color: "#071D33" }}>

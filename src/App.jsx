@@ -28,6 +28,9 @@ import Demands from './pages/Demands';
 import PointsCriteria from './pages/PointsCriteria';
 import Collaboration from './pages/Collaboration';
 import Library from './pages/Library';
+import Directory from './pages/Directory';
+import ExtraordinaryEvents from './pages/ExtraordinaryEvents';
+import BoardArea from './pages/BoardArea';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -76,6 +79,9 @@ const AuthenticatedApp = () => {
         <Route path="/criterios-pontuacao" element={<PointsCriteria />} />
         <Route path="/colaboracoes" element={<Collaboration />} />
         <Route path="/biblioteca" element={<Library />} />
+        <Route path="/diretorio" element={<Directory />} />
+        <Route path="/eventos-extraordinarios" element={<ExtraordinaryEvents />} />
+        <Route path="/diretoria" element={<BoardArea />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <BottomNav />
