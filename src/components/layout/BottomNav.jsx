@@ -23,14 +23,15 @@ export default function BottomNav() {
   function getActiveTab() {
     return ROOT_PATHS.find(root =>
       root === "/" ? location.pathname === "/" : location.pathname.startsWith(root)
-    ) || "/";
+    );
   }
 
   const activeTab = getActiveTab();
 
-  // Keep tab history updated as user navigates
+  // Keep tab history updated as user navigates (only for actual root tabs,
+  // so visiting a non-root page like /financeiro doesn't corrupt another tab's history)
   React.useEffect(() => {
-    tabHistory[activeTab] = location.pathname;
+    if (activeTab) tabHistory[activeTab] = location.pathname;
   }, [location.pathname, activeTab]);
 
   function handleTabPress(tabPath) {

@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Calendar, Trophy, CheckSquare, DollarSign, BookOpen, Star, Bell, ChevronRight, TrendingUp, AlertCircle, Clock, MessageSquare, Users, Award, FileText } from "lucide-react";
+import { CheckSquare, DollarSign, BookOpen, Star, Bell, ChevronRight, MessageSquare, Users, Award, FileText } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
-import MetricCard from "../components/ui/MetricCard";
 import StatusBadge from "../components/ui/StatusBadge";
 import usePullToRefresh from "../hooks/usePullToRefresh";
 import PullToRefreshIndicator from "../components/ui/PullToRefreshIndicator";
-import CycleGoals from "../components/home/CycleGoals";
 
 const cycleLabels = {
   qualifier: "Qualifier",
@@ -42,8 +40,14 @@ export default function Home() {
       ]);
 
       const today = new Date().toISOString().split("T")[0];
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
       setEvents(evs.filter(e => e.date >= today).slice(0, 3));
-      setAnnouncements(anns.filter(a => a.status === "publicado").slice(0, 3));
+      setAnnouncements(
+        anns
+          .filter(a => a.status === "publicado" && new Date(a.created_date) >= oneWeekAgo)
+          .slice(0, 3)
+      );
       setTasks(tks.filter(t => t.status === "publicada").slice(0, 3));
 
       // Try to get logged-in user and their member profile
@@ -156,18 +160,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Meta do Mês */}
-      <CycleGoals member={member} />
-
-      {/* Quick metrics */}
-      <div className="px-4 mt-4">
-        <div className="grid grid-cols-3 gap-3">
-          <MetricCard icon={Star} label="Pontos" value={member?.total_points || 0} color="#B8872A" onClick={() => navigate("/pontos")} />
-          <MetricCard icon={Trophy} label="Ranking" value={member?.ranking_position ? `#${member.ranking_position}` : "—"} color="#071D33" onClick={() => navigate("/ranking")} />
-          <MetricCard icon={Calendar} label="Presença" value={`${Math.round(member?.attendance_percentage || 0)}%`} color="#1F8A5B" onClick={() => navigate("/presenca")} />
-        </div>
-      </div>
-
       {/* Próximos eventos */}
       {events.length > 0 && (
         <div className="px-4 mt-5">
@@ -197,7 +189,7 @@ export default function Home() {
                   </span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-montserrat font-bold text-sm truncate" style={{ color: "#111827" }}>{ev.name}</p>
+                  <p className="font-montserrat font-bold text-sm truncate text-foreground">{ev.name}</p>
                   <p className="font-inter text-xs truncate mt-0.5" style={{ color: "#6B7280" }}>
                     {typeLabels[ev.type] || ev.type} · {ev.location || "A definir"}
                   </p>
@@ -260,7 +252,7 @@ export default function Home() {
                         {ann.priority === "importante" && <span className="font-inter text-[10px] font-bold" style={{ color: "#D99A22" }}>IMPORTANTE</span>}
                         {ann.department_name && <span className="font-inter text-[10px]" style={{ color: ann.priority === "urgente" ? "rgba(255,255,255,0.4)" : "#9CA3AF" }}>{ann.department_name}</span>}
                       </div>
-                      <p className="font-montserrat font-bold text-sm" style={{ color: ann.priority === "urgente" ? "#FFFFFF" : "#111827" }}>
+                      <p className={`font-montserrat font-bold text-sm ${ann.priority === "urgente" ? "text-white" : "text-foreground"}`}>
                         {ann.title}
                       </p>
                       <p className="font-inter text-xs mt-0.5 line-clamp-2" style={{ color: ann.priority === "urgente" ? "rgba(255,255,255,0.55)" : "#6B7280" }}>
@@ -302,7 +294,7 @@ export default function Home() {
                 style={{ background: `${item.color}10` }}>
                 <item.icon size={17} style={{ color: item.color }} strokeWidth={1.8} />
               </div>
-              <span className="font-inter text-sm font-semibold" style={{ color: "#111827" }}>{item.label}</span>
+              <span className="font-inter text-sm font-semibold text-foreground">{item.label}</span>
             </button>
           ))}
         </div>
