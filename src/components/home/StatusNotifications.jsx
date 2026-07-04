@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { CheckCircle2, XCircle, X } from "lucide-react";
 
@@ -9,6 +10,7 @@ function getSeenIds() {
 }
 
 export default function StatusNotifications({ member }) {
+  const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
@@ -33,6 +35,7 @@ export default function StatusNotifications({ member }) {
         uid: `reg_${r.id}`, approved,
         title: approved ? "Você foi selecionado(a)! 🎉" : "Inscrição não selecionada",
         message: approved ? `Sua inscrição para "${r.event_title}" foi aprovada.` : `Sua inscrição para "${r.event_title}" não foi selecionada desta vez.`,
+        path: `/eventos-extraordinarios?id=${r.event_id}`,
       });
     });
 
@@ -42,6 +45,7 @@ export default function StatusNotifications({ member }) {
         uid: `task_${t.id}`, approved,
         title: approved ? "Tarefa aprovada! 🎉" : "Tarefa recusada",
         message: approved ? "Sua tarefa enviada foi aprovada pela diretoria." : "Sua tarefa enviada foi recusada. Confira o feedback.",
+        path: "/tarefas",
       });
     });
 
@@ -51,6 +55,7 @@ export default function StatusNotifications({ member }) {
         uid: `rol_${a.id}`, approved,
         title: approved ? "Artigo aprovado! 🎉" : "Artigo não aprovado",
         message: approved ? `Seu artigo sobre "${a.book_title}" foi aprovado e já está no ROL Literário.` : `Seu artigo sobre "${a.book_title}" não foi aprovado desta vez.`,
+        path: "/rol",
       });
     });
 
@@ -60,6 +65,7 @@ export default function StatusNotifications({ member }) {
         uid: `reception_${r.id}`, approved,
         title: approved ? "Você foi selecionado(a)! 🎉" : "Recepção/Sombra — não selecionado(a)",
         message: approved ? `Você foi escolhido(a) para servir em "${r.event_name || "um evento"}". Confira as instruções.` : "Você não foi selecionado(a) para Recepção/Sombra desta vez.",
+        path: "/recepcao-sombra",
       });
     });
 
@@ -77,7 +83,7 @@ export default function StatusNotifications({ member }) {
   return (
     <div className="px-4 mt-4 flex flex-col gap-2">
       {notifications.map(n => (
-        <div key={n.uid} className="rounded-2xl p-4 flex items-start gap-3"
+        <div key={n.uid} onClick={() => navigate(n.path)} className="rounded-2xl p-4 flex items-start gap-3 cursor-pointer"
           style={{
             background: n.approved ? "rgba(31,138,91,0.08)" : "rgba(180,35,24,0.08)",
             border: n.approved ? "1px solid rgba(31,138,91,0.25)" : "1px solid rgba(180,35,24,0.25)",
@@ -90,7 +96,7 @@ export default function StatusNotifications({ member }) {
             <p className="font-montserrat font-bold text-sm" style={{ color: n.approved ? "#1F8A5B" : "#B42318" }}>{n.title}</p>
             <p className="font-inter text-xs mt-0.5" style={{ color: "#6B7280" }}>{n.message}</p>
           </div>
-          <button onClick={() => dismiss(n.uid)} className="p-1 flex-shrink-0">
+          <button onClick={(e) => { e.stopPropagation(); dismiss(n.uid); }} className="p-1 flex-shrink-0">
             <X size={15} style={{ color: "#9CA3AF" }} />
           </button>
         </div>
