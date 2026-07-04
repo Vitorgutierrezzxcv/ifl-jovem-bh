@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { Plus, X, Zap, Users, Check, XCircle, Clock } from "lucide-react";
+import { Plus, X, Zap, Users, Check, XCircle, Clock, Pencil } from "lucide-react";
+
+const emptyForm = { title: "", description: "", date: "", location: "", capacity: "", custom_questions: [""], status: "aberto" };
 
 export default function AdminExtraordinaryEvents() {
   const [events, setEvents] = useState([]);
   const [regs, setRegs] = useState([]);
   const [openEvent, setOpenEvent] = useState(null);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ title: "", description: "", date: "", location: "", capacity: "", custom_questions: "", status: "aberto" });
+  const [editingId, setEditingId] = useState(null);
+  const [form, setForm] = useState(emptyForm);
 
   useEffect(() => { load(); }, []);
 
@@ -20,18 +23,59 @@ export default function AdminExtraordinaryEvents() {
     setRegs(rs);
   }
 
-  async function handleCreate(e) {
+  function openNewForm() {
+    setEditingId(null);
+    setForm(emptyForm);
+    setShowForm(true);
+  }
+
+  function openEditForm(ev) {
+    setEditingId(ev.id);
+    setForm({
+      title: ev.title || "",
+      description: ev.description || "",
+      date: ev.date || "",
+      location: ev.location || "",
+      capacity: ev.capacity ?? "",
+      custom_questions: ev.custom_questions && ev.custom_questions.length ? ev.custom_questions : [""],
+      status: ev.status || "aberto",
+    });
+    setShowForm(true);
+  }
+
+  function updateQuestion(i, value) {
+    const qs = [...form.custom_questions];
+    qs[i] = value;
+    setForm({ ...form, custom_questions: qs });
+  }
+
+  function addQuestion() {
+    setForm({ ...form, custom_questions: [...form.custom_questions, ""] });
+  }
+
+  function removeQuestion(i) {
+    const qs = form.custom_questions.filter((_, idx) => idx !== i);
+    setForm({ ...form, custom_questions: qs.length ? qs : [""] });
+  }
+
+  async function handleSave(e) {
     e.preventDefault();
-    await base44.entities.ExtraordinaryEvent.create({
+    const payload = {
       title: form.title,
       description: form.description,
       date: form.date,
       location: form.location,
       capacity: form.capacity ? Number(form.capacity) : undefined,
-      custom_questions: form.custom_questions ? form.custom_questions.split(",").map(s => s.trim()).filter(Boolean) : [],
+      custom_questions: form.custom_questions.map(q => q.trim()).filter(Boolean),
       status: form.status,
-    });
-    setForm({ title: "", description: "", date: "", location: "", capacity: "", custom_questions: "", status: "aberto" });
+    };
+    if (editingId) {
+      await base44.entities.ExtraordinaryEvent.update(editingId, payload);
+    } else {
+      await base44.entities.ExtraordinaryEvent.create(payload);
+    }
+    setForm(emptyForm);
+    setEditingId(null);
     setShowForm(false);
     load();
   }
@@ -47,16 +91,16 @@ export default function AdminExtraordinaryEvents() {
     <div className="p-4 lg:p-8 max-w-5xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <h1 className="font-montserrat font-black text-2xl text-foreground">Eventos Extraordinários</h1>
-        <button onClick={() => setShowForm(true)} className="flex items-center gap-1.5 px-4 py-2 rounded-xl font-inter text-sm font-semibold text-white" style={{ background: "#0D2137" }}>
+        <button onClick={openNewForm} className="flex items-center gap-1.5 px-4 py-2 rounded-xl font-inter text-sm font-semibold text-white" style={{ background: "#0D2137" }}>
           <Plus size={15} /> Novo Evento
         </button>
       </div>
 
       {showForm && (
-        <form onSubmit={handleCreate} className="rounded-2xl p-5 mb-6 flex flex-col gap-3" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.08)" }}>
+        <form onSubmit={handleSave} className="rounded-2xl p-5 mb-6 flex flex-col gap-3" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.08)" }}>
           <div className="flex items-center justify-between">
-            <p className="font-montserrat font-bold text-sm text-foreground">Novo Evento Extraordinário</p>
-            <button type="button" onClick={() => setShowForm(false)}><X size={16} /></button>
+            <p className="font-montserrat font-bold text-sm text-foreground">{editingId ? "Editar Evento Extraordinário" : "Novo Evento Extraordinário"}</p>
+            <button type="button" onClick={() => { setShowForm(false); setEditingId(null); }}><X size={16} /></button>
           </div>
           <input required placeholder="Título" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} className="w-full rounded-xl px-4 h-11 font-inter text-sm outline-none text-foreground" style={{ background: "hsl(var(--background))", border: "1px solid rgba(13,33,55,0.1)" }} />
           <textarea placeholder="Descrição" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} rows={3} className="w-full rounded-xl px-4 py-3 font-inter text-sm outline-none text-foreground resize-none" style={{ background: "hsl(var(--background))", border: "1px solid rgba(13,33,55,0.1)" }} />
@@ -64,15 +108,43 @@ export default function AdminExtraordinaryEvents() {
             <input required type="date" value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} className="w-full rounded-xl px-4 h-11 font-inter text-sm outline-none text-foreground" style={{ background: "hsl(var(--background))", border: "1px solid rgba(13,33,55,0.1)" }} />
             <input placeholder="Local" value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} className="w-full rounded-xl px-4 h-11 font-inter text-sm outline-none text-foreground" style={{ background: "hsl(var(--background))", border: "1px solid rgba(13,33,55,0.1)" }} />
           </div>
-          <input placeholder="Vagas (capacidade)" type="number" value={form.capacity} onChange={e => setForm({ ...form, capacity: e.target.value })} className="w-full rounded-xl px-4 h-11 font-inter text-sm outline-none text-foreground" style={{ background: "hsl(var(--background))", border: "1px solid rgba(13,33,55,0.1)" }} />
-          <input placeholder="Perguntas personalizadas (separadas por vírgula)" value={form.custom_questions} onChange={e => setForm({ ...form, custom_questions: e.target.value })} className="w-full rounded-xl px-4 h-11 font-inter text-sm outline-none text-foreground" style={{ background: "hsl(var(--background))", border: "1px solid rgba(13,33,55,0.1)" }} />
-          <button type="submit" className="rounded-xl h-11 font-montserrat font-bold text-sm text-white" style={{ background: "#0D2137" }}>Criar evento</button>
+          <div className="grid grid-cols-2 gap-3">
+            <input placeholder="Vagas (capacidade)" type="number" value={form.capacity} onChange={e => setForm({ ...form, capacity: e.target.value })} className="w-full rounded-xl px-4 h-11 font-inter text-sm outline-none text-foreground" style={{ background: "hsl(var(--background))", border: "1px solid rgba(13,33,55,0.1)" }} />
+            <select value={form.status} onChange={e => setForm({ ...form, status: e.target.value })} className="w-full rounded-xl px-4 h-11 font-inter text-sm outline-none text-foreground" style={{ background: "hsl(var(--background))", border: "1px solid rgba(13,33,55,0.1)" }}>
+              <option value="aberto">Aberto</option>
+              <option value="selecao">Em seleção</option>
+              <option value="encerrado">Encerrado</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <p className="font-inter text-xs font-semibold" style={{ color: "#0D2137" }}>Perguntas personalizadas da inscrição</p>
+            {form.custom_questions.map((q, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <input placeholder={`Pergunta ${i + 1}`} value={q} onChange={e => updateQuestion(i, e.target.value)}
+                  className="flex-1 rounded-xl px-4 h-11 font-inter text-sm outline-none text-foreground" style={{ background: "hsl(var(--background))", border: "1px solid rgba(13,33,55,0.1)" }} />
+                <button type="button" onClick={() => removeQuestion(i)} className="p-2 rounded-lg flex-shrink-0" style={{ background: "rgba(180,35,24,0.1)" }}>
+                  <X size={15} style={{ color: "#B42318" }} />
+                </button>
+              </div>
+            ))}
+            <button type="button" onClick={addQuestion} className="flex items-center gap-1.5 font-inter text-xs font-semibold self-start" style={{ color: "#B5862A" }}>
+              <Plus size={14} /> Adicionar pergunta
+            </button>
+          </div>
+
+          <button type="submit" className="rounded-xl h-11 font-montserrat font-bold text-sm text-white" style={{ background: "#0D2137" }}>{editingId ? "Salvar alterações" : "Criar evento"}</button>
         </form>
       )}
 
       {openEvent ? (
         <div>
-          <button onClick={() => setOpenEvent(null)} className="font-inter text-sm mb-4" style={{ color: "#B5862A" }}>← Voltar</button>
+          <div className="flex items-center justify-between mb-4">
+            <button onClick={() => setOpenEvent(null)} className="font-inter text-sm" style={{ color: "#B5862A" }}>← Voltar</button>
+            <button onClick={() => openEditForm(openEvent)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-inter text-xs font-semibold" style={{ background: "rgba(13,33,55,0.06)", color: "#0D2137" }}>
+              <Pencil size={13} /> Editar evento
+            </button>
+          </div>
           <h2 className="font-montserrat font-bold text-lg mb-3 text-foreground">{openEvent.title} — Inscritos ({eventRegs.length})</h2>
           <div className="flex flex-col gap-2">
             {eventRegs.length === 0 ? (
@@ -128,14 +200,19 @@ export default function AdminExtraordinaryEvents() {
           {events.map(ev => {
             const count = regs.filter(r => r.event_id === ev.id).length;
             return (
-              <button key={ev.id} onClick={() => setOpenEvent(ev)} className="rounded-2xl p-4 flex items-center gap-3 text-left" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.06)" }}>
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "rgba(181,134,42,0.1)" }}><Zap size={16} style={{ color: "#B5862A" }} /></div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-inter text-sm font-semibold text-foreground">{ev.title}</p>
-                  <p className="font-inter text-xs" style={{ color: "#6B7280" }}>{new Date(ev.date + "T12:00:00").toLocaleDateString("pt-BR")} · {ev.location}</p>
-                </div>
+              <div key={ev.id} className="rounded-2xl p-4 flex items-center gap-3" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.06)" }}>
+                <button onClick={() => setOpenEvent(ev)} className="flex items-center gap-3 flex-1 min-w-0 text-left">
+                  <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "rgba(181,134,42,0.1)" }}><Zap size={16} style={{ color: "#B5862A" }} /></div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-inter text-sm font-semibold text-foreground">{ev.title}</p>
+                    <p className="font-inter text-xs" style={{ color: "#6B7280" }}>{new Date(ev.date + "T12:00:00").toLocaleDateString("pt-BR")} · {ev.location}</p>
+                  </div>
+                </button>
                 <div className="flex items-center gap-1 flex-shrink-0 font-inter text-xs" style={{ color: "#9CA3AF" }}><Users size={13} /> {count}</div>
-              </button>
+                <button onClick={() => openEditForm(ev)} className="p-2 rounded-lg flex-shrink-0" style={{ background: "rgba(13,33,55,0.06)" }}>
+                  <Pencil size={14} style={{ color: "#0D2137" }} />
+                </button>
+              </div>
             );
           })}
         </div>
