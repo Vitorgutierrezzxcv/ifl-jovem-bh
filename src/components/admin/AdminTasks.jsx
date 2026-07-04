@@ -103,7 +103,7 @@ export default function AdminTasks({ isAdmin, memberRole }) {
                 <StatusBadge status={sub.status} />
               </div>
 
-              {(sub.status === "enviada" || sub.status === "reenvio_enviado" || sub.status === "em_correcao") && (
+              {sub.status !== "expirada" && (
                 <div className="mt-3 pt-3 border-t" style={{ borderColor: "rgba(13,33,55,0.06)" }}>
                   {selected === sub.id ? (
                     <div>
