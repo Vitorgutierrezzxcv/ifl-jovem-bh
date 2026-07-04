@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BookOpen, Search, ExternalLink, Send, X, FileUp } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import MobileHeader from "../components/layout/MobileHeader";
+import RolFeed from "../components/rol/RolFeed";
 
 // ROL Literário completo — baseado no documento oficial IFL Jovem BH
 const livros = [
@@ -169,6 +170,8 @@ export default function ROL() {
             )}
           </div>
         )}
+
+        <RolFeed />
 
         {/* Search */}
         <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl mb-3" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.1)" }}>
