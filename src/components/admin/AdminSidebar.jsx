@@ -11,7 +11,7 @@ const navItems = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard, desc: "Visão geral" },
   { key: "members", label: "Associados", icon: Users, desc: "Gestão de membros" },
   { key: "events", label: "Eventos", icon: Calendar, desc: "Agenda e presenças" },
-  { key: "tasks", label: "Tarefas", icon: CheckSquare, desc: "Correção de entregas" },
+  { key: "tasks", label: "Tarefas & ROL", icon: CheckSquare, desc: "Correção de entregas e artigos" },
   { key: "points", label: "Pontos", icon: Star, desc: "Lançamentos e aprovações" },
   { key: "financial", label: "Financeiro", icon: DollarSign, desc: "Cobranças e pagamentos" },
   { key: "opportunities", label: "Oportunidades", icon: Target, desc: "Vagas e eventos" },
@@ -26,7 +26,6 @@ const navItems = [
   { key: "extraordinary", label: "Eventos Extraordinários", icon: Zap, desc: "Inscrições e seleção" },
   { key: "sponsors", label: "Patrocinadores", icon: Handshake, desc: "Cotas e pagamentos" },
   { key: "board", label: "Docs. da Diretoria", icon: FileText, desc: "Área restrita" },
-  { key: "rol", label: "Artigos do ROL", icon: Library, desc: "Aprovação de artigos" },
 ];
 
 const roleLabel = {

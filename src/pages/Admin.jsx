@@ -6,6 +6,7 @@ import AdminDashboard from "../components/admin/AdminDashboard";
 import AdminMembers from "../components/admin/AdminMembers";
 import AdminEvents from "../components/admin/AdminEvents";
 import AdminTasks from "../components/admin/AdminTasks";
+import AdminTasksAndArticles from "../components/admin/AdminTasksAndArticles";
 import AdminFinancial from "../components/admin/AdminFinancial";
 import AdminPoints from "../components/admin/AdminPoints";
 import AdminAnnouncements from "../components/admin/AdminAnnouncements";
@@ -81,7 +82,7 @@ export default function Admin() {
       dashboard: <AdminDashboard onNavigate={setActiveSection} isAdmin={isAdmin} memberRole={memberRole} />,
       members: <AdminMembers onSelectMember={(id) => setDetailId(id)} isAdmin={isAdmin} memberRole={memberRole} />,
       events: <AdminEvents isAdmin={isAdmin} memberRole={memberRole} />,
-      tasks: <AdminTasks isAdmin={isAdmin} memberRole={memberRole} />,
+      tasks: <AdminTasksAndArticles isAdmin={isAdmin} memberRole={memberRole} />,
       financial: <AdminFinancial isAdmin={isAdmin} memberRole={memberRole} />,
       points: <AdminPoints isAdmin={isAdmin} memberRole={memberRole} />,
       announcements: <AdminAnnouncements isAdmin={isAdmin} memberRole={memberRole} />,
