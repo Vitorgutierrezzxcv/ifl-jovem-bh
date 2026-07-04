@@ -24,7 +24,7 @@ export default function RolArticleDetail({ article, member, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col" style={{ background: "#F0F0F4" }}>
+    <div className="fixed inset-0 z-[10000] flex flex-col" style={{ background: "#F0F0F4" }}>
       <div className="flex items-center justify-between px-5" style={{ background: "#0D2137", paddingTop: "calc(env(safe-area-inset-top) + 12px)", paddingBottom: "12px" }}>
         <p className="font-montserrat font-bold text-sm text-white">Artigo</p>
         <button onClick={onClose} className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: "rgba(255,255,255,0.1)" }}>
