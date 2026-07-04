@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useNavigate } from "react-router-dom";
-import { LogOut, ChevronRight, User, BookOpen, Library, DollarSign, FileText, Star, Bell, Shield, Trash2, AlertTriangle, BarChart2, TrendingUp, Users, CheckSquare, Lock, Pencil, Check } from "lucide-react";
+import { LogOut, ChevronRight, User, BookOpen, Library, DollarSign, FileText, Star, Bell, Shield, Trash2, AlertTriangle, BarChart2, TrendingUp, Users, CheckSquare, Lock, Pencil, Check, Zap } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
 import StatusBadge from "../components/ui/StatusBadge";
 import ProfileAnalytics from "../components/profile/ProfileAnalytics";
@@ -44,6 +44,7 @@ export default function Profile() {
   }
 
   const menuItems = [
+    { icon: Zap, label: "Eventos Extraordinários", path: "/eventos-extraordinarios" },
     { icon: BookOpen, label: "Clube do Livro", path: "/clube-livro" },
     { icon: Library, label: "ROL Literário", path: "/rol" },
     { icon: DollarSign, label: "Financeiro", path: "/financeiro" },

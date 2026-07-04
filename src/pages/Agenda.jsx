@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Calendar, MapPin, Clock, Users, ChevronRight, Star, Zap, ChevronLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import MobileHeader from "../components/layout/MobileHeader";
 
 const WEEKDAYS = ["D", "S", "T", "Q", "Q", "S", "S"];
@@ -83,6 +84,7 @@ const statusColors = {
 };
 
 export default function Agenda() {
+  const navigateTo = useNavigate();
   const [events, setEvents] = useState([]);
   const [selected, setSelected] = useState(null);
   const [filter, setFilter] = useState("proximos");
@@ -201,6 +203,18 @@ export default function Agenda() {
             Dia {selectedDay} ✕
           </button>
         )}
+      </div>
+
+      <div className="px-4 pb-2">
+        <button onClick={() => navigateTo("/eventos-extraordinarios")}
+          className="w-full flex items-center gap-3 rounded-2xl p-3.5"
+          style={{ background: "rgba(181,134,42,0.08)", border: "1px solid rgba(181,134,42,0.2)" }}>
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "rgba(181,134,42,0.15)" }}>
+            <Zap size={15} style={{ color: "#B5862A" }} />
+          </div>
+          <span className="flex-1 text-left font-inter text-sm font-semibold" style={{ color: "#B5862A" }}>Eventos Extraordinários — inscreva-se</span>
+          <ChevronRight size={15} style={{ color: "#B5862A" }} />
+        </button>
       </div>
 
       <div className="px-4 flex flex-col gap-3 pt-2">
