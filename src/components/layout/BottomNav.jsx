@@ -4,6 +4,14 @@ import { Home, TrendingUp, Calendar, Trophy, User } from "lucide-react";
 
 const ROOT_PATHS = ["/", "/jornada", "/agenda", "/ranking", "/perfil"];
 
+// Sub-pages reached from "Minha Conta" (Perfil) that should keep the Perfil tab
+// active in the bottom nav, so navigation context stays consistent
+const PERFIL_SUB_PAGES = [
+  "/financeiro", "/tarefas", "/clube-livro", "/rol", "/oportunidades",
+  "/documentos", "/diretorio", "/eventos-extraordinarios", "/criterios-pontuacao",
+  "/colaboracoes", "/biblioteca", "/ciclo", "/demandas", "/diretoria", "/recepcao-sombra",
+];
+
 const navItems = [
   { path: "/", icon: Home, label: "Início" },
   { path: "/jornada", icon: TrendingUp, label: "Jornada" },
@@ -21,6 +29,7 @@ export default function BottomNav() {
 
   // Determine which root tab is active based on the current path
   function getActiveTab() {
+    if (PERFIL_SUB_PAGES.some(p => location.pathname.startsWith(p))) return "/perfil";
     return ROOT_PATHS.find(root =>
       root === "/" ? location.pathname === "/" : location.pathname.startsWith(root)
     );
