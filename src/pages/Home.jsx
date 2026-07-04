@@ -6,6 +6,7 @@ import MobileHeader from "../components/layout/MobileHeader";
 import StatusBadge from "../components/ui/StatusBadge";
 import usePullToRefresh from "../hooks/usePullToRefresh";
 import PullToRefreshIndicator from "../components/ui/PullToRefreshIndicator";
+import ExtraordinaryStatusBanner from "../components/home/ExtraordinaryStatusBanner";
 
 const cycleLabels = {
   qualifier: "Qualifier",
@@ -159,6 +160,8 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      <ExtraordinaryStatusBanner member={member} />
 
       {/* Próximos eventos */}
       {events.length > 0 && (
