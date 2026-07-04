@@ -17,12 +17,18 @@
       ],
       "default": "inscrito"
     },
+    "event_id": {
+      "type": "string"
+    },
     "event_name": {
       "type": "string"
     },
     "event_date": {
       "type": "string",
       "format": "date"
+    },
+    "area": {
+      "type": "string"
     },
     "instructions": {
       "type": "string"

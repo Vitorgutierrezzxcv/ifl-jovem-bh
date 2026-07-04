@@ -11,30 +11,38 @@ const statusConfig = {
 
 export default function AdminReceptionSignups() {
   const [signups, setSignups] = useState([]);
+  const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(null);
-  const [form, setForm] = useState({ event_name: "", event_date: "", instructions: "" });
+  const [form, setForm] = useState({ event_id: "", area: "", instructions: "" });
   const [saving, setSaving] = useState(false);
 
   useEffect(() => { load(); }, []);
 
   async function load() {
-    const data = await base44.entities.ReceptionSignup.list("-created_date", 200);
+    const [data, evs] = await Promise.all([
+      base44.entities.ReceptionSignup.list("-created_date", 200),
+      base44.entities.Event.list("-date", 100),
+    ]);
     setSignups(data);
+    setEvents(evs);
     setLoading(false);
   }
 
   function startEdit(s) {
     setEditing(s.id);
-    setForm({ event_name: s.event_name || "", event_date: s.event_date || "", instructions: s.instructions || "" });
+    setForm({ event_id: s.event_id || "", area: s.area || "", instructions: s.instructions || "" });
   }
 
   async function handleSelect(s, status) {
     setSaving(true);
+    const ev = events.find(e => e.id === form.event_id);
     await base44.entities.ReceptionSignup.update(s.id, {
       status,
-      event_name: form.event_name,
-      event_date: form.event_date,
+      event_id: form.event_id,
+      event_name: ev?.name || "",
+      event_date: ev?.date || "",
+      area: form.area,
       instructions: form.instructions,
     });
     setEditing(null);
@@ -66,20 +74,25 @@ export default function AdminReceptionSignups() {
                   </div>
                   {s.status === "selecionado" && !isEditing && (
                     <div className="text-xs font-inter mb-2" style={{ color: "#6B7280" }}>
-                      {s.event_name} {s.event_date && `· ${new Date(s.event_date + "T12:00:00").toLocaleDateString("pt-BR")}`}
+                      {s.event_name} {s.event_date && `· ${new Date(s.event_date + "T12:00:00").toLocaleDateString("pt-BR")}`} {s.area && `· ${s.area}`}
                     </div>
                   )}
 
                   {isEditing ? (
                     <div className="flex flex-col gap-2 mt-2">
-                      <input value={form.event_name} onChange={e => setForm({ ...form, event_name: e.target.value })}
-                        placeholder="Nome do evento" className="w-full rounded-lg px-3 py-2 text-sm border" style={{ borderColor: "rgba(13,33,55,0.15)" }} />
-                      <input type="date" value={form.event_date} onChange={e => setForm({ ...form, event_date: e.target.value })}
-                        className="w-full rounded-lg px-3 py-2 text-sm border" style={{ borderColor: "rgba(13,33,55,0.15)" }} />
+                      <select value={form.event_id} onChange={e => setForm({ ...form, event_id: e.target.value })}
+                        className="w-full rounded-lg px-3 py-2 text-sm border" style={{ borderColor: "rgba(13,33,55,0.15)" }}>
+                        <option value="">Selecione o evento</option>
+                        {events.map(ev => (
+                          <option key={ev.id} value={ev.id}>{ev.name} — {new Date(ev.date + "T12:00:00").toLocaleDateString("pt-BR")}</option>
+                        ))}
+                      </select>
+                      <input value={form.area} onChange={e => setForm({ ...form, area: e.target.value })}
+                        placeholder="Área que vai servir (ex: Recepção, Sombra)" className="w-full rounded-lg px-3 py-2 text-sm border" style={{ borderColor: "rgba(13,33,55,0.15)" }} />
                       <textarea value={form.instructions} onChange={e => setForm({ ...form, instructions: e.target.value })}
                         placeholder="Instruções para o associado" rows={3} className="w-full rounded-lg px-3 py-2 text-sm border resize-none" style={{ borderColor: "rgba(13,33,55,0.15)" }} />
                       <div className="flex gap-2">
-                        <button disabled={saving} onClick={() => handleSelect(s, "selecionado")}
+                        <button disabled={saving || !form.event_id} onClick={() => handleSelect(s, "selecionado")}
                           className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold text-white" style={{ background: "#1F8A5B" }}>
                           <Save size={14} /> Selecionar
                         </button>

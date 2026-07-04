@@ -103,6 +103,12 @@ export default function ReceptionSignup() {
                     <span className="font-inter text-sm" style={{ color: "#374151" }}>{signup.event_name}</span>
                   </div>
                 )}
+                {signup.area && (
+                  <div className="flex items-center gap-3">
+                    <HandHelping size={15} style={{ color: "#B5862A" }} />
+                    <span className="font-inter text-sm" style={{ color: "#374151" }}>{signup.area}</span>
+                  </div>
+                )}
                 {signup.event_date && (
                   <div className="flex items-center gap-3">
                     <Calendar size={15} style={{ color: "#B5862A" }} />
