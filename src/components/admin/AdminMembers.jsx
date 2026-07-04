@@ -14,6 +14,7 @@ export default function AdminMembers({ onSelectMember, isAdmin, memberRole }) {
   const [filterCycle, setFilterCycle] = useState("todos");
   const [filterStatus, setFilterStatus] = useState("todos");
   const [filterFinancial, setFilterFinancial] = useState("todos");
+  const [filterUniversity, setFilterUniversity] = useState("todos");
   const [selected, setSelected] = useState([]);
   const [bulkAction, setBulkAction] = useState("");
   const [showBulkConfirm, setShowBulkConfirm] = useState(false);
@@ -26,12 +27,18 @@ export default function AdminMembers({ onSelectMember, isAdmin, memberRole }) {
     setLoading(false);
   }
 
+  const universities = [...new Set(members.map(m => m.university).filter(Boolean))].sort();
+
   const filtered = members.filter(m => {
-    const matchSearch = !search || m.full_name?.toLowerCase().includes(search.toLowerCase()) || m.email?.toLowerCase().includes(search.toLowerCase());
+    const matchSearch = !search
+      || m.full_name?.toLowerCase().includes(search.toLowerCase())
+      || m.email?.toLowerCase().includes(search.toLowerCase())
+      || m.course?.toLowerCase().includes(search.toLowerCase());
     const matchCycle = filterCycle === "todos" || m.cycle === filterCycle;
     const matchStatus = filterStatus === "todos" || m.member_status === filterStatus;
     const matchFinancial = filterFinancial === "todos" || m.financial_status === filterFinancial;
-    return matchSearch && matchCycle && matchStatus && matchFinancial;
+    const matchUniversity = filterUniversity === "todos" || m.university === filterUniversity;
+    return matchSearch && matchCycle && matchStatus && matchFinancial && matchUniversity;
   });
 
   function toggleSelect(id) {
@@ -90,7 +97,7 @@ export default function AdminMembers({ onSelectMember, isAdmin, memberRole }) {
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: "#9CA3AF" }} />
             <input
               value={search} onChange={e => setSearch(e.target.value)}
-              placeholder="Buscar por nome ou e-mail..."
+              placeholder="Buscar por nome, e-mail ou curso..."
               className="w-full pl-9 pr-4 py-2.5 rounded-xl text-sm font-inter outline-none"
               style={{ background: "#F4F5F7", border: "1px solid rgba(13,33,55,0.08)", color: "#111827" }}
             />
@@ -120,6 +127,12 @@ export default function AdminMembers({ onSelectMember, isAdmin, memberRole }) {
               <option value="pendente">Pendente</option>
               <option value="vencido">Vencido</option>
               <option value="inadimplente">Inadimplente</option>
+            </select>
+            <select value={filterUniversity} onChange={e => setFilterUniversity(e.target.value)}
+              className="px-3 py-2 rounded-lg text-xs font-inter outline-none"
+              style={{ background: "#F4F5F7", border: "1px solid rgba(13,33,55,0.1)", color: "#374151" }}>
+              <option value="todos">Todas as faculdades</option>
+              {universities.map(u => <option key={u} value={u}>{u}</option>)}
             </select>
           </div>
         </div>
@@ -154,9 +167,10 @@ export default function AdminMembers({ onSelectMember, isAdmin, memberRole }) {
             <div className="col-span-1 flex items-center">
               <input type="checkbox" checked={selected.length === filtered.length && filtered.length > 0} onChange={toggleAll} className="rounded" />
             </div>
-            <div className="col-span-3 font-inter text-xs font-semibold" style={{ color: "#6B7280" }}>Nome</div>
+            <div className="col-span-2 font-inter text-xs font-semibold" style={{ color: "#6B7280" }}>Nome</div>
             <div className="col-span-2 font-inter text-xs font-semibold" style={{ color: "#6B7280" }}>Ciclo / Cargo</div>
-            <div className="col-span-2 font-inter text-xs font-semibold" style={{ color: "#6B7280" }}>Status</div>
+            <div className="col-span-2 font-inter text-xs font-semibold" style={{ color: "#6B7280" }}>Curso / Faculdade</div>
+            <div className="col-span-1 font-inter text-xs font-semibold" style={{ color: "#6B7280" }}>Status</div>
             <div className="col-span-1 font-inter text-xs font-semibold" style={{ color: "#6B7280" }}>Pontos</div>
             <div className="col-span-1 font-inter text-xs font-semibold" style={{ color: "#6B7280" }}>Presença</div>
             <div className="col-span-2 font-inter text-xs font-semibold" style={{ color: "#6B7280" }}>Financeiro</div>
@@ -179,7 +193,7 @@ export default function AdminMembers({ onSelectMember, isAdmin, memberRole }) {
               </div>
 
               {/* Name */}
-              <div className="flex-1 lg:col-span-3 flex items-center gap-3 min-w-0" onClick={() => onSelectMember(m.id)}>
+              <div className="flex-1 lg:col-span-2 flex items-center gap-3 min-w-0" onClick={() => onSelectMember(m.id)}>
                 <div className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center"
                   style={{ background: "rgba(13,33,55,0.08)" }}>
                   <span className="font-montserrat font-bold text-xs" style={{ color: "#071D33" }}>
@@ -189,6 +203,7 @@ export default function AdminMembers({ onSelectMember, isAdmin, memberRole }) {
                 <div className="min-w-0">
                   <p className="font-inter text-sm font-semibold truncate" style={{ color: "#111827" }}>{m.full_name}</p>
                   <p className="font-inter text-xs truncate" style={{ color: "#9CA3AF" }}>{m.email}</p>
+                  {m.mini_bio && <p className="font-inter text-xs truncate lg:hidden" style={{ color: "#9CA3AF" }}>{m.mini_bio}</p>}
                 </div>
               </div>
 
@@ -198,8 +213,15 @@ export default function AdminMembers({ onSelectMember, isAdmin, memberRole }) {
                 <p className="font-inter text-xs" style={{ color: "#9CA3AF" }}>{roleLabels[m.role] || m.role}</p>
               </div>
 
-              {/* Status */}
+              {/* Course / University / Bio */}
               <div className="hidden lg:block col-span-2" onClick={() => onSelectMember(m.id)}>
+                <p className="font-inter text-xs font-semibold truncate" style={{ color: "#374151" }}>{m.course || "—"}</p>
+                <p className="font-inter text-xs truncate" style={{ color: "#9CA3AF" }}>{m.university || "—"}</p>
+                {m.mini_bio && <p className="font-inter text-[11px] truncate mt-0.5" style={{ color: "#B5862A" }} title={m.mini_bio}>{m.mini_bio}</p>}
+              </div>
+
+              {/* Status */}
+              <div className="hidden lg:block col-span-1" onClick={() => onSelectMember(m.id)}>
                 <StatusBadge status={m.member_status} />
               </div>
 
