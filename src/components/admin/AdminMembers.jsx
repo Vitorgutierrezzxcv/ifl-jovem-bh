@@ -194,11 +194,15 @@ export default function AdminMembers({ onSelectMember, isAdmin, memberRole }) {
 
               {/* Name */}
               <div className="flex-1 lg:col-span-2 flex items-center gap-3 min-w-0" onClick={() => onSelectMember(m.id)}>
-                <div className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center"
+                <div className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden"
                   style={{ background: "rgba(13,33,55,0.08)" }}>
-                  <span className="font-montserrat font-bold text-xs" style={{ color: "#071D33" }}>
-                    {m.full_name?.charAt(0)}
-                  </span>
+                  {m.avatar_url ? (
+                    <img src={m.avatar_url} alt={m.full_name} className="w-8 h-8 object-cover" />
+                  ) : (
+                    <span className="font-montserrat font-bold text-xs" style={{ color: "#071D33" }}>
+                      {m.full_name?.charAt(0)}
+                    </span>
+                  )}
                 </div>
                 <div className="min-w-0">
                   <p className="font-inter text-sm font-semibold truncate" style={{ color: "#111827" }}>{m.full_name}</p>

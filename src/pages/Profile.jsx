@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useNavigate } from "react-router-dom";
-import { LogOut, ChevronRight, User, BookOpen, Library, DollarSign, FileText, Star, Bell, Shield, Trash2, AlertTriangle, BarChart2, TrendingUp, Users, CheckSquare, Lock, Pencil, Check, Zap } from "lucide-react";
+import { LogOut, ChevronRight, User, BookOpen, Library, DollarSign, FileText, Star, Bell, Shield, Trash2, AlertTriangle, BarChart2, TrendingUp, Users, CheckSquare, Lock, Pencil, Check, Zap, Camera } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
 import StatusBadge from "../components/ui/StatusBadge";
 import ProfileAnalytics from "../components/profile/ProfileAnalytics";
@@ -24,6 +24,7 @@ export default function Profile() {
   const [editingBio, setEditingBio] = useState(false);
   const [bioDraft, setBioDraft] = useState("");
   const [savingBio, setSavingBio] = useState(false);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
 
   useEffect(() => { loadData(); }, []);
 
@@ -66,6 +67,16 @@ export default function Profile() {
     setEditingBio(false);
   }
 
+  async function handleAvatarChange(e) {
+    const file = e.target.files?.[0];
+    if (!file || !member) return;
+    setUploadingAvatar(true);
+    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    await base44.entities.Member.update(member.id, { avatar_url: file_url });
+    setMember(m => ({ ...m, avatar_url: file_url }));
+    setUploadingAvatar(false);
+  }
+
   async function handleDeleteAccount() {
     await base44.auth.logout("/");
   }
@@ -78,10 +89,22 @@ export default function Profile() {
         <div className="px-5 pb-8">
           <div className="flex items-center gap-4">
             {/* Avatar */}
-            <div className="w-20 h-20 rounded-3xl flex items-center justify-center font-montserrat font-black text-3xl text-white flex-shrink-0"
+            <label className="w-20 h-20 rounded-3xl flex items-center justify-center font-montserrat font-black text-3xl text-white flex-shrink-0 relative cursor-pointer overflow-hidden"
               style={{ background: "linear-gradient(135deg, #B8872A, #D4A043)" }}>
-              {user?.full_name?.charAt(0) || "?"}
-            </div>
+              {member?.avatar_url ? (
+                <img src={member.avatar_url} alt={user?.full_name} className="w-20 h-20 object-cover" />
+              ) : (
+                user?.full_name?.charAt(0) || "?"
+              )}
+              <div className="absolute inset-0 flex items-center justify-center" style={{ background: "rgba(0,0,0,0.35)" }}>
+                {uploadingAvatar ? (
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <Camera size={18} className="text-white" />
+                )}
+              </div>
+              <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} disabled={uploadingAvatar} />
+            </label>
             <div className="flex-1 min-w-0">
               <h1 className="font-montserrat font-black text-xl text-white truncate">{user?.full_name || "Associado"}</h1>
               <p className="font-inter text-xs mt-0.5 truncate" style={{ color: "rgba(255,255,255,0.5)" }}>{user?.email}</p>
