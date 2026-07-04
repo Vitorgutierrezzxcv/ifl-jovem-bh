@@ -5,7 +5,7 @@ import IFLLogo from "./IFLLogo";
 
 const ROOT_ROUTES = ["/", "/jornada", "/agenda", "/ranking", "/perfil"];
 
-export default function MobileHeader({ title, subtitle, dark = false, showNotification = true, showBack }) {
+export default function MobileHeader({ title, subtitle, dark = false, showNotification = true, showBack, onNotificationClick, hasUnreadNotifications = true }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -50,9 +50,9 @@ export default function MobileHeader({ title, subtitle, dark = false, showNotifi
         )}
       </div>
       {showNotification && (
-        <button className="relative p-2 rounded-full" style={{ background: dark ? "rgba(255,255,255,0.1)" : "rgba(7,29,51,0.06)" }}>
+        <button onClick={onNotificationClick} className="relative p-2 rounded-full" style={{ background: dark ? "rgba(255,255,255,0.1)" : "rgba(7,29,51,0.06)" }}>
           <Bell size={18} style={{ color: dark ? "#D4A043" : "#071D33" }} strokeWidth={1.8} />
-          <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-ifl-gold border border-white" />
+          {hasUnreadNotifications && <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-ifl-gold border border-white" />}
         </button>
       )}
     </div>

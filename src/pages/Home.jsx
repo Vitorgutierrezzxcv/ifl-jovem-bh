@@ -7,6 +7,7 @@ import StatusBadge from "../components/ui/StatusBadge";
 import usePullToRefresh from "../hooks/usePullToRefresh";
 import PullToRefreshIndicator from "../components/ui/PullToRefreshIndicator";
 import StatusNotifications from "../components/home/StatusNotifications";
+import NotificationsPanel from "../components/home/NotificationsPanel";
 
 const cycleLabels = {
   qualifier: "Qualifier",
@@ -25,6 +26,8 @@ export default function Home() {
   const [announcements, setAnnouncements] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [allAnnouncements, setAllAnnouncements] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -44,9 +47,11 @@ export default function Home() {
       const oneWeekAgo = new Date();
       oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
       setEvents(evs.filter(e => e.date >= today).slice(0, 3));
+      const published = anns.filter(a => a.status === "publicado");
+      setAllAnnouncements(published);
       setAnnouncements(
-        anns
-          .filter(a => a.status === "publicado" && new Date(a.created_date) >= oneWeekAgo)
+        published
+          .filter(a => new Date(a.created_date) >= oneWeekAgo)
           .slice(0, 3)
       );
       setTasks(tks.filter(t => t.status === "publicada").slice(0, 3));
@@ -101,7 +106,7 @@ export default function Home() {
       >
 
 
-        <MobileHeader dark />
+        <MobileHeader dark onNotificationClick={() => setShowNotifications(true)} hasUnreadNotifications={allAnnouncements.length > 0} />
 
         <div className="px-5 pb-6">
           <p className="font-inter text-sm mb-1" style={{ color: "rgba(255,255,255,0.5)" }}>
@@ -162,6 +167,9 @@ export default function Home() {
       </div>
 
       <StatusNotifications member={member} />
+      {showNotifications && (
+        <NotificationsPanel announcements={allAnnouncements} onClose={() => setShowNotifications(false)} />
+      )}
 
       {/* Próximos eventos */}
       {events.length > 0 && (
