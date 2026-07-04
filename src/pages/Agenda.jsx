@@ -238,7 +238,7 @@ export default function Agenda() {
             <p className="font-inter text-sm" style={{ color: "#9CA3AF" }}>Nenhum evento encontrado</p>
           </div>
         ) : filtered.map(ev => (
-          <button key={ev.id} onClick={() => setSelected(ev)}
+          <button key={ev.id} onClick={() => ev.type === "evento_extraordinario" ? navigateTo(`/eventos-extraordinarios?id=${ev.id.replace("extra_", "")}`) : setSelected(ev)}
             className="rounded-2xl p-4 flex items-center gap-3 card-hover text-left w-full"
             style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.06)", boxShadow: "0 2px 8px rgba(13,33,55,0.04)" }}>
             <div className="w-12 h-12 rounded-xl flex flex-col items-center justify-center flex-shrink-0" style={{ background: "#0D2137" }}>

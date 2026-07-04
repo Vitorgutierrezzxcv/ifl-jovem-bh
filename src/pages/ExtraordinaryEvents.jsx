@@ -27,6 +27,11 @@ export default function ExtraordinaryEvents() {
       setMember(m);
       const evs = await base44.entities.ExtraordinaryEvent.list("-date", 50);
       setEvents(evs);
+      const urlId = new URLSearchParams(window.location.search).get("id");
+      if (urlId) {
+        const match = evs.find(e => e.id === urlId);
+        if (match) setSelected(match);
+      }
       if (m) {
         const regs = await base44.entities.ExtraordinaryRegistration.filter({ member_id: m.id }, undefined, 200);
         const byEvent = {};
