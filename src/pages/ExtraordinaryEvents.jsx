@@ -14,6 +14,7 @@ export default function ExtraordinaryEvents() {
   const [submitting, setSubmitting] = useState(false);
   const [npsScore, setNpsScore] = useState(0);
   const [npsComment, setNpsComment] = useState("");
+  const [regError, setRegError] = useState("");
 
   useEffect(() => { loadData(); }, []);
 
@@ -38,18 +39,27 @@ export default function ExtraordinaryEvents() {
 
   async function handleRegister(e) {
     e.preventDefault();
-    if (!member || !selected) return;
+    if (!selected) return;
+    setRegError("");
+    if (!member) {
+      setRegError("Não encontramos seu cadastro de associado. Fale com a diretoria para liberar sua inscrição.");
+      return;
+    }
     setSubmitting(true);
-    const reg = await base44.entities.ExtraordinaryRegistration.create({
-      event_id: selected.id,
-      event_title: selected.title,
-      member_id: member.id,
-      member_name: member.full_name,
-      answers: JSON.stringify(answers),
-    });
-    setMyRegs(prev => ({ ...prev, [selected.id]: reg }));
+    try {
+      const reg = await base44.entities.ExtraordinaryRegistration.create({
+        event_id: selected.id,
+        event_title: selected.title,
+        member_id: member.id,
+        member_name: member.full_name,
+        answers: JSON.stringify(answers),
+      });
+      setMyRegs(prev => ({ ...prev, [selected.id]: reg }));
+      setAnswers({});
+    } catch (err) {
+      setRegError("Não foi possível enviar sua inscrição. Tente novamente.");
+    }
     setSubmitting(false);
-    setAnswers({});
   }
 
   async function handleConfirm(reg) {
@@ -112,6 +122,7 @@ export default function ExtraordinaryEvents() {
                     style={{ background: "hsl(var(--background))", border: "1px solid rgba(13,33,55,0.1)", height: 46 }} />
                 </div>
               ))}
+              {regError && <p className="font-inter text-xs font-semibold" style={{ color: "#B42318" }}>{regError}</p>}
               <button type="submit" disabled={submitting}
                 className="w-full rounded-2xl font-montserrat font-bold text-sm text-white flex items-center justify-center gap-2 mt-1"
                 style={{ height: 50, background: "#0D2137" }}>
