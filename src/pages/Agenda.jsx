@@ -98,8 +98,20 @@ export default function Agenda() {
   }
 
   useEffect(() => {
-    base44.entities.Event.list("-date", 50).then(evs => {
-      setEvents(evs);
+    Promise.all([
+      base44.entities.Event.list("-date", 50),
+      base44.entities.ExtraordinaryEvent.list("-date", 50).catch(() => []),
+    ]).then(([evs, extras]) => {
+      const mappedExtras = extras.map(e => ({
+        id: `extra_${e.id}`,
+        name: e.title,
+        type: "evento_extraordinario",
+        date: e.date,
+        location: e.location,
+        description: e.description,
+        status: e.status === "encerrado" ? "realizado" : "publicado",
+      }));
+      setEvents([...evs, ...mappedExtras]);
       setLoading(false);
     });
   }, []);
