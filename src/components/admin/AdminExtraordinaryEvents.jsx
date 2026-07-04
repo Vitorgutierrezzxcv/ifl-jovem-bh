@@ -88,6 +88,14 @@ export default function AdminExtraordinaryEvents() {
                         <p key={q} className="font-inter text-xs mt-1" style={{ color: "#6B7280" }}><span className="font-semibold">{q}</span> {a}</p>
                       ))}
                       {r.confirmed && <span className="text-[10px] font-semibold" style={{ color: "#1F8A5B" }}>✓ presença confirmada</span>}
+                      {status === "aprovado" && !r.confirmed && (
+                        <span className="text-[10px] font-semibold" style={{ color: "#D99A22" }}>⏳ aguardando confirmação — vaga pode ser realocada</span>
+                      )}
+                      {r.nps_score !== undefined && r.nps_score !== null && (
+                        <p className="font-inter text-[11px] mt-1" style={{ color: "#6B7280" }}>
+                          NPS: <span className="font-semibold" style={{ color: "#B5862A" }}>{r.nps_score}/5</span>{r.nps_comment && ` — "${r.nps_comment}"`}
+                        </p>
+                      )}
                     </div>
                     <span className="flex items-center gap-1 px-2 py-1 rounded-lg font-inter text-[11px] font-semibold flex-shrink-0"
                       style={{

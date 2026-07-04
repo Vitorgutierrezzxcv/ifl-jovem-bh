@@ -20,14 +20,16 @@ export default function StatusNotifications({ member }) {
 
   async function load() {
     const seen = getSeenIds();
-    const [regs, tasks, articles, reception] = await Promise.all([
+    const [regs, tasks, articles, reception, extraEvents] = await Promise.all([
       base44.entities.ExtraordinaryRegistration.filter({ member_id: member.id }).catch(() => []),
       base44.entities.TaskSubmission.filter({ member_id: member.id }).catch(() => []),
       base44.entities.RolArticle.filter({ member_id: member.id }).catch(() => []),
       base44.entities.ReceptionSignup.filter({ member_id: member.id }).catch(() => []),
+      base44.entities.ExtraordinaryEvent.list("-date", 100).catch(() => []),
     ]);
 
     const items = [];
+    const today = new Date().toISOString().split("T")[0];
 
     regs.filter(r => r.status === "aprovado" || r.status === "recusado").forEach(r => {
       const approved = r.status === "aprovado";
@@ -37,6 +39,32 @@ export default function StatusNotifications({ member }) {
         message: approved ? `Sua inscrição para "${r.event_title}" foi aprovada.` : `Sua inscrição para "${r.event_title}" não foi selecionada desta vez.`,
         path: `/eventos-extraordinarios?id=${r.event_id}`,
       });
+    });
+
+    // Confirmation reminders (approved, not confirmed, event within 5 days) and NPS requests (event passed)
+    regs.filter(r => r.status === "aprovado").forEach(r => {
+      const ev = extraEvents.find(e => e.id === r.event_id);
+      if (!ev) return;
+      const daysUntil = Math.ceil((new Date(ev.date) - new Date(today)) / (1000 * 60 * 60 * 24));
+      const eventPassed = ev.date < today;
+
+      if (!r.confirmed && !eventPassed && daysUntil <= 5) {
+        items.push({
+          uid: `confirm_${r.id}`, approved: true,
+          title: "Confirme sua presença 📌",
+          message: `O evento "${ev.title}" está próximo. Confirme sua presença ou sua vaga poderá ser realocada.`,
+          path: `/eventos-extraordinarios?id=${r.event_id}`,
+        });
+      }
+
+      if (eventPassed && ev.collect_nps && r.nps_score === undefined) {
+        items.push({
+          uid: `nps_${r.id}`, approved: true,
+          title: "Como foi sua experiência? ⭐",
+          message: `Conte pra gente o que achou do evento "${ev.title}".`,
+          path: `/eventos-extraordinarios?id=${r.event_id}`,
+        });
+      }
     });
 
     tasks.filter(t => t.status === "aprovada" || t.status === "aprovada_ressalvas" || t.status === "recusada").forEach(t => {
