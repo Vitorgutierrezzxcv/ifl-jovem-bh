@@ -171,7 +171,7 @@ export default function ROL() {
           </div>
         )}
 
-        <RolFeed />
+        <RolFeed member={member} />
 
         {/* Search */}
         <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl mb-3" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.1)" }}>

@@ -1,0 +1,22 @@
+{
+  "name": "RolArticleComment",
+  "type": "object",
+  "properties": {
+    "article_id": {
+      "type": "string"
+    },
+    "member_id": {
+      "type": "string"
+    },
+    "member_name": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "article_id",
+    "content"
+  ]
+}
