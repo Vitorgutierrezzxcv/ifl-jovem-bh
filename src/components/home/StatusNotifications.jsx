@@ -18,10 +18,11 @@ export default function StatusNotifications({ member }) {
 
   async function load() {
     const seen = getSeenIds();
-    const [regs, tasks, articles] = await Promise.all([
+    const [regs, tasks, articles, reception] = await Promise.all([
       base44.entities.ExtraordinaryRegistration.filter({ member_id: member.id }).catch(() => []),
       base44.entities.TaskSubmission.filter({ member_id: member.id }).catch(() => []),
       base44.entities.RolArticle.filter({ member_id: member.id }).catch(() => []),
+      base44.entities.ReceptionSignup.filter({ member_id: member.id }).catch(() => []),
     ]);
 
     const items = [];
@@ -50,6 +51,15 @@ export default function StatusNotifications({ member }) {
         uid: `rol_${a.id}`, approved,
         title: approved ? "Artigo aprovado! 🎉" : "Artigo não aprovado",
         message: approved ? `Seu artigo sobre "${a.book_title}" foi aprovado e já está no ROL Literário.` : `Seu artigo sobre "${a.book_title}" não foi aprovado desta vez.`,
+      });
+    });
+
+    reception.filter(r => r.status === "selecionado" || r.status === "nao_selecionado").forEach(r => {
+      const approved = r.status === "selecionado";
+      items.push({
+        uid: `reception_${r.id}`, approved,
+        title: approved ? "Você foi selecionado(a)! 🎉" : "Recepção/Sombra — não selecionado(a)",
+        message: approved ? `Você foi escolhido(a) para servir em "${r.event_name || "um evento"}". Confira as instruções.` : "Você não foi selecionado(a) para Recepção/Sombra desta vez.",
       });
     });
 

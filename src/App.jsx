@@ -31,6 +31,7 @@ import Library from './pages/Library';
 import Directory from './pages/Directory';
 import ExtraordinaryEvents from './pages/ExtraordinaryEvents';
 import BoardArea from './pages/BoardArea';
+import ReceptionSignup from './pages/ReceptionSignup';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -82,6 +83,7 @@ const AuthenticatedApp = () => {
         <Route path="/diretorio" element={<Directory />} />
         <Route path="/eventos-extraordinarios" element={<ExtraordinaryEvents />} />
         <Route path="/diretoria" element={<BoardArea />} />
+        <Route path="/recepcao-sombra" element={<ReceptionSignup />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <BottomNav />

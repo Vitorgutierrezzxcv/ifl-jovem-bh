@@ -20,6 +20,7 @@ import AdminExtraordinaryEvents from "../components/admin/AdminExtraordinaryEven
 import AdminSponsors from "../components/admin/AdminSponsors";
 import AdminBoardDocuments from "../components/admin/AdminBoardDocuments";
 import AdminRolArticles from "../components/admin/AdminRolArticles";
+import AdminReceptionSignups from "../components/admin/AdminReceptionSignups";
 
 const ADMIN_SECTIONS = {
   dashboard: AdminDashboard,
@@ -93,6 +94,7 @@ export default function Admin() {
       sponsors: <AdminSponsors />,
       board: <AdminBoardDocuments />,
       rol: <AdminRolArticles />,
+      reception: <AdminReceptionSignups />,
     };
     return sections[activeSection] || sections.dashboard;
   };

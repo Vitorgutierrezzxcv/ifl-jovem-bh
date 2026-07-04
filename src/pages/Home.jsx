@@ -290,7 +290,7 @@ export default function Home() {
             { icon: CheckSquare, label: "Envio de Tarefas", path: "/tarefas", color: "#071D33" },
             { icon: MessageSquare, label: "SAC — Demandas", path: "/demandas", color: "#071D33" },
             { icon: Award, label: "Critérios de Pts", path: "/criterios-pontuacao", color: "#B8872A" },
-            { icon: HandHelping, label: "Recepção & Sombra", path: "/demandas", state: { presetCategory: "Inscrição para Recepção/Sombra em Eventos" }, color: "#1F8A5B" },
+            { icon: HandHelping, label: "Recepção & Sombra", path: "/recepcao-sombra", color: "#1F8A5B" },
           ].map(item => (
             <button
               key={item.label}

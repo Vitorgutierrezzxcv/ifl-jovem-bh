@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import {
   LayoutDashboard, Users, Calendar, CheckSquare, DollarSign,
   Star, Bell, Target, MessageSquare, LogOut, Menu, X, ChevronRight,
-  Shield, ArrowLeft, Lock, BookOpen, GraduationCap, Inbox, Zap, Handshake, FileText, Library,
+  Shield, ArrowLeft, Lock, BookOpen, GraduationCap, Inbox, Zap, Handshake, FileText, Library, HandHelping,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -16,6 +16,7 @@ const navItems = [
   { key: "financial", label: "Financeiro", icon: DollarSign, desc: "Cobranças e pagamentos" },
   { key: "opportunities", label: "Oportunidades", icon: Target, desc: "Vagas e eventos" },
   { key: "demands", label: "Demandas", icon: MessageSquare, desc: "Solicitações de membros" },
+  { key: "reception", label: "Recepção & Sombra", icon: HandHelping, desc: "Inscrições e seleção" },
   { key: "announcements", label: "Avisos", icon: Bell, desc: "Comunicados" },
   { key: "access", label: "Níveis de Acesso", icon: Shield, desc: "Cargos e permissões" },
   { key: "library", label: "Biblioteca", icon: BookOpen, desc: "Materiais por diretoria" },
