@@ -24,6 +24,9 @@ export default function Profile() {
   const [editingBio, setEditingBio] = useState(false);
   const [bioDraft, setBioDraft] = useState("");
   const [savingBio, setSavingBio] = useState(false);
+  const [editingStudy, setEditingStudy] = useState(false);
+  const [studyDraft, setStudyDraft] = useState({ course: "", university: "", occupation: "" });
+  const [savingStudy, setSavingStudy] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
 
   useEffect(() => { loadData(); }, []);
@@ -36,6 +39,7 @@ export default function Profile() {
       if (members.length > 0) {
         setMember(members[0]);
         setBioDraft(members[0].mini_bio || "");
+        setStudyDraft({ course: members[0].course || "", university: members[0].university || "", occupation: members[0].occupation || "" });
       } else {
         const all = await base44.entities.Member.list("-total_points", 1);
         if (all.length > 0) setMember(all[0]);
@@ -65,6 +69,15 @@ export default function Profile() {
     setMember(m => ({ ...m, mini_bio: bioDraft }));
     setSavingBio(false);
     setEditingBio(false);
+  }
+
+  async function handleSaveStudy() {
+    if (!member) return;
+    setSavingStudy(true);
+    await base44.entities.Member.update(member.id, studyDraft);
+    setMember(m => ({ ...m, ...studyDraft }));
+    setSavingStudy(false);
+    setEditingStudy(false);
   }
 
   async function handleAvatarChange(e) {
@@ -219,6 +232,49 @@ export default function Profile() {
               </div>
             ) : (
               <p className="font-inter text-sm text-foreground">{member.mini_bio || "Nenhuma bio adicionada ainda."}</p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Study / Occupation */}
+      {member && (
+        <div className="px-4 mt-4">
+          <div className="rounded-2xl p-4" style={{ background: "hsl(var(--card))", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}>
+            <div className="flex items-center justify-between mb-2">
+              <p className="font-inter text-xs font-semibold" style={{ color: "#6B7280" }}>Formação / Profissão</p>
+              {!editingStudy && (
+                <button onClick={() => setEditingStudy(true)} className="flex items-center gap-1 font-inter text-xs font-semibold" style={{ color: "#B8872A" }}>
+                  <Pencil size={12} /> Editar
+                </button>
+              )}
+            </div>
+            {editingStudy ? (
+              <div className="flex flex-col gap-2">
+                <input value={studyDraft.course} onChange={e => setStudyDraft(d => ({ ...d, course: e.target.value }))}
+                  placeholder="Curso (ex: Administração)"
+                  className="w-full rounded-xl px-3 py-2 font-inter text-sm outline-none text-foreground"
+                  style={{ background: "hsl(var(--background))", border: "1px solid rgba(7,29,51,0.1)" }} />
+                <input value={studyDraft.university} onChange={e => setStudyDraft(d => ({ ...d, university: e.target.value }))}
+                  placeholder="Faculdade / Instituição"
+                  className="w-full rounded-xl px-3 py-2 font-inter text-sm outline-none text-foreground"
+                  style={{ background: "hsl(var(--background))", border: "1px solid rgba(7,29,51,0.1)" }} />
+                <input value={studyDraft.occupation} onChange={e => setStudyDraft(d => ({ ...d, occupation: e.target.value }))}
+                  placeholder="Ocupação / Profissão"
+                  className="w-full rounded-xl px-3 py-2 font-inter text-sm outline-none text-foreground"
+                  style={{ background: "hsl(var(--background))", border: "1px solid rgba(7,29,51,0.1)" }} />
+                <div className="flex gap-2 justify-end">
+                  <button onClick={() => { setEditingStudy(false); setStudyDraft({ course: member.course || "", university: member.university || "", occupation: member.occupation || "" }); }} className="px-3 py-1.5 rounded-lg font-inter text-xs font-semibold" style={{ color: "#6B7280" }}>Cancelar</button>
+                  <button onClick={handleSaveStudy} disabled={savingStudy} className="flex items-center gap-1 px-3 py-1.5 rounded-lg font-inter text-xs font-semibold text-white" style={{ background: "#071D33" }}>
+                    <Check size={12} /> {savingStudy ? "Salvando..." : "Salvar"}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-0.5">
+                <p className="font-inter text-sm text-foreground">{member.course || "Curso não informado"}{member.university ? ` · ${member.university}` : ""}</p>
+                <p className="font-inter text-sm" style={{ color: "#6B7280" }}>{member.occupation || "Ocupação não informada"}</p>
+              </div>
             )}
           </div>
         </div>

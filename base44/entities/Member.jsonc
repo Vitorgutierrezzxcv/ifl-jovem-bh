@@ -117,6 +117,9 @@
     "course": {
       "type": "string"
     },
+    "occupation": {
+      "type": "string"
+    },
     "mini_bio": {
       "type": "string"
     },
