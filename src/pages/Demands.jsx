@@ -13,7 +13,6 @@ const CATEGORIES = [
   "Questões Relativas ao ROL Literário (vídeos)",
   "Outros Problemas do Ranking",
   "Inscrição para Recepção/Sombra em Eventos",
-  "Solicitação de Desligamento",
   "Outros",
 ];
 

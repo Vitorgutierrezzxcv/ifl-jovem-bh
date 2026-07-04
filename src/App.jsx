@@ -32,6 +32,7 @@ import Directory from './pages/Directory';
 import ExtraordinaryEvents from './pages/ExtraordinaryEvents';
 import BoardArea from './pages/BoardArea';
 import ReceptionSignup from './pages/ReceptionSignup';
+import TerminationRequest from './pages/TerminationRequest';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -84,6 +85,7 @@ const AuthenticatedApp = () => {
         <Route path="/eventos-extraordinarios" element={<ExtraordinaryEvents />} />
         <Route path="/diretoria" element={<BoardArea />} />
         <Route path="/recepcao-sombra" element={<ReceptionSignup />} />
+        <Route path="/solicitar-desligamento" element={<TerminationRequest />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <BottomNav />

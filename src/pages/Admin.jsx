@@ -21,6 +21,7 @@ import AdminSponsors from "../components/admin/AdminSponsors";
 import AdminBoardDocuments from "../components/admin/AdminBoardDocuments";
 import AdminRolArticles from "../components/admin/AdminRolArticles";
 import AdminReceptionSignups from "../components/admin/AdminReceptionSignups";
+import AdminTerminationRequests from "../components/admin/AdminTerminationRequests";
 
 const ADMIN_SECTIONS = {
   dashboard: AdminDashboard,
@@ -95,6 +96,7 @@ export default function Admin() {
       board: <AdminBoardDocuments />,
       rol: <AdminRolArticles />,
       reception: <AdminReceptionSignups />,
+      termination: <AdminTerminationRequests />,
     };
     return sections[activeSection] || sections.dashboard;
   };

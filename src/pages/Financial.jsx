@@ -75,7 +75,7 @@ export default function Financial() {
       )}
 
       <div className="px-4 mt-4">
-        <button onClick={() => navigate("/demandas", { state: { presetCategory: "Solicitação de Desligamento" } })}
+        <button onClick={() => navigate("/solicitar-desligamento")}
           className="w-full rounded-2xl p-4 flex items-center gap-3 card-hover"
           style={{ background: "rgba(180,35,24,0.05)", border: "1px solid rgba(180,35,24,0.15)" }}>
           <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(180,35,24,0.1)" }}>
