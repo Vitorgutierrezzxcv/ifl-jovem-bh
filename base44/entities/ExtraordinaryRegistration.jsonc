@@ -17,6 +17,15 @@
     "answers": {
       "type": "string"
     },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pendente",
+        "aprovado",
+        "recusado"
+      ],
+      "default": "pendente"
+    },
     "selected": {
       "type": "boolean",
       "default": false

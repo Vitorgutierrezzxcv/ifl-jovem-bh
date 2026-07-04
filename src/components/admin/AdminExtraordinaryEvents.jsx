@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { Plus, X, Zap, Users, Check } from "lucide-react";
+import { Plus, X, Zap, Users, Check, XCircle, Clock } from "lucide-react";
 
 export default function AdminExtraordinaryEvents() {
   const [events, setEvents] = useState([]);
@@ -36,8 +36,8 @@ export default function AdminExtraordinaryEvents() {
     load();
   }
 
-  async function toggleSelected(reg) {
-    await base44.entities.ExtraordinaryRegistration.update(reg.id, { selected: !reg.selected });
+  async function decide(reg, status) {
+    await base44.entities.ExtraordinaryRegistration.update(reg.id, { status, selected: status === "aprovado" });
     load();
   }
 
@@ -77,20 +77,42 @@ export default function AdminExtraordinaryEvents() {
           <div className="flex flex-col gap-2">
             {eventRegs.length === 0 ? (
               <p className="font-inter text-sm" style={{ color: "#9CA3AF" }}>Nenhuma inscrição ainda.</p>
-            ) : eventRegs.map(r => (
-              <div key={r.id} className="rounded-xl p-3 flex items-center gap-3" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.08)" }}>
-                <div className="flex-1 min-w-0">
-                  <p className="font-inter text-sm font-semibold text-foreground">{r.member_name}</p>
-                  {r.answers && <p className="font-inter text-xs mt-0.5" style={{ color: "#6B7280" }}>{Object.values(JSON.parse(r.answers || "{}")).join(" · ")}</p>}
-                  {r.confirmed && <span className="text-[10px] font-semibold" style={{ color: "#1F8A5B" }}>✓ presença confirmada</span>}
+            ) : eventRegs.map(r => {
+              const status = r.status || "pendente";
+              return (
+                <div key={r.id} className="rounded-xl p-3 flex flex-col gap-2" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.08)" }}>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-inter text-sm font-semibold text-foreground">{r.member_name}</p>
+                      {r.answers && Object.entries(JSON.parse(r.answers || "{}")).map(([q, a]) => (
+                        <p key={q} className="font-inter text-xs mt-1" style={{ color: "#6B7280" }}><span className="font-semibold">{q}</span> {a}</p>
+                      ))}
+                      {r.confirmed && <span className="text-[10px] font-semibold" style={{ color: "#1F8A5B" }}>✓ presença confirmada</span>}
+                    </div>
+                    <span className="flex items-center gap-1 px-2 py-1 rounded-lg font-inter text-[11px] font-semibold flex-shrink-0"
+                      style={{
+                        background: status === "aprovado" ? "rgba(31,138,91,0.1)" : status === "recusado" ? "rgba(180,35,24,0.1)" : "rgba(217,154,34,0.1)",
+                        color: status === "aprovado" ? "#1F8A5B" : status === "recusado" ? "#B42318" : "#D99A22",
+                      }}>
+                      {status === "aprovado" ? <Check size={12} /> : status === "recusado" ? <XCircle size={12} /> : <Clock size={12} />}
+                      {status === "aprovado" ? "Aprovado" : status === "recusado" ? "Recusado" : "Pendente"}
+                    </span>
+                  </div>
+                  <div className="flex gap-2">
+                    <button onClick={() => decide(r, "aprovado")}
+                      className="flex-1 flex items-center justify-center gap-1 py-2 rounded-lg font-inter text-xs font-semibold"
+                      style={{ background: status === "aprovado" ? "#1F8A5B" : "rgba(31,138,91,0.1)", color: status === "aprovado" ? "#FFF" : "#1F8A5B" }}>
+                      <Check size={13} /> Aprovar
+                    </button>
+                    <button onClick={() => decide(r, "recusado")}
+                      className="flex-1 flex items-center justify-center gap-1 py-2 rounded-lg font-inter text-xs font-semibold"
+                      style={{ background: status === "recusado" ? "#B42318" : "rgba(180,35,24,0.1)", color: status === "recusado" ? "#FFF" : "#B42318" }}>
+                      <XCircle size={13} /> Recusar
+                    </button>
+                  </div>
                 </div>
-                <button onClick={() => toggleSelected(r)}
-                  className="flex items-center gap-1 px-3 py-1.5 rounded-lg font-inter text-xs font-semibold flex-shrink-0"
-                  style={{ background: r.selected ? "rgba(31,138,91,0.1)" : "rgba(13,33,55,0.06)", color: r.selected ? "#1F8A5B" : "#6B7280" }}>
-                  <Check size={13} /> {r.selected ? "Selecionado" : "Selecionar"}
-                </button>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       ) : (

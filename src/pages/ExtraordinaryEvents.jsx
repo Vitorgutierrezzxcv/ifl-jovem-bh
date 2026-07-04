@@ -81,7 +81,7 @@ export default function ExtraordinaryEvents() {
     const reg = myRegs[selected.id];
     const daysUntil = Math.ceil((new Date(selected.date) - new Date(today)) / (1000 * 60 * 60 * 24));
     const eventPassed = selected.date < today;
-    const canGiveNps = eventPassed && reg?.selected && selected.collect_nps && reg?.nps_score === undefined;
+    const canGiveNps = eventPassed && reg?.status === "aprovado" && selected.collect_nps && reg?.nps_score === undefined;
 
     return (
       <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
@@ -139,17 +139,19 @@ export default function ExtraordinaryEvents() {
                 <p className="font-montserrat font-bold text-sm text-foreground">Inscrição enviada</p>
               </div>
               <p className="font-inter text-xs" style={{ color: "#6B7280" }}>
-                {reg.selected ? "Você foi selecionado(a) pela diretoria! 🎉" : "Aguardando seleção da diretoria."}
+                {reg.status === "aprovado" ? "Você foi selecionado(a) pela diretoria! 🎉"
+                  : reg.status === "recusado" ? "Sua inscrição não foi selecionada desta vez."
+                  : "Aguardando seleção da diretoria."}
               </p>
 
-              {reg.selected && !reg.confirmed && !eventPassed && daysUntil <= 5 && (
+              {reg.status === "aprovado" && !reg.confirmed && !eventPassed && daysUntil <= 5 && (
                 <button onClick={() => handleConfirm(reg)}
                   className="w-full rounded-2xl font-montserrat font-bold text-sm text-white mt-1"
                   style={{ height: 48, background: "#1F8A5B" }}>
                   Confirmar minha presença
                 </button>
               )}
-              {reg.selected && reg.confirmed && <p className="font-inter text-xs font-semibold" style={{ color: "#1F8A5B" }}>✓ Presença confirmada</p>}
+              {reg.status === "aprovado" && reg.confirmed && <p className="font-inter text-xs font-semibold" style={{ color: "#1F8A5B" }}>✓ Presença confirmada</p>}
             </div>
           )}
 
