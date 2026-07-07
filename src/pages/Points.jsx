@@ -25,13 +25,13 @@ const categoryLabels = {
 };
 
 const howToEarn = [
-  { label: "Participar de palestras ordinárias", pts: "+2 pts", color: "#071D33" },
+  { label: "Participar de palestras ordinárias", pts: "+2 pts", color: "#B5862A" },
   { label: "Auxiliar na organização de eventos", pts: "+3 pts", color: "#1F8A5B" },
   { label: "Participar do Clube do Livro", pts: "+1–3 pts", color: "#B8872A" },
   { label: "Publicar artigo no ROL Literário", pts: "+5 pts", color: "#B8872A" },
-  { label: "Completar tarefas mensais", pts: "+2 pts", color: "#071D33" },
+  { label: "Completar tarefas mensais", pts: "+2 pts", color: "#B5862A" },
   { label: "Participar de eventos extraordinários", pts: "+5 pts", color: "#1F8A5B" },
-  { label: "Atividades de gestão", pts: "+3–8 pts", color: "#071D33" },
+  { label: "Atividades de gestão", pts: "+3–8 pts", color: "#B5862A" },
   { label: "Presença em eventos institucionais", pts: "+2 pts", color: "#B8872A" },
 ];
 
@@ -125,7 +125,7 @@ export default function Points() {
           <>
             {tab === "aprovado" && (ledger.length === 0 ? (
               <div className="flex flex-col items-center py-10 gap-2">
-                <Star size={36} style={{ color: "rgba(7,29,51,0.12)" }} />
+                <Star size={36} style={{ color: "rgba(255,255,255,0.15)" }} />
                 <p className="font-inter text-sm" style={{ color: "#9CA3AF" }}>Nenhum ponto aprovado ainda</p>
               </div>
             ) : (
@@ -157,7 +157,7 @@ export default function Points() {
 
             {tab === "pendente" && (pendingLedger.length === 0 ? (
               <div className="flex flex-col items-center py-10 gap-2">
-                <Clock size={36} style={{ color: "rgba(7,29,51,0.12)" }} />
+                <Clock size={36} style={{ color: "rgba(255,255,255,0.15)" }} />
                 <p className="font-inter text-sm" style={{ color: "#9CA3AF" }}>Nenhum ponto pendente</p>
               </div>
             ) : (
@@ -187,7 +187,7 @@ export default function Points() {
 
             {tab === "recusado" && (rejectedLedger.length === 0 ? (
               <div className="flex flex-col items-center py-10 gap-2">
-                <XCircle size={36} style={{ color: "rgba(7,29,51,0.12)" }} />
+                <XCircle size={36} style={{ color: "rgba(255,255,255,0.15)" }} />
                 <p className="font-inter text-sm" style={{ color: "#9CA3AF" }}>Nenhum ponto recusado</p>
               </div>
             ) : (

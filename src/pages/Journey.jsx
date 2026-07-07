@@ -95,7 +95,7 @@ export default function Journey() {
               <p className="font-montserrat font-bold text-sm" style={{ color: donePct >= 80 ? "#1F8A5B" : "#D99A22" }}>
                 {donePct >= 80 ? "Você está apto para análise!" : "Faltam poucos passos"}
               </p>
-              <p className="font-inter text-xs mt-0.5" style={{ color: "#6B7280" }}>
+              <p className="font-inter text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.6)" }}>
                 {donePct >= 80 ? "Aguarde a validação da Diretoria de Formação." : `Conclua mais ${requirements.filter(r => !r.done).length} requisito(s) para avançar.`}
               </p>
             </div>
@@ -138,9 +138,9 @@ export default function Journey() {
             {tips.map((tip, i) => (
               <button key={i} onClick={() => navigate(tip.path)}
                 className="rounded-2xl p-3 flex items-center gap-3 card-hover w-full text-left"
-                style={{ background: "rgba(13,33,55,0.04)", border: "1px solid rgba(13,33,55,0.08)" }}>
-                <ChevronRight size={14} style={{ color: "#B5862A", flexShrink: 0 }} />
-                <p className="font-inter text-sm flex-1" style={{ color: "#374151" }}>{tip.text}</p>
+                style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}>
+                <ChevronRight size={14} style={{ color: "#D4A043", flexShrink: 0 }} />
+                <p className="font-inter text-sm flex-1" style={{ color: "rgba(255,255,255,0.8)" }}>{tip.text}</p>
               </button>
             ))}
           </div>

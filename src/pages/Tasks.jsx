@@ -138,7 +138,7 @@ export default function Tasks({ embedded = false }) {
         <div className="px-4 pt-4 flex flex-col gap-4">
           
           {/* Task Header */}
-          <div className="rounded-2xl p-5" style={{ background: "#0D2137", border: "1px solid rgba(181,134,42,0.2)" }}>
+          <div className="rounded-2xl p-5" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(181,134,42,0.3)" }}>
             <div className="flex items-start gap-3 mb-3">
               <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "rgba(181,134,42,0.15)" }}>
                 <CheckSquare size={20} style={{ color: "#D4A043" }} />
@@ -269,9 +269,9 @@ export default function Tasks({ embedded = false }) {
               )}
 
               {sub.feedback && (
-                <div className="rounded-2xl p-4" style={{ background: "rgba(184,135,42,0.06)", border: "1px solid rgba(184,135,42,0.15)" }}>
-                  <p className="font-montserrat font-bold text-sm mb-2" style={{ color: "#0D2137" }}>💬 Feedback da Diretoria</p>
-                  <p className="font-inter text-sm leading-relaxed" style={{ color: "#374151" }}>{sub.feedback}</p>
+                <div className="rounded-2xl p-4" style={{ background: "rgba(184,135,42,0.12)", border: "1px solid rgba(184,135,42,0.3)" }}>
+                  <p className="font-montserrat font-bold text-sm mb-2" style={{ color: "#D4A043" }}>💬 Feedback da Diretoria</p>
+                  <p className="font-inter text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.8)" }}>{sub.feedback}</p>
                 </div>
               )}
 
@@ -303,14 +303,14 @@ export default function Tasks({ embedded = false }) {
                 placeholder="Escreva sua resposta, reflexão ou descreva o que você fez..."
                 value={submissionText}
                 onChange={e => setSubmissionText(e.target.value)}
-                style={{ borderColor: "rgba(13,33,55,0.12)", background: "#0D2137" }}
+                style={{ borderColor: "rgba(13,33,55,0.12)", background: "rgba(13,33,55,0.04)", color: "#111827" }}
               />
 
               {/* Link */}
               <label className="font-inter text-xs font-semibold block mt-3 mb-1.5" style={{ color: "#0D2137" }}>
                 Link (opcional)
               </label>
-              <div className="flex items-center gap-2 p-3 rounded-xl" style={{ background: "#0D2137", border: "1px solid rgba(13,33,55,0.1)" }}>
+              <div className="flex items-center gap-2 p-3 rounded-xl" style={{ background: "rgba(13,33,55,0.04)", border: "1px solid rgba(13,33,55,0.1)" }}>
                 <Link size={15} style={{ color: "#6B7280" }} />
                 <input
                   className="flex-1 bg-transparent font-inter text-sm outline-none"
@@ -341,7 +341,7 @@ export default function Tasks({ embedded = false }) {
                 <button
                   onClick={() => fileInputRef.current?.click()}
                   className="w-full flex items-center justify-center gap-2 p-3 rounded-xl font-inter text-sm"
-                  style={{ background: "#0D2137", border: "1px dashed rgba(13,33,55,0.2)", color: "#6B7280" }}>
+                  style={{ background: "rgba(13,33,55,0.04)", border: "1px dashed rgba(13,33,55,0.2)", color: "#6B7280" }}>
                   <Paperclip size={15} />
                   Clique para anexar arquivo
                 </button>
@@ -351,7 +351,7 @@ export default function Tasks({ embedded = false }) {
                 onClick={handleSubmit}
                 disabled={submitting || !canSend}
                 className="w-full mt-4 py-3 rounded-xl font-montserrat font-bold text-sm text-white transition-all"
-                style={{ background: !canSend || submitting ? "#9CA3AF" : "#0D2137" }}
+                style={{ background: !canSend || submitting ? "#9CA3AF" : "#B5862A" }}
               >
                 {submitting ? "Enviando..." : isLate ? "Enviar (fora do prazo)" : "Enviar Tarefa"}
               </button>

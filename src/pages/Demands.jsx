@@ -129,7 +129,7 @@ export default function Demands() {
                 <p className="font-montserrat font-bold text-sm" style={{ color: "#9CA3AF" }}>Nenhuma demanda enviada ainda</p>
                 <button onClick={() => setView("new")}
                   className="px-6 py-3 rounded-2xl font-montserrat font-bold text-sm text-white"
-                  style={{ background: "#0D2137" }}>
+                  style={{ background: "#B5862A" }}>
                   Enviar primeira demanda
                 </button>
               </div>
@@ -201,36 +201,36 @@ export default function Demands() {
                 <div className="w-20 h-20 rounded-full flex items-center justify-center" style={{ background: "rgba(31,138,91,0.1)" }}>
                   <CheckCircle2 size={40} style={{ color: "#1F8A5B" }} />
                 </div>
-                <h2 className="font-montserrat font-black text-xl text-center" style={{ color: "#0D2137" }}>Demanda enviada!</h2>
-                <p className="font-inter text-sm text-center leading-relaxed" style={{ color: "#6B7280" }}>
+                <h2 className="font-montserrat font-black text-xl text-center" style={{ color: "#FFFFFF" }}>Demanda enviada!</h2>
+                <p className="font-inter text-sm text-center leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>
                   Sua solicitação foi registrada. Acompanhe o status aqui no app.
                 </p>
               </div>
             ) : (
               <>
-                <div className="rounded-2xl p-4 mb-4" style={{ background: "rgba(13,33,55,0.04)", border: "1px solid rgba(13,33,55,0.1)" }}>
-                  <p className="font-inter text-sm leading-relaxed" style={{ color: "#374151" }}>
+                <div className="rounded-2xl p-4 mb-4" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}>
+                  <p className="font-inter text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.8)" }}>
                     Todos os pedidos serão analisados em até <strong>2 semanas</strong>. A resposta aparecerá aqui no app.
                   </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                   <div>
-                    <label className="font-inter text-xs font-semibold block mb-1.5" style={{ color: "#0D2137" }}>Nome <span style={{ color: "#B42318" }}>*</span></label>
+                    <label className="font-inter text-xs font-semibold block mb-1.5" style={{ color: "#D4A043" }}>Nome <span style={{ color: "#B42318" }}>*</span></label>
                     <input value={form.nome} onChange={e => setForm({ ...form, nome: e.target.value })} placeholder="Seu nome completo" required
                       className="w-full rounded-xl px-4 font-inter text-sm focus:outline-none"
                       style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.1)", color: "#111827", height: 48 }} />
                   </div>
 
                   <div>
-                    <label className="font-inter text-xs font-semibold block mb-1.5" style={{ color: "#0D2137" }}>Telefone (WhatsApp)</label>
+                    <label className="font-inter text-xs font-semibold block mb-1.5" style={{ color: "#D4A043" }}>Telefone (WhatsApp)</label>
                     <input value={form.telefone} onChange={e => setForm({ ...form, telefone: e.target.value })} placeholder="(31) 9 0000-0000" type="tel"
                       className="w-full rounded-xl px-4 font-inter text-sm focus:outline-none"
                       style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.1)", color: "#111827", height: 48 }} />
                   </div>
 
                   <div>
-                    <label className="font-inter text-xs font-semibold block mb-1.5" style={{ color: "#0D2137" }}>Ciclo de Formação <span style={{ color: "#B42318" }}>*</span></label>
+                    <label className="font-inter text-xs font-semibold block mb-1.5" style={{ color: "#D4A043" }}>Ciclo de Formação <span style={{ color: "#B42318" }}>*</span></label>
                     <div className="flex gap-2 flex-wrap">
                       {CYCLES.map(c => (
                         <button key={c} type="button" onClick={() => setForm({ ...form, ciclo: c })}
@@ -243,7 +243,7 @@ export default function Demands() {
                   </div>
 
                   <div>
-                    <label className="font-inter text-xs font-semibold block mb-1.5" style={{ color: "#0D2137" }}>Categoria <span style={{ color: "#B42318" }}>*</span></label>
+                    <label className="font-inter text-xs font-semibold block mb-1.5" style={{ color: "#D4A043" }}>Categoria <span style={{ color: "#B42318" }}>*</span></label>
                     <div className="flex flex-col gap-2">
                       {CATEGORIES.map(cat => (
                         <button key={cat} type="button" onClick={() => setForm({ ...form, categoria: cat })}
@@ -261,7 +261,7 @@ export default function Demands() {
 
                   {form.categoria === "Outros" && (
                     <div>
-                      <label className="font-inter text-xs font-semibold block mb-1.5" style={{ color: "#0D2137" }}>Especifique</label>
+                      <label className="font-inter text-xs font-semibold block mb-1.5" style={{ color: "#D4A043" }}>Especifique</label>
                       <input value={form.outro} onChange={e => setForm({ ...form, outro: e.target.value })} placeholder="Descreva sua demanda"
                         className="w-full rounded-xl px-4 font-inter text-sm focus:outline-none"
                         style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.1)", color: "#111827", height: 48 }} />
@@ -269,7 +269,7 @@ export default function Demands() {
                   )}
 
                   <div>
-                    <label className="font-inter text-xs font-semibold block mb-1.5" style={{ color: "#0D2137" }}>Justificativa <span style={{ color: "#B42318" }}>*</span></label>
+                    <label className="font-inter text-xs font-semibold block mb-1.5" style={{ color: "#D4A043" }}>Justificativa <span style={{ color: "#B42318" }}>*</span></label>
                     <textarea value={form.justificativa} onChange={e => setForm({ ...form, justificativa: e.target.value })}
                       placeholder="Descreva detalhadamente sua demanda..." rows={4} required
                       className="w-full rounded-xl px-4 py-3 font-inter text-sm resize-none focus:outline-none"
@@ -278,7 +278,7 @@ export default function Demands() {
 
                   <button type="submit" disabled={submitting || !form.nome || !form.ciclo || !form.categoria || !form.justificativa}
                     className="w-full rounded-2xl font-montserrat font-bold text-sm flex items-center justify-center gap-2"
-                    style={{ height: 52, background: (!form.nome || !form.ciclo || !form.categoria || !form.justificativa) ? "rgba(13,33,55,0.1)" : "#0D2137", color: (!form.nome || !form.ciclo || !form.categoria || !form.justificativa) ? "#9CA3AF" : "#FFF" }}>
+                    style={{ height: 52, background: (!form.nome || !form.ciclo || !form.categoria || !form.justificativa) ? "rgba(255,255,255,0.1)" : "#B5862A", color: (!form.nome || !form.ciclo || !form.categoria || !form.justificativa) ? "rgba(255,255,255,0.4)" : "#FFF" }}>
                     <Send size={16} />
                     {submitting ? "Enviando..." : "Enviar Demanda"}
                   </button>
