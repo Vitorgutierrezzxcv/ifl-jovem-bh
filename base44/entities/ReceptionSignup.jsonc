@@ -35,6 +35,15 @@
     },
     "notes": {
       "type": "string"
+    },
+    "help_type": {
+      "type": "string",
+      "enum": [
+        "recepcao",
+        "lanche",
+        "sombra"
+      ],
+      "default": "recepcao"
     }
   },
   "required": [
