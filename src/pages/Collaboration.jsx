@@ -58,7 +58,7 @@ export default function Collaboration() {
   // Already registered view
   if (myCollaboration && !submitted) {
     return (
-      <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
+      <div className="min-h-screen" style={{ background: "#0D2137", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
         <div style={{ background: "#0D2137" }}><MobileHeader title="Colaborações" dark /></div>
         <div className="flex flex-col items-center px-6 py-16 gap-4">
           <div className="w-20 h-20 rounded-full flex items-center justify-center" style={{ background: "rgba(181,134,42,0.1)" }}>
@@ -90,7 +90,7 @@ export default function Collaboration() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
+      <div className="min-h-screen" style={{ background: "#0D2137", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
         <div style={{ background: "#0D2137" }}><MobileHeader title="Colaborações" dark /></div>
         <div className="flex flex-col items-center justify-center px-6 py-16 gap-4">
           <div className="w-20 h-20 rounded-full flex items-center justify-center" style={{ background: "rgba(31,138,91,0.1)" }}>
@@ -109,7 +109,7 @@ export default function Collaboration() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
+    <div className="min-h-screen" style={{ background: "#0D2137", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
       <div style={{ background: "#0D2137" }}>
         <MobileHeader title="Colaborações" dark />
         <div className="px-5 pb-5 flex items-center gap-3">

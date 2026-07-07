@@ -88,7 +88,7 @@ export default function Demands() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
+    <div className="min-h-screen" style={{ background: "#0D2137", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
       <div style={{ background: "#0D2137" }}>
         <MobileHeader title="SAC — Demandas" dark />
         <div className="px-5 pb-4">
@@ -135,8 +135,8 @@ export default function Demands() {
               </div>
             ) : (
               <div className="flex flex-col gap-3">
-                <p className="font-inter text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: "#9CA3AF" }}>
-                  Suas solicitações ({myDemands.length})
+                <p className="font-inter text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: "#D4A043" }}>
+                   Suas solicitações ({myDemands.length})
                 </p>
                 {myDemands.map(d => {
                   const scfg = statusConfig[d.status] || statusConfig.pendente;
@@ -235,7 +235,7 @@ export default function Demands() {
                       {CYCLES.map(c => (
                         <button key={c} type="button" onClick={() => setForm({ ...form, ciclo: c })}
                           className="px-4 rounded-2xl font-inter text-xs font-semibold"
-                          style={{ height: 44, background: form.ciclo === c ? "#0D2137" : "hsl(var(--card))", color: form.ciclo === c ? "#FFF" : "#6B7280", border: form.ciclo === c ? "1px solid rgba(181,134,42,0.3)" : "1px solid rgba(13,33,55,0.1)" }}>
+                          style={{ height: 44, background: form.ciclo === c ? "rgba(181,134,42,0.15)" : "rgba(255,255,255,0.06)", color: form.ciclo === c ? "#D4A043" : "rgba(255,255,255,0.6)", border: form.ciclo === c ? "1px solid rgba(181,134,42,0.3)" : "1px solid rgba(255,255,255,0.1)" }}>
                           {c}
                         </button>
                       ))}

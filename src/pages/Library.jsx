@@ -121,7 +121,7 @@ export default function LibraryPage() {
   const featured = items.filter(i => i.featured).slice(0, 3);
 
   return (
-    <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
+    <div className="min-h-screen" style={{ background: "#0D2137", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
       <div style={{ background: "#0D2137" }}>
         <MobileHeader title="Biblioteca" dark />
         <div className="px-5 pb-4">

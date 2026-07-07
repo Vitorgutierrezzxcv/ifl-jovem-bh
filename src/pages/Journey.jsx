@@ -35,10 +35,10 @@ export default function Journey() {
   }
 
   const requirements = [
-    { key: "presenca", icon: Calendar, label: "Presença em Eventos Ordinários", target: "≥ 70%", value: `${Math.round(member?.attendance_percentage || 0)}%`, done: (member?.attendance_percentage || 0) >= 70, color: "#0D2137", path: "/presenca" },
+    { key: "presenca", icon: Calendar, label: "Presença em Eventos Ordinários", target: "≥ 70%", value: `${Math.round(member?.attendance_percentage || 0)}%`, done: (member?.attendance_percentage || 0) >= 70, color: "#D4A043", path: "/presenca" },
     { key: "clube", icon: BookOpen, label: "Clube do Livro", target: "3 de 5", value: "—", done: false, color: "#B5862A", path: "/clube-livro" },
     { key: "formacao", icon: Calendar, label: "Eventos de Formação", target: "3 de 5", value: "—", done: false, color: "#1F8A5B", path: "/agenda" },
-    { key: "tarefas", icon: CheckSquare, label: "Tarefas Mensais", target: "3 tarefas", value: "—", done: false, color: "#0D2137", path: "/tarefas" },
+    { key: "tarefas", icon: CheckSquare, label: "Tarefas Mensais", target: "3 tarefas", value: "—", done: false, color: "#D4A043", path: "/tarefas" },
     { key: "artigo", icon: FileText, label: "Artigo ROL Literário", target: "1 artigo", value: "—", done: false, color: "#B5862A", path: "/rol" },
     { key: "financeiro", icon: DollarSign, label: "Pendências Financeiras", target: "Sem pendências", value: member?.financial_status === "em_dia" ? "Em dia" : "Pendente", done: member?.financial_status === "em_dia", color: "#1F8A5B", path: "/financeiro" },
   ];
@@ -104,7 +104,7 @@ export default function Journey() {
       </div>
 
       <div className="px-4 mt-5">
-        <h2 className="font-montserrat font-bold text-sm uppercase tracking-wider mb-3" style={{ color: "#0D2137" }}>
+        <h2 className="font-montserrat font-bold text-sm uppercase tracking-wider mb-3" style={{ color: "#D4A043" }}>
           <span style={{ borderBottom: "2px solid #B5862A", paddingBottom: 2 }}>Requisitos Anuais</span>
         </h2>
         <div className="flex flex-col gap-2">
@@ -131,7 +131,7 @@ export default function Journey() {
 
       {tips.length > 0 && (
         <div className="px-4 mt-5">
-          <h2 className="font-montserrat font-bold text-sm uppercase tracking-wider mb-3" style={{ color: "#0D2137" }}>
+          <h2 className="font-montserrat font-bold text-sm uppercase tracking-wider mb-3" style={{ color: "#D4A043" }}>
             <span style={{ borderBottom: "2px solid #B5862A", paddingBottom: 2 }}>Recomendações</span>
           </h2>
           <div className="flex flex-col gap-2">

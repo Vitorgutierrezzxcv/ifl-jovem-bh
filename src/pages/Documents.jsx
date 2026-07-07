@@ -65,7 +65,7 @@ export default function Documents() {
           <div className="flex flex-col gap-4">
             {Object.entries(grouped).map(([cat, items]) => (
               <div key={cat}>
-                <h3 className="font-montserrat font-bold text-xs uppercase tracking-wider mb-2" style={{ color: "#9CA3AF" }}>
+                <h3 className="font-montserrat font-bold text-xs uppercase tracking-wider mb-2" style={{ color: "#D4A043" }}>
                   {categoryLabels[cat] || cat}
                 </h3>
                 <div className="flex flex-col gap-1.5">

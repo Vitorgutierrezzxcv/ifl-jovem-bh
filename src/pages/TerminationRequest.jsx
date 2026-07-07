@@ -56,7 +56,7 @@ export default function TerminationRequest() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
+    <div className="min-h-screen" style={{ background: "#0D2137", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
       <div style={{ background: "#0D2137" }}>
         <MobileHeader title="Solicitar Desligamento" dark />
         <div className="px-5 pb-4">

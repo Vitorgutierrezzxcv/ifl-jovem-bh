@@ -49,7 +49,7 @@ export default function ReceptionSignup() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#F0F0F4" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0D2137" }}>
         <div className="w-8 h-8 border-4 border-gray-200 border-t-ifl-navy rounded-full animate-spin" />
       </div>
     );
@@ -59,7 +59,7 @@ export default function ReceptionSignup() {
   const signupByType = (type) => signups.find(s => s.help_type === type);
 
   return (
-    <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
+    <div className="min-h-screen" style={{ background: "#0D2137", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
       <div style={{ background: "#0D2137" }}>
         <MobileHeader title="Ajuda em Eventos" dark />
         <div className="px-5 pb-4">

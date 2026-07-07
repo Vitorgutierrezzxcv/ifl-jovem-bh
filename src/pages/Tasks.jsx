@@ -124,7 +124,7 @@ export default function Tasks({ embedded = false }) {
     const canSend = submissionText.trim() || submissionLink.trim() || submissionFile;
 
     return (
-      <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
+      <div className="min-h-screen" style={{ background: "#0D2137", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
         {embedded ? (
           <div className="flex items-center gap-3 px-5" style={{ background: "#0D2137", paddingTop: "calc(env(safe-area-inset-top) + 12px)", paddingBottom: "12px" }}>
             <button onClick={() => setSelectedTask(null)} className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: "rgba(255,255,255,0.1)" }}>
@@ -303,14 +303,14 @@ export default function Tasks({ embedded = false }) {
                 placeholder="Escreva sua resposta, reflexão ou descreva o que você fez..."
                 value={submissionText}
                 onChange={e => setSubmissionText(e.target.value)}
-                style={{ borderColor: "rgba(13,33,55,0.12)", background: "#F0F0F4" }}
+                style={{ borderColor: "rgba(13,33,55,0.12)", background: "#0D2137" }}
               />
 
               {/* Link */}
               <label className="font-inter text-xs font-semibold block mt-3 mb-1.5" style={{ color: "#0D2137" }}>
                 Link (opcional)
               </label>
-              <div className="flex items-center gap-2 p-3 rounded-xl" style={{ background: "#F0F0F4", border: "1px solid rgba(13,33,55,0.1)" }}>
+              <div className="flex items-center gap-2 p-3 rounded-xl" style={{ background: "#0D2137", border: "1px solid rgba(13,33,55,0.1)" }}>
                 <Link size={15} style={{ color: "#6B7280" }} />
                 <input
                   className="flex-1 bg-transparent font-inter text-sm outline-none"
@@ -341,7 +341,7 @@ export default function Tasks({ embedded = false }) {
                 <button
                   onClick={() => fileInputRef.current?.click()}
                   className="w-full flex items-center justify-center gap-2 p-3 rounded-xl font-inter text-sm"
-                  style={{ background: "#F0F0F4", border: "1px dashed rgba(13,33,55,0.2)", color: "#6B7280" }}>
+                  style={{ background: "#0D2137", border: "1px dashed rgba(13,33,55,0.2)", color: "#6B7280" }}>
                   <Paperclip size={15} />
                   Clique para anexar arquivo
                 </button>
@@ -369,7 +369,7 @@ export default function Tasks({ embedded = false }) {
 
   // ── LIST VIEW ──
   return (
-    <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
+    <div className="min-h-screen" style={{ background: "#0D2137", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
       {!embedded && <MobileHeader title="Tarefas" dark />}
 
       <div className="flex gap-2 px-4 pt-4 pb-2 overflow-x-auto scrollbar-hide">
@@ -380,9 +380,9 @@ export default function Tasks({ embedded = false }) {
             <button key={tab.key} onClick={() => setActiveFilter(tab.key)}
               className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full font-inter text-xs font-semibold"
               style={{
-                background: active ? "#0D2137" : "hsl(var(--card))",
-                color: active ? "#FFFFFF" : "#6B7280",
-                border: active ? "none" : "1px solid rgba(13,33,55,0.1)",
+                background: active ? "rgba(181,134,42,0.15)" : "rgba(255,255,255,0.06)",
+                color: active ? "#D4A043" : "rgba(255,255,255,0.6)",
+                border: active ? "1px solid rgba(181,134,42,0.3)" : "1px solid rgba(255,255,255,0.1)",
               }}>
               {tab.label}
               {count > 0 && (

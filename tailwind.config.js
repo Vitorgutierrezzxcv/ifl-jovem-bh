@@ -29,7 +29,7 @@ module.exports = {
           'gold-light': '#C9973A',
           'gold-dark': '#9A6E1F',
           white: '#FFFFFF',
-          'gray-bg': '#F4F5F6',
+          'gray-bg': '#0D2137',
           'gray-light': '#F7F7F4',
           'gray-text': '#6B7280',
           'dark-text': '#111827',

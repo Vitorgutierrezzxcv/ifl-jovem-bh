@@ -116,7 +116,7 @@ export default function ROL({ embedded = false }) {
   });
 
   return (
-    <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
+    <div className="min-h-screen" style={{ background: "#0D2137", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
       {!embedded && (
         <div style={{ background: "#0D2137" }}>
           <MobileHeader title="ROL Literário" dark />
@@ -186,7 +186,7 @@ export default function ROL({ embedded = false }) {
           {Object.entries(cicloLabels).map(([key, label]) => (
             <button key={key} onClick={() => setActiveCiclo(key)}
               className="flex-shrink-0 px-3 py-1.5 rounded-full font-inter text-xs font-semibold"
-              style={{ background: activeCiclo === key ? "#0D2137" : "hsl(var(--card))", color: activeCiclo === key ? "#FFF" : "#6B7280", border: activeCiclo === key ? "none" : "1px solid rgba(13,33,55,0.1)" }}>
+              style={{ background: activeCiclo === key ? "rgba(181,134,42,0.15)" : "rgba(255,255,255,0.06)", color: activeCiclo === key ? "#D4A043" : "rgba(255,255,255,0.6)", border: activeCiclo === key ? "1px solid rgba(181,134,42,0.3)" : "1px solid rgba(255,255,255,0.1)" }}>
               {label}
             </button>
           ))}
@@ -197,7 +197,7 @@ export default function ROL({ embedded = false }) {
           {temas.map(tema => (
             <button key={tema} onClick={() => setActiveTema(tema)}
               className="flex-shrink-0 px-3 py-1 rounded-full font-inter text-[11px] font-semibold"
-              style={{ background: activeTema === tema ? "#B5862A" : "hsl(var(--card))", color: activeTema === tema ? "#FFF" : "#6B7280", border: activeTema === tema ? "none" : "1px solid rgba(13,33,55,0.1)" }}>
+              style={{ background: activeTema === tema ? "#B5862A" : "rgba(255,255,255,0.06)", color: activeTema === tema ? "#FFF" : "rgba(255,255,255,0.6)", border: activeTema === tema ? "none" : "1px solid rgba(255,255,255,0.1)" }}>
               {tema}
             </button>
           ))}

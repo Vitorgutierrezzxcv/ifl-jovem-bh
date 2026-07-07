@@ -74,9 +74,9 @@ export default function PointsCriteria() {
           <button key={d} onClick={() => setFilter(d)}
             className="flex-shrink-0 px-4 py-2 rounded-2xl font-inter text-xs font-semibold transition-all"
             style={{
-              background: filter === d ? "#071D33" : "hsl(var(--card))",
-              color: filter === d ? "#D4A043" : "#6B7280",
-              border: filter === d ? "1px solid rgba(184,135,42,0.3)" : "1px solid rgba(7,29,51,0.08)",
+              background: filter === d ? "rgba(181,134,42,0.15)" : "rgba(255,255,255,0.06)",
+              color: filter === d ? "#D4A043" : "rgba(255,255,255,0.6)",
+              border: filter === d ? "1px solid rgba(181,134,42,0.3)" : "1px solid rgba(255,255,255,0.1)",
               height: 36,
             }}>
             {d}

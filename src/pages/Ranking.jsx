@@ -78,7 +78,7 @@ export default function Ranking() {
   const myRanked = myMember ? ranked.find(m => m.id === myMember.id) : null;
 
   return (
-    <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
+    <div className="min-h-screen" style={{ background: "#0D2137", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
       <div style={{ background: "#0D2137" }}>
         <MobileHeader title="Ranking" dark />
         {myRanked && (
@@ -107,7 +107,7 @@ export default function Ranking() {
         {tabs.map(t => (
           <button key={t.key} onClick={() => setActiveTab(t.key)}
             className="flex-shrink-0 px-3 py-1.5 rounded-full font-inter text-xs font-semibold"
-            style={{ background: activeTab === t.key ? "#0D2137" : "hsl(var(--card))", color: activeTab === t.key ? "#FFF" : "#6B7280", border: activeTab === t.key ? "none" : "1px solid rgba(13,33,55,0.1)" }}>
+            style={{ background: activeTab === t.key ? "rgba(181,134,42,0.15)" : "rgba(255,255,255,0.06)", color: activeTab === t.key ? "#D4A043" : "rgba(255,255,255,0.6)", border: activeTab === t.key ? "1px solid rgba(181,134,42,0.3)" : "1px solid rgba(255,255,255,0.1)" }}>
             {t.label}
           </button>
         ))}
@@ -185,7 +185,7 @@ export default function Ranking() {
       {!loading && (
         <div className="px-4 mt-6 mb-2">
           <div className="rounded-2xl p-4" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.08)" }}>
-            <p className="font-montserrat font-bold text-sm mb-3" style={{ color: "#0D2137" }}>🎮 Níveis de Engajamento</p>
+            <p className="font-montserrat font-bold text-sm mb-3" style={{ color: "#D4A043" }}>🎮 Níveis de Engajamento</p>
             {[
               { name: "Observador", icon: "👁️", pts: "0–49 pts", color: "#9CA3AF" },
               { name: "Iniciante", icon: "🎯", pts: "50–99 pts", color: "#6B7280" },

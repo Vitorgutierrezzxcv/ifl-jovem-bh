@@ -86,7 +86,7 @@ export default function Financial() {
       </div>
 
       <div className="px-4 mt-5">
-        <h2 className="font-montserrat font-bold text-sm uppercase tracking-wider mb-3" style={{ color: "#071D33" }}>
+        <h2 className="font-montserrat font-bold text-sm uppercase tracking-wider mb-3" style={{ color: "#D4A043" }}>
           <span style={{ borderBottom: "2px solid #B8872A", paddingBottom: 2 }}>Histórico de Cobranças</span>
         </h2>
         {loading ? (
@@ -112,7 +112,7 @@ export default function Financial() {
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="font-montserrat font-bold text-base" style={{ color: "#071D33" }}>R$ {c.amount}</p>
+                  <p className="font-montserrat font-bold text-base" style={{ color: "#D4A043" }}>R$ {c.amount}</p>
                   <StatusBadge status={c.status} />
                 </div>
               </div>

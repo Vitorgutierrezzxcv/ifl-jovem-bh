@@ -141,9 +141,9 @@ export default function CycleInfo() {
           <button key={t.key} onClick={() => setTab(t.key)}
             className="flex-shrink-0 px-4 py-2 rounded-2xl font-inter text-xs font-semibold transition-all"
             style={{
-              background: tab === t.key ? "#071D33" : "hsl(var(--card))",
-              color: tab === t.key ? "#D4A043" : "#6B7280",
-              border: tab === t.key ? "1px solid rgba(184,135,42,0.3)" : "1px solid rgba(7,29,51,0.08)",
+              background: tab === t.key ? "rgba(181,134,42,0.15)" : "rgba(255,255,255,0.06)",
+              color: tab === t.key ? "#D4A043" : "rgba(255,255,255,0.6)",
+              border: tab === t.key ? "1px solid rgba(181,134,42,0.3)" : "1px solid rgba(255,255,255,0.1)",
             }}>
             {t.label}
           </button>
@@ -156,7 +156,7 @@ export default function CycleInfo() {
         {tab === "visao" && (
           <div className="flex flex-col gap-3">
             {/* Ciclos */}
-            <h2 className="font-montserrat font-bold text-xs uppercase tracking-wider" style={{ color: "#6B7280" }}>Divisão dos Ciclos</h2>
+            <h2 className="font-montserrat font-bold text-xs uppercase tracking-wider" style={{ color: "#D4A043" }}>Divisão dos Ciclos</h2>
             {Object.entries(cycleInfo).map(([key, c]) => (
               <div key={key} className="rounded-2xl p-4 flex items-start gap-3"
                 style={{

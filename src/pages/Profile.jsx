@@ -164,9 +164,9 @@ export default function Profile() {
             onClick={() => setActiveTab(tab.key)}
             className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl font-inter text-sm font-semibold transition-all"
             style={{
-              background: activeTab === tab.key ? "#071D33" : "hsl(var(--card))",
-              color: activeTab === tab.key ? "#D4A043" : "#6B7280",
-              border: activeTab === tab.key ? "1px solid rgba(184,135,42,0.2)" : "1px solid rgba(7,29,51,0.06)",
+              background: activeTab === tab.key ? "rgba(181,134,42,0.15)" : "rgba(255,255,255,0.06)",
+              color: activeTab === tab.key ? "#D4A043" : "rgba(255,255,255,0.6)",
+              border: activeTab === tab.key ? "1px solid rgba(181,134,42,0.3)" : "1px solid rgba(255,255,255,0.1)",
             }}
           >
             {tab.icon && <tab.icon size={14} strokeWidth={2} />}
@@ -333,7 +333,7 @@ export default function Profile() {
 
       {/* Menu items */}
       <div className="px-4 mt-4">
-        <h2 className="font-montserrat font-bold text-xs uppercase tracking-wider mb-3" style={{ color: "#9CA3AF" }}>Mais opções</h2>
+        <h2 className="font-montserrat font-bold text-xs uppercase tracking-wider mb-3" style={{ color: "#D4A043" }}>Mais opções</h2>
         <div className="rounded-2xl overflow-hidden" style={{ background: "hsl(var(--card))", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}>
           {menuItems.map((item, idx) => (
             <button key={item.path} onClick={() => navigate(item.path)}

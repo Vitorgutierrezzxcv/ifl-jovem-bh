@@ -8,7 +8,7 @@ export default function Assignments({ initialTab = "tarefas" }) {
   const [tab, setTab] = useState(initialTab);
 
   return (
-    <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
+    <div className="min-h-screen" style={{ background: "#0D2137", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
       <div style={{ background: "#0D2137" }}>
         <MobileHeader title="Entregas" dark showNotification={false} />
         <div className="px-5 pb-3 flex gap-2">

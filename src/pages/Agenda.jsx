@@ -132,7 +132,7 @@ export default function Agenda() {
     const sc = statusColors[selected.status] || statusColors.publicado;
     const isExtraordinary = selected.type === "evento_extraordinario";
     return (
-      <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
+      <div className="min-h-screen" style={{ background: "#0D2137", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
         <div style={{ background: "#0D2137" }}>
           <MobileHeader title="Evento" dark showBack />
         </div>
@@ -195,7 +195,7 @@ export default function Agenda() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
+    <div className="min-h-screen" style={{ background: "#0D2137", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
       <MobileHeader title="Agenda" dark />
 
       <div className="px-4 pt-4">
@@ -206,7 +206,7 @@ export default function Agenda() {
         {[{ key: "proximos", label: "Próximos" }, { key: "realizados", label: "Realizados" }, { key: "todos", label: "Todos" }].map(f => (
           <button key={f.key} onClick={() => setFilter(f.key)}
             className="px-4 py-1.5 rounded-full font-inter text-xs font-semibold"
-            style={{ background: filter === f.key ? "#0D2137" : "hsl(var(--card))", color: filter === f.key ? "#FFF" : "#6B7280", border: filter === f.key ? "none" : "1px solid rgba(13,33,55,0.1)" }}>
+            style={{ background: filter === f.key ? "rgba(181,134,42,0.15)" : "rgba(255,255,255,0.06)", color: filter === f.key ? "#D4A043" : "rgba(255,255,255,0.6)", border: filter === f.key ? "1px solid rgba(181,134,42,0.3)" : "1px solid rgba(255,255,255,0.1)" }}>
             {f.label}
           </button>
         ))}

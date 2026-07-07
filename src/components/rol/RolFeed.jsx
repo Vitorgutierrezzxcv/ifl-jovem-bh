@@ -17,7 +17,7 @@ export default function RolFeed({ member }) {
     <div className="mb-4">
       <div className="flex items-center gap-2 mb-3">
         <Users size={15} style={{ color: "#B5862A" }} />
-        <h2 className="font-montserrat font-bold text-sm text-foreground">Artigos da Comunidade</h2>
+        <h2 className="font-montserrat font-bold text-sm" style={{ color: "#D4A043" }}>Artigos da Comunidade</h2>
       </div>
       <div className="flex flex-col gap-3">
         {articles.map(a => (

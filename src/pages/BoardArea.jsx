@@ -43,7 +43,7 @@ export default function BoardArea() {
   }, {});
 
   return (
-    <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
+    <div className="min-h-screen" style={{ background: "#0D2137", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
       <div style={{ background: "#0D2137" }}>
         <MobileHeader title="Acesso da Diretoria" dark />
         <div className="px-5 pb-4 flex items-center gap-2">
@@ -63,7 +63,7 @@ export default function BoardArea() {
         ) : (
           Object.entries(grouped).map(([cat, items]) => (
             <div key={cat} className="mb-5">
-              <h2 className="font-montserrat font-bold text-xs uppercase tracking-wider mb-2" style={{ color: "#9CA3AF" }}>{categoryLabels[cat] || cat}</h2>
+              <h2 className="font-montserrat font-bold text-xs uppercase tracking-wider mb-2" style={{ color: "#D4A043" }}>{categoryLabels[cat] || cat}</h2>
               <div className="flex flex-col gap-2">
                 {items.map(d => (
                   <a key={d.id} href={d.file_url} target="_blank" rel="noopener noreferrer"

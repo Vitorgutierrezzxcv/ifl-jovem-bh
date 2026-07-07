@@ -39,7 +39,7 @@ export default function Opportunities() {
   if (selected) {
     const sc = statusColors[selected.status] || statusColors.aberta;
     return (
-      <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
+      <div className="min-h-screen" style={{ background: "#0D2137", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
         <div style={{ background: "#0D2137" }}><MobileHeader title="Oportunidade" dark showBack /></div>
         <div className="px-4 pt-4 flex flex-col gap-4">
           <div className="rounded-2xl p-5" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.08)" }}>
@@ -89,7 +89,7 @@ export default function Opportunities() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
+    <div className="min-h-screen" style={{ background: "#0D2137", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
       <MobileHeader title="Oportunidades" dark />
       <div className="px-4 pt-4 flex flex-col gap-3">
         {loading ? (

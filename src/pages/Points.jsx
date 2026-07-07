@@ -110,7 +110,7 @@ export default function Points() {
           ].map(t => (
             <button key={t.key} onClick={() => setTab(t.key)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full font-inter text-xs font-semibold"
-              style={{ background: tab === t.key ? "#071D33" : "rgba(255,255,255,0.8)", color: tab === t.key ? "white" : "#6B7280", border: tab === t.key ? "none" : "1px solid rgba(7,29,51,0.12)" }}>
+              style={{ background: tab === t.key ? "rgba(181,134,42,0.15)" : "rgba(255,255,255,0.06)", color: tab === t.key ? "#D4A043" : "rgba(255,255,255,0.6)", border: tab === t.key ? "1px solid rgba(181,134,42,0.3)" : "1px solid rgba(255,255,255,0.1)" }}>
               {t.label}
               {t.count > 0 && <span className="text-[10px]">({t.count})</span>}
             </button>
@@ -222,7 +222,7 @@ export default function Points() {
       {/* How to earn */}
       <div className="px-4 mt-6">
         <h2 className="font-montserrat font-bold text-xs uppercase tracking-wider mb-3"
-          style={{ color: "#6B7280" }}>
+          style={{ color: "#D4A043" }}>
           Como ganhar mais pontos
         </h2>
         <div className="rounded-2xl overflow-hidden" style={{ background: "hsl(var(--card))", border: "1px solid rgba(7,29,51,0.06)" }}>
