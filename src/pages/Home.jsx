@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { CheckSquare, Zap, Award, MessageSquare, HandHelping, ChevronRight, Bell } from "lucide-react";
+import { CheckSquare, Zap, Award, MessageSquare, HandHelping, ChevronRight, Bell, UserCircle, Coffee } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
 import StatusBadge from "../components/ui/StatusBadge";
 import usePullToRefresh from "../hooks/usePullToRefresh";
@@ -290,7 +290,9 @@ export default function Home() {
             { icon: CheckSquare, label: "Envio de Tarefas", path: "/tarefas", color: "#D4A043" },
             { icon: MessageSquare, label: "SAC — Demandas", path: "/demandas", color: "#D4A043" },
             { icon: Award, label: "Critérios de Pts", path: "/criterios-pontuacao", color: "#B8872A" },
-            { icon: HandHelping, label: "Ajuda em Eventos", path: "/recepcao-sombra", color: "#1F8A5B" },
+            { icon: UserCircle, label: "Recepção", path: "/recepcao-sombra", color: "#B5862A", state: { presetType: "recepcao" } },
+            { icon: Coffee, label: "Lanche", path: "/recepcao-sombra", color: "#1F8A5B", state: { presetType: "lanche" } },
+            { icon: HandHelping, label: "Sombra", path: "/recepcao-sombra", color: "#071D33", state: { presetType: "sombra" } },
           ].map(item => (
             <button
               key={item.label}

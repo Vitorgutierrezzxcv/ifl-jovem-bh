@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { HandHelping, CheckCircle2, Clock, Star, MapPin, Calendar, Coffee, UserCircle } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
@@ -10,11 +11,12 @@ const HELP_TYPES = [
 ];
 
 export default function ReceptionSignup() {
+  const location = useLocation();
   const [member, setMember] = useState(null);
   const [signups, setSignups] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [activeType, setActiveType] = useState("recepcao");
+  const [activeType, setActiveType] = useState(location.state?.presetType || "recepcao");
 
   useEffect(() => { load(); }, []);
 
