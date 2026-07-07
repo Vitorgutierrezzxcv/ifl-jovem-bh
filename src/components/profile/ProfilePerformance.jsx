@@ -57,7 +57,7 @@ export default function ProfilePerformance({ member }) {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    if (!member) return;
+    if (!member) { setLoading(false); return; }
     async function load() {
       try {
         const [pts, subs, members, tks] = await Promise.all([

@@ -9,7 +9,7 @@ export default function BookClub() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    base44.entities.BookClub.list("-year,-month", 30)
+    base44.entities.BookClub.list("-session_date", 50)
       .then(b => setBooks(b))
       .catch(e => { console.error(e); setBooks([]); })
       .finally(() => setLoading(false));

@@ -15,7 +15,7 @@ export default function ProfileAnalytics({ member }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!member?.id) return;
+    if (!member?.id) { setLoading(false); return; }
     loadAnalytics();
   }, [member?.id]);
 
