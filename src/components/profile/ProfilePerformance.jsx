@@ -59,17 +59,22 @@ export default function ProfilePerformance({ member }) {
   useEffect(() => {
     if (!member) return;
     async function load() {
-      const [pts, subs, members, tks] = await Promise.all([
-        base44.entities.PointsLedger.filter({ member_id: member.id }),
-        base44.entities.TaskSubmission.filter({ member_id: member.id }),
-        base44.entities.Member.filter({ cycle: member.cycle }),
-        base44.entities.Task.list("-due_date", 100),
-      ]);
-      setPoints(pts.filter(p => p.status === "aprovado"));
-      setSubmissions(subs);
-      setAllMembers(members.sort((a, b) => (b.total_points || 0) - (a.total_points || 0)));
-      setTasks(tks);
-      setLoading(false);
+      try {
+        const [pts, subs, members, tks] = await Promise.all([
+          base44.entities.PointsLedger.filter({ member_id: member.id }).catch(() => []),
+          base44.entities.TaskSubmission.filter({ member_id: member.id }).catch(() => []),
+          base44.entities.Member.filter({ cycle: member.cycle }).catch(() => []),
+          base44.entities.Task.list("-due_date", 100).catch(() => []),
+        ]);
+        setPoints(pts.filter(p => p.status === "aprovado"));
+        setSubmissions(subs);
+        setAllMembers(members.sort((a, b) => (b.total_points || 0) - (a.total_points || 0)));
+        setTasks(tks);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
     }
     load();
   }, [member]);
