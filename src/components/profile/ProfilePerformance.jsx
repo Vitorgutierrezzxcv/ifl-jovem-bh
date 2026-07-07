@@ -82,7 +82,17 @@ export default function ProfilePerformance({ member }) {
   if (loading) {
     return (
       <div className="flex justify-center py-12">
-        <div className="w-7 h-7 border-4 border-gray-200 border-t-ifl-navy rounded-full animate-spin" />
+        <div className="w-7 h-7 rounded-full animate-spin" style={{ border: "3px solid rgba(181,134,42,0.3)", borderTopColor: "#D4A043" }} />
+      </div>
+    );
+  }
+
+  if (!member) {
+    return (
+      <div className="px-4 pt-8">
+        <p className="font-inter text-sm text-center" style={{ color: "rgba(255,255,255,0.5)" }}>
+          Não foi possível carregar seus dados de associado.
+        </p>
       </div>
     );
   }
@@ -132,12 +142,12 @@ export default function ProfilePerformance({ member }) {
       </div>
 
       {/* Pontos por categoria */}
-      <div className="rounded-2xl p-4" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.08)" }}>
-        <p className="font-montserrat font-bold text-sm mb-3" style={{ color: "#111827" }}>
+      <div className="rounded-2xl p-4" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(181,134,42,0.2)" }}>
+        <p className="font-montserrat font-bold text-sm mb-3" style={{ color: "#FFFFFF" }}>
           📊 Pontos por Categoria
         </p>
         {sortedCategories.length === 0 ? (
-          <p className="font-inter text-sm text-center py-4" style={{ color: "#9CA3AF" }}>Nenhum ponto registrado ainda</p>
+          <p className="font-inter text-sm text-center py-4" style={{ color: "rgba(255,255,255,0.4)" }}>Nenhum ponto registrado ainda</p>
         ) : (
           <div className="flex flex-col gap-2.5">
             {sortedCategories.map(([cat, pts]) => {
@@ -146,14 +156,14 @@ export default function ProfilePerformance({ member }) {
               return (
                 <div key={cat}>
                   <div className="flex items-center justify-between mb-1">
-                    <span className="font-inter text-xs font-semibold" style={{ color: "#374151" }}>
+                    <span className="font-inter text-xs font-semibold" style={{ color: "rgba(255,255,255,0.7)" }}>
                       {categoryLabels[cat] || cat}
                     </span>
                     <span className="font-montserrat font-bold text-xs" style={{ color }}>
                       {pts} pts
                     </span>
                   </div>
-                  <div className="h-2 rounded-full w-full" style={{ background: "rgba(13,33,55,0.07)" }}>
+                  <div className="h-2 rounded-full w-full" style={{ background: "rgba(255,255,255,0.08)" }}>
                     <div
                       className="h-2 rounded-full transition-all"
                       style={{ width: `${pct}%`, background: color }}
@@ -167,24 +177,24 @@ export default function ProfilePerformance({ member }) {
       </div>
 
       {/* Tarefas aprovadas */}
-      <div className="rounded-2xl p-4" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.08)" }}>
-        <p className="font-montserrat font-bold text-sm mb-3" style={{ color: "#111827" }}>
+      <div className="rounded-2xl p-4" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(181,134,42,0.2)" }}>
+        <p className="font-montserrat font-bold text-sm mb-3" style={{ color: "#FFFFFF" }}>
           ✅ Tarefas Aprovadas ({approvedSubs.length})
         </p>
         {approvedSubs.length === 0 ? (
-          <p className="font-inter text-sm text-center py-4" style={{ color: "#9CA3AF" }}>Nenhuma tarefa aprovada ainda</p>
+          <p className="font-inter text-sm text-center py-4" style={{ color: "rgba(255,255,255,0.4)" }}>Nenhuma tarefa aprovada ainda</p>
         ) : (
           <div className="flex flex-col gap-3">
             {approvedSubs.map(sub => (
-              <div key={sub.id} className="rounded-xl p-3" style={{ background: "rgba(13,33,55,0.03)", border: "1px solid rgba(13,33,55,0.07)" }}>
+              <div key={sub.id} className="rounded-xl p-3" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
                 <div className="flex items-start gap-2">
                   <CheckCircle2 size={15} className="flex-shrink-0 mt-0.5" style={{ color: "#1F8A5B" }} />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                      <p className="font-inter text-sm font-semibold truncate" style={{ color: "#111827" }}>
+                      <p className="font-inter text-sm font-semibold truncate" style={{ color: "#FFFFFF" }}>
                         {tasks.find(t => t.id === sub.task_id)?.title || "Tarefa"}
                       </p>
-                      <span className="font-inter text-[10px] flex-shrink-0" style={{ color: "#9CA3AF" }}>
+                      <span className="font-inter text-[10px] flex-shrink-0" style={{ color: "rgba(255,255,255,0.4)" }}>
                         {sub.submitted_at
                           ? new Date(sub.submitted_at).toLocaleDateString("pt-BR")
                           : new Date(sub.created_date).toLocaleDateString("pt-BR")}
@@ -192,15 +202,15 @@ export default function ProfilePerformance({ member }) {
                     </div>
                     {sub.status === "aprovada_ressalvas" && (
                       <span className="font-inter text-[10px] font-semibold px-1.5 py-0.5 rounded-full inline-block mt-0.5"
-                        style={{ background: "rgba(217,154,34,0.12)", color: "#D99A22" }}>
+                        style={{ background: "rgba(217,154,34,0.15)", color: "#D99A22" }}>
                         Aprovada c/ ressalvas
                       </span>
                     )}
                     {sub.feedback && (
                       <div className="mt-2 p-2 rounded-lg flex items-start gap-1.5"
-                        style={{ background: "rgba(13,33,55,0.05)", border: "1px solid rgba(13,33,55,0.08)" }}>
-                        <MessageSquare size={12} className="flex-shrink-0 mt-0.5" style={{ color: "#B5862A" }} />
-                        <p className="font-inter text-xs italic leading-relaxed" style={{ color: "#374151" }}>
+                        style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                        <MessageSquare size={12} className="flex-shrink-0 mt-0.5" style={{ color: "#D4A043" }} />
+                        <p className="font-inter text-xs italic leading-relaxed" style={{ color: "rgba(255,255,255,0.7)" }}>
                           "{sub.feedback}"
                         </p>
                       </div>

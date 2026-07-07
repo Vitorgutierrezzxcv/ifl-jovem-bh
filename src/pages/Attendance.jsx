@@ -117,7 +117,7 @@ export default function Attendance() {
   return (
     <div className="min-h-screen bg-ifl-gray-bg" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
       {/* Header */}
-      <div className="hex-bg-dark relative overflow-hidden" style={{ background: "#071D33" }}>
+      <div className="hex-bg-dark relative overflow-hidden" style={{ background: "#0D2137" }}>
         <MobileHeader title="Minha Presença" dark />
         <div className="px-5 pb-6">
           <div className="flex items-end gap-4">

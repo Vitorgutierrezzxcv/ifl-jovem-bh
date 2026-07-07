@@ -50,7 +50,7 @@ export default function ReceptionSignup() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "#0D2137" }}>
-        <div className="w-8 h-8 border-4 border-gray-200 border-t-ifl-navy rounded-full animate-spin" />
+        <div className="w-8 h-8 rounded-full animate-spin" style={{ border: "3px solid rgba(181,134,42,0.3)", borderTopColor: "#D4A043" }} />
       </div>
     );
   }
@@ -68,11 +68,11 @@ export default function ReceptionSignup() {
       </div>
 
       <div className="px-4 pt-4 flex flex-col gap-4">
-        <div className="rounded-2xl p-5 flex items-start gap-3" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.08)" }}>
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "rgba(31,138,91,0.1)" }}>
+        <div className="rounded-2xl p-5 flex items-start gap-3" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(181,134,42,0.2)" }}>
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "rgba(31,138,91,0.15)" }}>
             <HandHelping size={17} style={{ color: "#1F8A5B" }} />
           </div>
-          <p className="font-inter text-sm leading-relaxed" style={{ color: "#374151" }}>
+          <p className="font-inter text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.7)" }}>
             Escolha o tipo de ajuda e inscreva-se. A diretoria escolhe quem vai participar de cada evento e avisa aqui com as instruções.
           </p>
         </div>
@@ -93,13 +93,13 @@ export default function ReceptionSignup() {
                 <button key={t.key} onClick={() => setActiveType(t.key)}
                   className="flex-1 flex flex-col items-center gap-1 py-3 rounded-xl font-inter text-xs font-semibold transition-all"
                   style={{
-                    background: active ? t.color : "hsl(var(--card))",
-                    color: active ? "#FFFFFF" : "#6B7280",
-                    border: active ? "none" : "1px solid rgba(13,33,55,0.08)",
+                    background: active ? t.color : "rgba(255,255,255,0.05)",
+                    color: active ? "#FFFFFF" : "rgba(255,255,255,0.55)",
+                    border: active ? `1px solid ${t.color}` : "1px solid rgba(255,255,255,0.1)",
                   }}>
                   <t.icon size={18} strokeWidth={1.8} />
                   {t.label}
-                  {has && <span className="w-1.5 h-1.5 rounded-full bg-ifl-gold" />}
+                  {has && <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#D4A043" }} />}
                 </button>
               );
             })}
@@ -111,20 +111,20 @@ export default function ReceptionSignup() {
           const t = HELP_TYPES.find(t => t.key === activeType);
           const signup = signupByType(activeType);
           return (
-            <div className="rounded-2xl p-5 flex flex-col gap-3" style={{ background: "hsl(var(--card))", border: "1px solid rgba(13,33,55,0.08)" }}>
-              <div className="flex items-center gap-3 pb-3 border-b" style={{ borderColor: "rgba(13,33,55,0.06)" }}>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${t.color}15` }}>
+            <div className="rounded-2xl p-5 flex flex-col gap-3" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(181,134,42,0.2)" }}>
+              <div className="flex items-center gap-3 pb-3 border-b" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${t.color}20` }}>
                   <t.icon size={20} style={{ color: t.color }} />
                 </div>
                 <div>
-                  <p className="font-montserrat font-bold text-sm" style={{ color: "#111827" }}>{t.label}</p>
-                  <p className="font-inter text-xs" style={{ color: "#9CA3AF" }}>{t.desc}</p>
+                  <p className="font-montserrat font-bold text-sm" style={{ color: "#FFFFFF" }}>{t.label}</p>
+                  <p className="font-inter text-xs" style={{ color: "rgba(255,255,255,0.45)" }}>{t.desc}</p>
                 </div>
               </div>
 
               {!signup ? (
                 <>
-                  <p className="font-inter text-sm" style={{ color: "#6B7280" }}>Você ainda não se inscreveu para {t.label.toLowerCase()}.</p>
+                  <p className="font-inter text-sm" style={{ color: "rgba(255,255,255,0.6)" }}>Você ainda não se inscreveu para {t.label.toLowerCase()}.</p>
                   <button onClick={() => handleSignup(activeType)} disabled={submitting}
                     className="w-full rounded-2xl font-montserrat font-bold text-sm text-white flex items-center justify-center gap-2"
                     style={{ height: 48, background: t.color }}>
@@ -137,9 +137,9 @@ export default function ReceptionSignup() {
                     <>
                       <div className="flex items-center gap-2">
                         <Clock size={17} style={{ color: "#D99A22" }} />
-                        <p className="font-montserrat font-bold text-sm" style={{ color: "#111827" }}>Inscrição enviada</p>
+                        <p className="font-montserrat font-bold text-sm" style={{ color: "#FFFFFF" }}>Inscrição enviada</p>
                       </div>
-                      <p className="font-inter text-xs" style={{ color: "#6B7280" }}>
+                      <p className="font-inter text-xs" style={{ color: "rgba(255,255,255,0.55)" }}>
                         Aguarde — a diretoria vai avisar aqui quando você for selecionado(a) para um evento.
                       </p>
                     </>
@@ -153,35 +153,35 @@ export default function ReceptionSignup() {
                       </div>
                       {signup.event_name && (
                         <div className="flex items-center gap-3">
-                          <Star size={15} style={{ color: "#B5862A" }} />
-                          <span className="font-inter text-sm" style={{ color: "#374151" }}>{signup.event_name}</span>
+                          <Star size={15} style={{ color: "#D4A043" }} />
+                          <span className="font-inter text-sm" style={{ color: "rgba(255,255,255,0.8)" }}>{signup.event_name}</span>
                         </div>
                       )}
                       {signup.area && (
                         <div className="flex items-center gap-3">
-                          <MapPin size={15} style={{ color: "#B5862A" }} />
-                          <span className="font-inter text-sm" style={{ color: "#374151" }}>{signup.area}</span>
+                          <MapPin size={15} style={{ color: "#D4A043" }} />
+                          <span className="font-inter text-sm" style={{ color: "rgba(255,255,255,0.8)" }}>{signup.area}</span>
                         </div>
                       )}
                       {signup.event_date && (
                         <div className="flex items-center gap-3">
-                          <Calendar size={15} style={{ color: "#B5862A" }} />
-                          <span className="font-inter text-sm" style={{ color: "#374151" }}>
+                          <Calendar size={15} style={{ color: "#D4A043" }} />
+                          <span className="font-inter text-sm" style={{ color: "rgba(255,255,255,0.8)" }}>
                             {new Date(signup.event_date + "T12:00:00").toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
                           </span>
                         </div>
                       )}
                       {signup.instructions && (
-                        <div className="p-3 rounded-xl" style={{ background: "rgba(31,138,91,0.06)", border: "1px solid rgba(31,138,91,0.15)" }}>
+                        <div className="p-3 rounded-xl" style={{ background: "rgba(31,138,91,0.1)", border: "1px solid rgba(31,138,91,0.25)" }}>
                           <p className="font-inter text-[11px] font-bold mb-1" style={{ color: "#1F8A5B" }}>📋 Instruções da Diretoria</p>
-                          <p className="font-inter text-sm leading-relaxed" style={{ color: "#374151" }}>{signup.instructions}</p>
+                          <p className="font-inter text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.8)" }}>{signup.instructions}</p>
                         </div>
                       )}
                     </>
                   )}
 
                   {signup.status === "nao_selecionado" && (
-                    <p className="font-inter text-sm" style={{ color: "#6B7280" }}>
+                    <p className="font-inter text-sm" style={{ color: "rgba(255,255,255,0.6)" }}>
                       Você não foi selecionado(a) desta vez. Fique de olho para as próximas oportunidades!
                     </p>
                   )}

@@ -34,7 +34,7 @@ export default function MobileHeader({ title, subtitle, dark = false, showNotifi
         style={{
           paddingTop: "calc(env(safe-area-inset-top) + 12px)",
           paddingBottom: "12px",
-          background: dark ? "#071D33" : "#071D33",
+          background: "#0D2137",
         }}
       >
         <div className="flex items-center gap-3">
@@ -42,9 +42,9 @@ export default function MobileHeader({ title, subtitle, dark = false, showNotifi
             <button
               onClick={() => navigate(-1)}
               className="w-8 h-8 rounded-full flex items-center justify-center"
-              style={{ background: dark ? "rgba(255,255,255,0.1)" : "rgba(7,29,51,0.06)" }}
+              style={{ background: "rgba(255,255,255,0.1)" }}
             >
-              <ChevronLeft size={20} style={{ color: dark ? "#FFFFFF" : "#071D33" }} strokeWidth={2} />
+              <ChevronLeft size={20} style={{ color: "#FFFFFF" }} strokeWidth={2} />
             </button>
           ) : (
             <IFLLogo size={32} />
@@ -52,12 +52,12 @@ export default function MobileHeader({ title, subtitle, dark = false, showNotifi
           {(title || subtitle) && (
             <div>
               {title && (
-                <p className="font-montserrat font-bold text-sm uppercase tracking-wider" style={{ color: dark ? "#FFFFFF" : "#071D33" }}>
+                <p className="font-montserrat font-bold text-sm uppercase tracking-wider" style={{ color: "#FFFFFF" }}>
                   {title}
                 </p>
               )}
               {subtitle && (
-                <p className="font-inter text-xs" style={{ color: dark ? "rgba(255,255,255,0.55)" : "#6B7280" }}>
+                <p className="font-inter text-xs" style={{ color: "rgba(255,255,255,0.55)" }}>
                   {subtitle}
                 </p>
               )}
@@ -65,8 +65,8 @@ export default function MobileHeader({ title, subtitle, dark = false, showNotifi
           )}
         </div>
         {showNotification && (
-          <button onClick={handleBellClick} className="relative p-2 rounded-full" style={{ background: dark ? "rgba(255,255,255,0.1)" : "rgba(7,29,51,0.06)" }}>
-            <Bell size={18} style={{ color: dark ? "#D4A043" : "#071D33" }} strokeWidth={1.8} />
+          <button onClick={handleBellClick} className="relative p-2 rounded-full" style={{ background: "rgba(255,255,255,0.1)" }}>
+            <Bell size={18} style={{ color: "#D4A043" }} strokeWidth={1.8} />
             {unread && <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-ifl-gold border border-white" />}
           </button>
         )}

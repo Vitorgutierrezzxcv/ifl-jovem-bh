@@ -63,7 +63,7 @@ export default function Welcome() {
     <div
       className="min-h-screen flex flex-col relative overflow-hidden hex-bg-dark"
       style={{
-        background: "linear-gradient(160deg, #071D33 0%, #0A2640 60%, #040F1A 100%)",
+        background: "linear-gradient(160deg, #0D2137 0%, #0A2640 60%, #040F1A 100%)",
         paddingTop: "env(safe-area-inset-top)",
         paddingBottom: "env(safe-area-inset-bottom)",
       }}

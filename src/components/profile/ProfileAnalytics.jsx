@@ -77,15 +77,15 @@ export default function ProfileAnalytics({ member }) {
   const topCycle = cycleMembers.length > 0 ? Math.max(...cycleMembers.map(m => m.total_points || 0)) : 0;
 
   const compareData = [
-    { name: "Você", Pontos: myPoints, fill: "#B8872A" },
-    { name: "Média do ciclo", Pontos: avgCyclePoints, fill: "#071D33" },
+    { name: "Você", Pontos: myPoints, fill: "#D4A043" },
+    { name: "Média do ciclo", Pontos: avgCyclePoints, fill: "#D4A043" },
     { name: "Topo do ciclo", Pontos: topCycle, fill: "#1F8A5B" },
   ];
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload?.length) {
       return (
-        <div className="rounded-xl px-3 py-2 font-inter text-xs" style={{ background: "#071D33", color: "#fff", border: "1px solid rgba(184,135,42,0.3)" }}>
+        <div className="rounded-xl px-3 py-2 font-inter text-xs" style={{ background: "#0D2137", color: "#fff", border: "1px solid rgba(184,135,42,0.3)" }}>
           <p className="font-bold" style={{ color: "#D4A043" }}>{label}</p>
           <p>{payload[0].value} pts</p>
         </div>
@@ -97,7 +97,17 @@ export default function ProfileAnalytics({ member }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="w-8 h-8 rounded-full animate-spin" style={{ border: "3px solid #B8872A", borderTopColor: "transparent" }} />
+        <div className="w-8 h-8 rounded-full animate-spin" style={{ border: "3px solid rgba(181,134,42,0.3)", borderTopColor: "#D4A043" }} />
+      </div>
+    );
+  }
+
+  if (!member?.id) {
+    return (
+      <div className="px-4 pt-8">
+        <p className="font-inter text-sm text-center" style={{ color: "rgba(255,255,255,0.5)" }}>
+          Não foi possível carregar seus dados de associado.
+        </p>
       </div>
     );
   }
@@ -106,27 +116,27 @@ export default function ProfileAnalytics({ member }) {
     <div className="px-4 pb-4 flex flex-col gap-5 mt-4">
 
       {/* Pontuação por mês */}
-      <div className="rounded-2xl p-4" style={{ background: "hsl(var(--card))", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}>
+      <div className="rounded-2xl p-4" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(181,134,42,0.2)" }}>
         <div className="flex items-center gap-2 mb-4">
-          <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "rgba(184,135,42,0.1)" }}>
-            <TrendingUp size={16} style={{ color: "#B8872A" }} strokeWidth={1.8} />
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "rgba(184,135,42,0.15)" }}>
+            <TrendingUp size={16} style={{ color: "#D4A043" }} strokeWidth={1.8} />
           </div>
           <div>
-            <p className="font-montserrat font-bold text-sm" style={{ color: "#111827" }}>Evolução de Pontos</p>
-            <p className="font-inter text-xs" style={{ color: "#9CA3AF" }}>Últimos 6 meses</p>
+            <p className="font-montserrat font-bold text-sm" style={{ color: "#FFFFFF" }}>Evolução de Pontos</p>
+            <p className="font-inter text-xs" style={{ color: "rgba(255,255,255,0.45)" }}>Últimos 6 meses</p>
           </div>
         </div>
         {pointsByMonth.every(m => m.Pontos === 0) ? (
-          <p className="font-inter text-sm text-center py-6" style={{ color: "#9CA3AF" }}>Sem dados de pontuação ainda</p>
+          <p className="font-inter text-sm text-center py-6" style={{ color: "rgba(255,255,255,0.4)" }}>Sem dados de pontuação ainda</p>
         ) : (
           <ResponsiveContainer width="100%" height={160}>
             <BarChart data={pointsByMonth} barSize={26}>
-              <XAxis dataKey="name" tick={{ fontFamily: "Inter", fontSize: 11, fill: "#9CA3AF" }} axisLine={false} tickLine={false} />
+              <XAxis dataKey="name" tick={{ fontFamily: "Inter", fontSize: 11, fill: "rgba(255,255,255,0.5)" }} axisLine={false} tickLine={false} />
               <YAxis hide />
               <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(184,135,42,0.07)" }} />
               <Bar dataKey="Pontos" radius={[6, 6, 0, 0]}>
                 {pointsByMonth.map((_, i) => (
-                  <Cell key={i} fill={i === pointsByMonth.length - 1 ? "#B8872A" : "#0D2137"} />
+                  <Cell key={i} fill={i === pointsByMonth.length - 1 ? "#D4A043" : "rgba(255,255,255,0.25)"} />
                 ))}
               </Bar>
             </BarChart>
@@ -135,21 +145,21 @@ export default function ProfileAnalytics({ member }) {
       </div>
 
       {/* Taxa de aprovação */}
-      <div className="rounded-2xl p-4" style={{ background: "hsl(var(--card))", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}>
+      <div className="rounded-2xl p-4" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(181,134,42,0.2)" }}>
         <div className="flex items-center gap-2 mb-4">
-          <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "rgba(31,138,91,0.1)" }}>
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "rgba(31,138,91,0.15)" }}>
             <CheckCircle size={16} style={{ color: "#1F8A5B" }} strokeWidth={1.8} />
           </div>
           <div>
-            <p className="font-montserrat font-bold text-sm" style={{ color: "#111827" }}>Taxa de Aprovação</p>
-            <p className="font-inter text-xs" style={{ color: "#9CA3AF" }}>Tarefas enviadas</p>
+            <p className="font-montserrat font-bold text-sm" style={{ color: "#FFFFFF" }}>Taxa de Aprovação</p>
+            <p className="font-inter text-xs" style={{ color: "rgba(255,255,255,0.45)" }}>Tarefas enviadas</p>
           </div>
           <div className="ml-auto">
             <span className="font-montserrat font-black text-2xl" style={{ color: approvalRate >= 70 ? "#1F8A5B" : "#D99A22" }}>{approvalRate}%</span>
           </div>
         </div>
         {taskPie.length === 0 ? (
-          <p className="font-inter text-sm text-center py-6" style={{ color: "#9CA3AF" }}>Nenhuma tarefa enviada ainda</p>
+          <p className="font-inter text-sm text-center py-6" style={{ color: "rgba(255,255,255,0.4)" }}>Nenhuma tarefa enviada ainda</p>
         ) : (
           <div className="flex items-center justify-center">
             <ResponsiveContainer width="100%" height={180}>
@@ -170,11 +180,11 @@ export default function ProfileAnalytics({ member }) {
                 <Legend
                   iconType="circle"
                   iconSize={8}
-                  wrapperStyle={{ fontFamily: "Inter", fontSize: 11, color: "#6B7280" }}
+                  wrapperStyle={{ fontFamily: "Inter", fontSize: 11, color: "rgba(255,255,255,0.6)" }}
                 />
                 <Tooltip
                   formatter={(val, name) => [`${val} tarefa(s)`, name]}
-                  contentStyle={{ fontFamily: "Inter", fontSize: 12, borderRadius: 10, border: "1px solid rgba(7,29,51,0.1)" }}
+                  contentStyle={{ fontFamily: "Inter", fontSize: 12, borderRadius: 10, background: "#0D2137", border: "1px solid rgba(184,135,42,0.3)", color: "#fff" }}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -183,20 +193,20 @@ export default function ProfileAnalytics({ member }) {
       </div>
 
       {/* Comparativo do ciclo */}
-      <div className="rounded-2xl p-4" style={{ background: "hsl(var(--card))", border: "1px solid rgba(7,29,51,0.06)", boxShadow: "0 2px 8px rgba(7,29,51,0.04)" }}>
+      <div className="rounded-2xl p-4" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(181,134,42,0.2)" }}>
         <div className="flex items-center gap-2 mb-4">
-          <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "rgba(7,29,51,0.07)" }}>
-            <Users size={16} style={{ color: "#071D33" }} strokeWidth={1.8} />
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "rgba(255,255,255,0.08)" }}>
+            <Users size={16} style={{ color: "#D4A043" }} strokeWidth={1.8} />
           </div>
           <div>
-            <p className="font-montserrat font-bold text-sm" style={{ color: "#111827" }}>Comparativo do Ciclo</p>
-            <p className="font-inter text-xs" style={{ color: "#9CA3AF" }}>{cycleMembers.length} membros ativos no seu ciclo</p>
+            <p className="font-montserrat font-bold text-sm" style={{ color: "#FFFFFF" }}>Comparativo do Ciclo</p>
+            <p className="font-inter text-xs" style={{ color: "rgba(255,255,255,0.45)" }}>{cycleMembers.length} membros ativos no seu ciclo</p>
           </div>
         </div>
         <ResponsiveContainer width="100%" height={140}>
           <BarChart data={compareData} barSize={38} layout="vertical">
             <XAxis type="number" hide />
-            <YAxis type="category" dataKey="name" tick={{ fontFamily: "Inter", fontSize: 11, fill: "#6B7280" }} axisLine={false} tickLine={false} width={80} />
+            <YAxis type="category" dataKey="name" tick={{ fontFamily: "Inter", fontSize: 11, fill: "rgba(255,255,255,0.6)" }} axisLine={false} tickLine={false} width={80} />
             <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(184,135,42,0.07)" }} />
             <Bar dataKey="Pontos" radius={[0, 6, 6, 0]}>
               {compareData.map((entry, i) => (
@@ -208,13 +218,13 @@ export default function ProfileAnalytics({ member }) {
         {/* Summary pills */}
         <div className="flex gap-2 mt-3 flex-wrap">
           {[
-            { label: "Você", val: myPoints, color: "#B8872A" },
-            { label: "Média", val: avgCyclePoints, color: "#071D33" },
+            { label: "Você", val: myPoints, color: "#D4A043" },
+            { label: "Média", val: avgCyclePoints, color: "#D4A043" },
             { label: "Topo", val: topCycle, color: "#1F8A5B" },
           ].map(item => (
-            <div key={item.label} className="flex-1 rounded-xl p-2 text-center min-w-0" style={{ background: `${item.color}10`, border: `1px solid ${item.color}20` }}>
+            <div key={item.label} className="flex-1 rounded-xl p-2 text-center min-w-0" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
               <p className="font-montserrat font-black text-base" style={{ color: item.color }}>{item.val}</p>
-              <p className="font-inter text-[10px]" style={{ color: "#9CA3AF" }}>{item.label}</p>
+              <p className="font-inter text-[10px]" style={{ color: "rgba(255,255,255,0.45)" }}>{item.label}</p>
             </div>
           ))}
         </div>

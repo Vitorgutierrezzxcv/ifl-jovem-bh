@@ -102,7 +102,7 @@ export default function Home() {
       {/* Hero Header */}
       <div
         className="hex-bg-dark relative overflow-hidden"
-        style={{ background: "#071D33" }}
+        style={{ background: "#0D2137" }}
       >
 
 

@@ -37,7 +37,7 @@ export default function Financial() {
 
   return (
     <div className="min-h-screen bg-ifl-gray-bg" style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 72px)" }}>
-      <div style={{ background: "#071D33" }}>
+      <div style={{ background: "#0D2137" }}>
         <MobileHeader title="Financeiro" dark />
         <div className="px-5 pb-6">
           <h1 className="font-montserrat font-black text-2xl text-white mb-4">Situação Financeira</h1>
