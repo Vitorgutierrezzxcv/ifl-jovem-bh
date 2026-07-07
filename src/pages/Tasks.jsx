@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
-import { CheckSquare, Clock, ChevronRight, Link, FileText, AlertCircle, Paperclip, X, CheckCircle2, AlertTriangle } from "lucide-react";
+import { CheckSquare, Clock, ChevronRight, ChevronLeft, Link, FileText, AlertCircle, Paperclip, X, CheckCircle2, AlertTriangle } from "lucide-react";
 import MobileHeader from "../components/layout/MobileHeader";
 import StatusBadge from "../components/ui/StatusBadge";
 
@@ -14,7 +14,7 @@ const filterTabs = [
   { key: "todas", label: "Todas" },
 ];
 
-export default function Tasks() {
+export default function Tasks({ embedded = false }) {
   const [tasks, setTasks] = useState([]);
   const [submissions, setSubmissions] = useState([]);
   const [member, setMember] = useState(null);
@@ -125,7 +125,16 @@ export default function Tasks() {
 
     return (
       <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
-        <div style={{ background: "#0D2137" }}><MobileHeader title="Detalhes da Tarefa" dark showBack /></div>
+        {embedded ? (
+          <div className="flex items-center gap-3 px-5" style={{ background: "#0D2137", paddingTop: "calc(env(safe-area-inset-top) + 12px)", paddingBottom: "12px" }}>
+            <button onClick={() => setSelectedTask(null)} className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: "rgba(255,255,255,0.1)" }}>
+              <ChevronLeft size={20} color="#FFFFFF" strokeWidth={2} />
+            </button>
+            <p className="font-montserrat font-bold text-sm uppercase tracking-wider text-white">Detalhes da Tarefa</p>
+          </div>
+        ) : (
+          <div style={{ background: "#0D2137" }}><MobileHeader title="Detalhes da Tarefa" dark showBack /></div>
+        )}
         <div className="px-4 pt-4 flex flex-col gap-4">
           
           {/* Task Header */}
@@ -361,7 +370,7 @@ export default function Tasks() {
   // ── LIST VIEW ──
   return (
     <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
-      <MobileHeader title="Tarefas" dark />
+      {!embedded && <MobileHeader title="Tarefas" dark />}
 
       <div className="flex gap-2 px-4 pt-4 pb-2 overflow-x-auto scrollbar-hide">
         {filterTabs.map(tab => {

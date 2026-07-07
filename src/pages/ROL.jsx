@@ -62,7 +62,7 @@ const temas = ["Todos", ...Array.from(new Set(livros.map(l => l.tema)))];
 
 const statusLabels = { pendente: { label: "Em análise", color: "#D99A22" }, aprovado: { label: "Aprovado", color: "#1F8A5B" }, recusado: { label: "Recusado", color: "#B42318" } };
 
-export default function ROL() {
+export default function ROL({ embedded = false }) {
   const [search, setSearch] = useState("");
   const [activeCiclo, setActiveCiclo] = useState("todos");
   const [activeTema, setActiveTema] = useState("Todos");
@@ -117,14 +117,16 @@ export default function ROL() {
 
   return (
     <div className="min-h-screen" style={{ background: "#F0F0F4", paddingBottom: "calc(env(safe-area-inset-bottom) + 96px)" }}>
-      <div style={{ background: "#0D2137" }}>
-        <MobileHeader title="ROL Literário" dark />
-        <div className="px-5 pb-4">
-          <p className="font-inter text-xs" style={{ color: "rgba(255,255,255,0.55)" }}>
-            {livros.length} livros · Trilha oficial IFL Jovem BH
-          </p>
+      {!embedded && (
+        <div style={{ background: "#0D2137" }}>
+          <MobileHeader title="ROL Literário" dark />
+          <div className="px-5 pb-4">
+            <p className="font-inter text-xs" style={{ color: "rgba(255,255,255,0.55)" }}>
+              {livros.length} livros · Trilha oficial IFL Jovem BH
+            </p>
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="px-4 pt-4">
         {/* Article submission */}

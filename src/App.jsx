@@ -14,10 +14,10 @@ import Journey from './pages/Journey';
 import Agenda from './pages/Agenda';
 import Ranking from './pages/Ranking';
 import Profile from './pages/Profile';
-import Tasks from './pages/Tasks';
+import Assignments from './pages/Assignments';
 import Financial from './pages/Financial';
 import BookClub from './pages/BookClub';
-import ROL from './pages/ROL';
+
 import Opportunities from './pages/Opportunities';
 import Documents from './pages/Documents';
 import Admin from './pages/Admin';
@@ -67,10 +67,10 @@ const AuthenticatedApp = () => {
         <Route path="/agenda" element={<Agenda />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/perfil" element={<Profile />} />
-        <Route path="/tarefas" element={<Tasks />} />
+        <Route path="/tarefas" element={<Assignments initialTab="tarefas" />} />
         <Route path="/financeiro" element={<Financial />} />
         <Route path="/clube-livro" element={<BookClub />} />
-        <Route path="/rol" element={<ROL />} />
+        <Route path="/rol" element={<Assignments initialTab="rol" />} />
         <Route path="/oportunidades" element={<Opportunities />} />
         <Route path="/documentos" element={<Documents />} />
         <Route path="/admin" element={<Admin />} />
