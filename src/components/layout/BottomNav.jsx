@@ -56,7 +56,8 @@ export default function BottomNav() {
     }
   }
 
-  if (location.pathname.startsWith("/admin")) return null;
+  const AUTH_PATHS = ["/login", "/register", "/forgot-password", "/reset-password"];
+  if (location.pathname.startsWith("/admin") || AUTH_PATHS.includes(location.pathname)) return null;
 
   return (
     <nav
