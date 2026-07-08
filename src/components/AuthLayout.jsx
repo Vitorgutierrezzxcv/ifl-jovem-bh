@@ -25,7 +25,7 @@ export default function AuthLayout({ icon: Icon, title, subtitle, footer, childr
         {/* Logo + Title */}
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <IFLLogo size={56} />
+            <IFLLogo size={80} />
           </div>
           <h1
             className="font-montserrat font-black text-2xl leading-tight"
