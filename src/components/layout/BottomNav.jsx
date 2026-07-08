@@ -63,7 +63,7 @@ export default function BottomNav() {
     <nav
       className="fixed left-1/2 z-[9999]"
       style={{
-        bottom: "max(2px, env(safe-area-inset-bottom) - 28px)",
+        bottom: "max(0px, env(safe-area-inset-bottom) - 34px)",
         transform: "translateX(-50%)",
         width: "calc(100% - 24px)",
         maxWidth: 420,
