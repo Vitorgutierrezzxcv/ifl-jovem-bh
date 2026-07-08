@@ -1,66 +1,52 @@
 // Service Worker — Central IFL Jovem BH
-// Auto-update: network-first for navigation ensures latest version on every open
+// Strategy: cache-first for hashed assets, network-first for navigation.
+// Auto-update: new SW calls skipWaiting on install; page reloads on controllerchange.
 const CACHE = 'ifl-pwa-v1';
-const CORE = ['/', '/index.html', '/manifest.json'];
 
-// Install: cache core assets and activate immediately
+const CORE_ASSETS = ['/', '/index.html', '/manifest.json'];
+
+// Install: pre-cache core assets, activate immediately
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(CORE)).catch(() => {})
-  );
   self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE).then((cache) => cache.addAll(CORE_ASSETS).catch(() => {}))
+  );
 });
 
-// Activate: clean old caches and claim clients
+// Activate: delete old caches, claim all clients immediately
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
-    )
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-// Fetch: network-first for navigation (always latest HTML), cache-first for assets
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   const url = new URL(req.url);
 
-  // Only handle GET requests from same origin
+  // Only handle same-origin GET requests
   if (req.method !== 'GET' || url.origin !== location.origin) return;
 
-  // Navigation requests (HTML pages) — network-first with content comparison
+  // Navigation (HTML) — network-first so users always get the latest shell
   if (req.mode === 'navigate') {
     event.respondWith(
-      (async () => {
-        const cache = await caches.open(CACHE);
-        const cached = await cache.match(req);
-
-        try {
-          const networkRes = await fetch(req);
-          const networkText = await networkRes.clone().text();
-
-          // If we have a cached version and content changed, notify clients to reload
-          if (cached) {
-            const cachedText = await cached.text();
-            if (cachedText !== networkText) {
-              const clients = await self.clients.matchAll({ type: 'window' });
-              clients.forEach((c) => c.postMessage({ type: 'CONTENT_UPDATED' }));
-            }
-          }
-
-          cache.put(req, networkRes.clone());
-          return networkRes;
-        } catch {
-          // Offline — serve cached version
-          return cached || (await cache.match('/index.html')) || Response.error();
-        }
-      })()
+      fetch(req)
+        .then((res) => {
+          const clone = res.clone();
+          caches.open(CACHE).then((cache) => cache.put('/index.html', clone));
+          return res;
+        })
+        .catch(async () => {
+          const cache = await caches.open(CACHE);
+          return (await cache.match('/index.html')) || (await cache.match(req)) || Response.error();
+        })
     );
     return;
   }
 
-  // Static assets (JS, CSS, images with content hashes) — cache-first
+  // Static assets (JS/CSS/images with content hashes) — cache-first
   event.respondWith(
     caches.match(req).then((cached) => {
       return (
@@ -77,7 +63,6 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// Listen for messages from the app
 self.addEventListener('message', (event) => {
   if (event.data === 'SKIP_WAITING') self.skipWaiting();
 });
