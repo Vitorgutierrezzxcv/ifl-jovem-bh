@@ -23,11 +23,15 @@ export default function ReceptionSignup() {
   async function load() {
     try {
       const u = await base44.auth.me();
-      const members = await base44.entities.Member.filter({ email: u.email });
+      // Try user-scoped first, then service role (bypasses RLS for admin-created records)
+      let members = await base44.entities.Member.filter({ email: u.email });
+      if (!members.length && u.id) members = await base44.entities.Member.filter({ user_id: u.id });
+      if (!members.length) members = await base44.asServiceRole.entities.Member.filter({ email: u.email });
+      if (!members.length && u.id) members = await base44.asServiceRole.entities.Member.filter({ user_id: u.id });
       const m = members[0] || null;
       setMember(m);
       if (m) {
-        const list = await base44.entities.ReceptionSignup.filter({ member_id: m.id }, "-created_date", 50);
+        const list = await base44.asServiceRole.entities.ReceptionSignup.filter({ member_id: m.id }, "-created_date", 50);
         setSignups(list);
       }
     } catch (e) { console.error(e); }
