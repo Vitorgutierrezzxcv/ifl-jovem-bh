@@ -89,12 +89,7 @@ export default function Login() {
               placeholder="voce@exemplo.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="pl-10 h-12"
-              style={{
-                background: "rgba(255,255,255,0.06)",
-                border: "1px solid rgba(255,255,255,0.14)",
-                color: "#FFFFFF",
-              }}
+              className="auth-input pl-10 h-12"
               required
             />
           </div>
@@ -115,12 +110,7 @@ export default function Login() {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="pl-10 h-12"
-              style={{
-                background: "rgba(255,255,255,0.06)",
-                border: "1px solid rgba(255,255,255,0.14)",
-                color: "#FFFFFF",
-              }}
+              className="auth-input pl-10 h-12"
               required
             />
           </div>

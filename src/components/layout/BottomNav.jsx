@@ -63,17 +63,17 @@ export default function BottomNav() {
     <nav
       className="fixed left-1/2 z-[9999]"
       style={{
-        bottom: "calc(env(safe-area-inset-bottom) + 14px)",
+        bottom: "calc(env(safe-area-inset-bottom) + 4px)",
         transform: "translateX(-50%)",
-        width: "calc(100% - 32px)",
+        width: "calc(100% - 24px)",
         maxWidth: 420,
-        background: "rgba(7,29,51,0.92)",
+        background: "rgba(13,33,55,0.92)",
         backdropFilter: "blur(20px)",
         WebkitBackdropFilter: "blur(20px)",
-        borderRadius: 32,
+        borderRadius: 28,
         border: "1px solid rgba(184,135,42,0.18)",
         boxShadow: "0 8px 32px rgba(7,29,51,0.28), 0 2px 8px rgba(0,0,0,0.18)",
-        padding: "8px 8px",
+        padding: "6px 6px",
         pointerEvents: "auto",
       }}
     >

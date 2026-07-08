@@ -20,7 +20,7 @@ export default function ResetPassword() {
     e.preventDefault();
     setError("");
     if (newPassword !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("As senhas não coincidem");
       return;
     }
     setLoading(true);
@@ -28,7 +28,7 @@ export default function ResetPassword() {
       await base44.auth.resetPassword({ resetToken, newPassword });
       window.location.href = "/login";
     } catch (err) {
-      setError(err.message || "Failed to reset password");
+      setError(err.message || "Falha ao redefinir senha");
     } finally {
       setLoading(false);
     }
@@ -37,38 +37,43 @@ export default function ResetPassword() {
   if (!resetToken) {
     return (
       <AuthLayout
-        icon={AlertTriangle}
-        title="Invalid reset link"
-        subtitle="This password reset link is missing or invalid"
+        title="Link inválido ⚠️"
+        subtitle="Este link de redefinição está ausente ou inválido"
         footer={
-          <Link to="/forgot-password" className="text-primary font-medium hover:underline">
-            Request a new link
+          <Link to="/forgot-password" className="font-medium hover:underline" style={{ color: "#D4A043" }}>
+            Solicitar um novo link
           </Link>
         }
       >
-        <p className="text-sm text-foreground text-center">
-          The link you used appears to be incomplete. Please request a new password reset email.
-        </p>
+        <div className="text-center py-4">
+          <div className="flex justify-center mb-4">
+            <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ background: "rgba(180,35,24,0.15)" }}>
+              <AlertTriangle size={28} style={{ color: "#FCA5A5" }} />
+            </div>
+          </div>
+          <p className="font-inter text-sm" style={{ color: "rgba(255,255,255,0.7)" }}>
+            O link utilizado parece estar incompleto. Solicite um novo e-mail de redefinição de senha.
+          </p>
+        </div>
       </AuthLayout>
     );
   }
 
   return (
     <AuthLayout
-      icon={Lock}
-      title="New password"
-      subtitle="Enter your new password below"
+      title="Nova senha 🔒"
+      subtitle="Digite sua nova senha abaixo"
     >
       {error && (
-        <div className="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
+        <div className="mb-4 p-3 rounded-lg text-sm font-inter" style={{ background: "rgba(180,35,24,0.15)", color: "#FCA5A5" }}>
           {error}
         </div>
       )}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="password">New Password</Label>
+          <Label htmlFor="password" style={{ color: "rgba(255,255,255,0.7)" }}>Nova Senha</Label>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "rgba(255,255,255,0.4)" }} aria-hidden="true" />
             <Input
               id="password"
               type="password"
@@ -77,15 +82,15 @@ export default function ResetPassword() {
               placeholder="••••••••"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="pl-10 h-12"
+              className="auth-input pl-10 h-12"
               required
             />
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="confirm">Confirm Password</Label>
+          <Label htmlFor="confirm" style={{ color: "rgba(255,255,255,0.7)" }}>Confirmar Senha</Label>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "rgba(255,255,255,0.4)" }} aria-hidden="true" />
             <Input
               id="confirm"
               type="password"
@@ -93,19 +98,27 @@ export default function ResetPassword() {
               placeholder="••••••••"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="pl-10 h-12"
+              className="auth-input pl-10 h-12"
               required
             />
           </div>
         </div>
-        <Button type="submit" className="w-full h-12 font-medium" disabled={loading}>
+        <Button
+          type="submit"
+          className="w-full h-12 font-montserrat font-bold text-sm"
+          disabled={loading}
+          style={{
+            background: "linear-gradient(135deg, #B8872A, #D4A043)",
+            color: "#071D33",
+          }}
+        >
           {loading ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Resetting...
+              Redefinindo...
             </>
           ) : (
-            "Reset password"
+            "Redefinir senha"
           )}
         </Button>
       </form>

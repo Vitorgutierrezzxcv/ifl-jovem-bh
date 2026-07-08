@@ -146,6 +146,37 @@
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
+/* Auth pages — dark background inputs */
+.auth-input {
+  background-color: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.14) !important;
+  color: #FFFFFF !important;
+}
+.auth-input::placeholder {
+  color: rgba(255,255,255,0.35);
+}
+.auth-input:focus {
+  border-color: rgba(184,135,42,0.4) !important;
+  box-shadow: 0 0 0 1px rgba(184,135,42,0.2);
+}
+
+/* Auth OTP slots */
+.auth-otp-slot {
+  height: 3.5rem !important;
+  width: 3.5rem !important;
+  font-size: 1.5rem !important;
+  border-radius: 0.75rem !important;
+  background-color: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.14) !important;
+  color: #FFFFFF !important;
+  margin: 0 4px;
+}
+.auth-otp-slot:first-child { margin-left: 0; }
+.auth-otp-slot:last-child { margin-right: 0; }
+.auth-otp .animate-caret-blink {
+  background-color: #D4A043 !important;
+}
+
 /* PWA full screen */
 @media all and (display-mode: standalone) {
   body {

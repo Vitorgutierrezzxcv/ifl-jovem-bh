@@ -10,14 +10,6 @@ import AuthLayout from "@/components/AuthLayout";
 import GoogleIcon from "@/components/GoogleIcon";
 import { toast } from "@/components/ui/use-toast";
 
-const inputStyle = {
-  background: "rgba(255,255,255,0.06)",
-  border: "1px solid rgba(255,255,255,0.14)",
-  color: "#FFFFFF",
-};
-
-const labelStyle = { color: "rgba(255,255,255,0.7)" };
-
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -89,7 +81,7 @@ export default function Register() {
             {error}
           </div>
         )}
-        <div className="flex justify-center mb-6">
+        <div className="flex justify-center mb-6 auth-otp">
           <InputOTP
             maxLength={6}
             value={otpCode}
@@ -98,12 +90,12 @@ export default function Register() {
             autoComplete="one-time-code"
           >
             <InputOTPGroup>
-              <InputOTPSlot index={0} style={inputStyle} />
-              <InputOTPSlot index={1} style={inputStyle} />
-              <InputOTPSlot index={2} style={inputStyle} />
-              <InputOTPSlot index={3} style={inputStyle} />
-              <InputOTPSlot index={4} style={inputStyle} />
-              <InputOTPSlot index={5} style={inputStyle} />
+              <InputOTPSlot index={0} className="auth-otp-slot" />
+              <InputOTPSlot index={1} className="auth-otp-slot" />
+              <InputOTPSlot index={2} className="auth-otp-slot" />
+              <InputOTPSlot index={3} className="auth-otp-slot" />
+              <InputOTPSlot index={4} className="auth-otp-slot" />
+              <InputOTPSlot index={5} className="auth-otp-slot" />
             </InputOTPGroup>
           </InputOTP>
         </div>
@@ -122,7 +114,7 @@ export default function Register() {
               Verificando...
             </>
           ) : (
-            "Verificar"
+            "Verificar código"
           )}
         </Button>
         <p className="text-center font-inter text-sm mt-4" style={{ color: "rgba(255,255,255,0.55)" }}>
@@ -138,7 +130,7 @@ export default function Register() {
   return (
     <AuthLayout
       title="Crie sua conta ✨"
-      subtitle="Cadastre-se para começar sua jornada"
+      subtitle="Cadastre-se para começar sua jornada no IFL"
       footer={
         <>
           Já tem uma conta?{" "}
@@ -181,7 +173,7 @@ export default function Register() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="email" style={labelStyle}>E-mail</Label>
+          <Label htmlFor="email" style={{ color: "rgba(255,255,255,0.7)" }}>E-mail</Label>
           <div className="relative">
             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "rgba(255,255,255,0.4)" }} aria-hidden="true" />
             <Input
@@ -192,14 +184,13 @@ export default function Register() {
               placeholder="voce@exemplo.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="pl-10 h-12"
-              style={inputStyle}
+              className="auth-input pl-10 h-12"
               required
             />
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="password" style={labelStyle}>Senha</Label>
+          <Label htmlFor="password" style={{ color: "rgba(255,255,255,0.7)" }}>Senha</Label>
           <div className="relative">
             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "rgba(255,255,255,0.4)" }} aria-hidden="true" />
             <Input
@@ -209,14 +200,13 @@ export default function Register() {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="pl-10 h-12"
-              style={inputStyle}
+              className="auth-input pl-10 h-12"
               required
             />
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="confirm" style={labelStyle}>Confirmar Senha</Label>
+          <Label htmlFor="confirm" style={{ color: "rgba(255,255,255,0.7)" }}>Confirmar Senha</Label>
           <div className="relative">
             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "rgba(255,255,255,0.4)" }} aria-hidden="true" />
             <Input
@@ -226,8 +216,7 @@ export default function Register() {
               placeholder="••••••••"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="pl-10 h-12"
-              style={inputStyle}
+              className="auth-input pl-10 h-12"
               required
             />
           </div>
