@@ -61,18 +61,19 @@ export default function BottomNav() {
 
   return (
     <nav
-      className="fixed left-0 right-0 z-[9999]"
+      className="fixed left-1/2 z-[9999]"
       style={{
-        bottom: 0,
-        background: "rgba(13,33,55,0.96)",
+        bottom: "calc(env(safe-area-inset-bottom) + 4px)",
+        transform: "translateX(-50%)",
+        width: "calc(100% - 24px)",
+        maxWidth: 420,
+        background: "rgba(13,33,55,0.92)",
         backdropFilter: "blur(20px)",
         WebkitBackdropFilter: "blur(20px)",
-        borderTop: "1px solid rgba(184,135,42,0.18)",
-        boxShadow: "0 -4px 24px rgba(7,29,51,0.3)",
-        paddingTop: 8,
-        paddingBottom: "calc(env(safe-area-inset-bottom) + 8px)",
-        paddingLeft: "calc(env(safe-area-inset-left) + 8px)",
-        paddingRight: "calc(env(safe-area-inset-right) + 8px)",
+        borderRadius: 28,
+        border: "1px solid rgba(184,135,42,0.18)",
+        boxShadow: "0 8px 32px rgba(7,29,51,0.28), 0 2px 8px rgba(0,0,0,0.18)",
+        padding: "6px 6px",
         pointerEvents: "auto",
       }}
     >
