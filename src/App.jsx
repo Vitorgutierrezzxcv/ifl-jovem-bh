@@ -1,10 +1,10 @@
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
-import UserNotRegisteredError from '@/components/UserNotRegisteredError';
+import ProtectedRoute from '@/components/ProtectedRoute';
 import BottomNav from './components/layout/BottomNav';
 
 // Pages
@@ -34,9 +34,13 @@ import BoardArea from './pages/BoardArea';
 import ReceptionSignup from './pages/ReceptionSignup';
 import TerminationRequest from './pages/TerminationRequest';
 
+import Login from './pages/Login';
+import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+
 const AuthenticatedApp = () => {
-  const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
-  const location = useLocation();
+  const { isLoadingAuth, isLoadingPublicSettings } = useAuth();
 
   // Show loading spinner while checking app public settings or auth
   if (isLoadingPublicSettings || isLoadingAuth) {
@@ -47,46 +51,41 @@ const AuthenticatedApp = () => {
     );
   }
 
-  // Handle authentication errors
-  if (authError) {
-    if (authError.type === 'user_not_registered') {
-      return <UserNotRegisteredError />;
-    } else if (authError.type === 'auth_required') {
-      navigateToLogin();
-      return null;
-    }
-  }
-
-  // Render the main app
   return (
     <>
-      <Routes location={location}>
-        <Route path="/welcome" element={<Welcome />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/jornada" element={<Journey />} />
-        <Route path="/agenda" element={<Agenda />} />
-        <Route path="/ranking" element={<Ranking />} />
-        <Route path="/perfil" element={<Profile />} />
-        <Route path="/tarefas" element={<Assignments initialTab="tarefas" />} />
-        <Route path="/financeiro" element={<Financial />} />
-        <Route path="/clube-livro" element={<BookClub />} />
-        <Route path="/rol" element={<Assignments initialTab="rol" />} />
-        <Route path="/oportunidades" element={<Opportunities />} />
-        <Route path="/documentos" element={<Documents />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/pontos" element={<Points />} />
-        <Route path="/presenca" element={<Attendance />} />
-        <Route path="/ciclo" element={<CycleInfo />} />
-        <Route path="/demandas" element={<Demands />} />
-        <Route path="/criterios-pontuacao" element={<PointsCriteria />} />
-        <Route path="/colaboracoes" element={<Collaboration />} />
-        <Route path="/biblioteca" element={<Library />} />
-        <Route path="/diretorio" element={<Directory />} />
-        <Route path="/eventos-extraordinarios" element={<ExtraordinaryEvents />} />
-        <Route path="/diretoria" element={<BoardArea />} />
-        <Route path="/recepcao-sombra" element={<ReceptionSignup />} />
-        <Route path="/solicitar-desligamento" element={<TerminationRequest />} />
-        <Route path="*" element={<PageNotFound />} />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
+          <Route path="/welcome" element={<Welcome />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/jornada" element={<Journey />} />
+          <Route path="/agenda" element={<Agenda />} />
+          <Route path="/ranking" element={<Ranking />} />
+          <Route path="/perfil" element={<Profile />} />
+          <Route path="/tarefas" element={<Assignments initialTab="tarefas" />} />
+          <Route path="/financeiro" element={<Financial />} />
+          <Route path="/clube-livro" element={<BookClub />} />
+          <Route path="/rol" element={<Assignments initialTab="rol" />} />
+          <Route path="/oportunidades" element={<Opportunities />} />
+          <Route path="/documentos" element={<Documents />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/pontos" element={<Points />} />
+          <Route path="/presenca" element={<Attendance />} />
+          <Route path="/ciclo" element={<CycleInfo />} />
+          <Route path="/demandas" element={<Demands />} />
+          <Route path="/criterios-pontuacao" element={<PointsCriteria />} />
+          <Route path="/colaboracoes" element={<Collaboration />} />
+          <Route path="/biblioteca" element={<Library />} />
+          <Route path="/diretorio" element={<Directory />} />
+          <Route path="/eventos-extraordinarios" element={<ExtraordinaryEvents />} />
+          <Route path="/diretoria" element={<BoardArea />} />
+          <Route path="/recepcao-sombra" element={<ReceptionSignup />} />
+          <Route path="/solicitar-desligamento" element={<TerminationRequest />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Route>
       </Routes>
       <BottomNav />
     </>
